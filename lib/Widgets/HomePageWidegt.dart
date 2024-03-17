@@ -296,7 +296,9 @@ class _HomePageState extends State<HomePage> {
               color:  null,
             ),
             // Text('text!', style: TextStyle(color: Radtioselected == index ? Colors.red : null)),
-          ],
+
+
+            ],
         ),
         onTap: () => setState(() {
 
@@ -559,5 +561,16 @@ print(Response +' h3h3h3h3h');
     }
     NearestMeetingDayDate = DateTime.now().add(Duration(days: Nearest.getInt("Days")! )).toString().substring(0,10);
 
+  }
+
+  List<DateTime> getDays(){
+    List<DateTime> Days =  [];
+
+    for(int loop = 0 ; loop < cardData.length ; loop ++){
+      Days.add(DateTime.parse(cardData[loop]['date']));
+
+    }
+
+    return Days;
   }
 }

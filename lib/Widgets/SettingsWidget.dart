@@ -70,18 +70,7 @@ class Settings extends StatelessWidget {
                   style: TextStyle(color: Colors.grey, fontSize: 15)),
             ),
           ),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(top: 20, left: 50),
-            child:  InkWell(
-              onTap: () {
 
-              },
-              child: const Text(
-                'Edit',
-              )
-            ),
-          ),
           Container(
             margin: const EdgeInsets.only(top: 50, left: 30),
             child: const Text(

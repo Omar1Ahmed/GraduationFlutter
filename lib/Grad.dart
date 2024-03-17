@@ -40,16 +40,7 @@ late List<Map> cardData;
 
 
 
-List<DateTime> getDays(){
-  List<DateTime> Days =  [];
 
-  for(int loop = 0 ; loop < cardData.length ; loop ++){
-    Days.add(DateTime.parse(cardData[loop]['date']));
-
-  }
-
-  return Days;
-}
 
 
 

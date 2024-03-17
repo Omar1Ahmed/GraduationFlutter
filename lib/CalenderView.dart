@@ -40,86 +40,111 @@ class CalenderVu extends StatelessWidget{
   int counter = 4;
   @override
   Widget build(BuildContext context) {
-    return  Container(
-                padding: EdgeInsets.only(top: 10),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-    ),
-                      alignment: Alignment.center,
+    return  Material(
+      elevation: 10,
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+      child: Container(
+                  padding: EdgeInsets.only(top: 10),
+                  decoration: const BoxDecoration(
+                    color: Color(0xff1E2126),
+                    // color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+                        alignment: Alignment.center,
 
-                      child: CalendarDatePicker2(
-
-
-                        config: CalendarDatePicker2Config(
-                          centerAlignModePicker: true,
-
-                          calendarType: CalendarDatePicker2Type.multi,
-
-                          selectedDayHighlightColor: const Color.fromRGBO(50,213,131,100),
-                          dayBuilder: ({required date, decoration, isDisabled, isSelected, isToday, textStyle}) {
-                            Widget? dayWidget;
-
-                            for(int loop = 0; loop < DateWithCounter.length; loop ++) {
-                              if (date   == DateWithCounter[loop]['Date']) {
-
-                                dayWidget = Container(
-
-                                  decoration: decoration,
-
-                                  child: Center(
-
-                                    child: Stack(
-                                      alignment: AlignmentDirectional.center,
-                                      children: [
-                                        Text(
-                                          MaterialLocalizations.of(context)
-                                              .formatDecimal(date.day),
-                                          style: textStyle,
-                                        ),
-                                        Padding(
-
-                                          padding: const EdgeInsets.only(
-                                              left: 15.0, top: 20.5),
-
-                                          child: Container(
-                                            height: 12,
-                                            width: 12,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius
-                                                  .circular(5),
-                                              color: isSelected == true
-                                                  ? Colors.white
-                                                  : const Color.fromRGBO(
-                                                  50, 213, 131, 100),
-                                            ),
-                                            child: Text('${DateWithCounter[loop]['counter']}',
-                                                style: TextStyle(
-                                                    color: isSelected == true
-                                                        ? const Color.fromRGBO(
-                                                        50, 213, 131, 100)
-                                                        : Colors.white,
-                                                    fontSize: 9),
-                                                textAlign: TextAlign.center),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
-                            return dayWidget;
+                        child: CalendarDatePicker2(
+                          onValueChanged: (value) {
+                            print(value);
                           },
 
-                        ), value: [setDate],
+                          config: CalendarDatePicker2Config(
+                          dayTextStyle: TextStyle(
+                            color: Colors.grey
+                          ),
+                            yearTextStyle: TextStyle(
+                              color: Colors.grey
+                            ),
+                           controlsTextStyle: TextStyle(
+                             color: Colors.grey
+                           ),
+                            weekdayLabelTextStyle: TextStyle(
+                              color: Colors.grey
+                            ),
+                            nextMonthIcon: Icon(Icons.arrow_forward_ios_sharp,color: Colors.green,),
+                            lastMonthIcon: Icon(Icons.arrow_back_ios_sharp,color: Colors.green,),
+                            centerAlignModePicker: true,
+
+                            calendarType: CalendarDatePicker2Type.multi,
+
+                            selectedDayHighlightColor: const Color.fromRGBO(50,213,131,100),
+                            dayBuilder: ({required date, decoration, isDisabled, isSelected, isToday, textStyle}) {
+                              Widget? dayWidget;
+
+                              for(int loop = 0; loop < DateWithCounter.length; loop ++) {
+                                if (date   == DateWithCounter[loop]['Date']) {
+
+                                  dayWidget = Container(
+
+                                    decoration: decoration,
+
+                                    child: Center(
+
+                                      child: Stack(
+                                        alignment: AlignmentDirectional.center,
+                                        children: [
+                                          Text(
+                                            MaterialLocalizations.of(context)
+                                                .formatDecimal(date.day),
+                                            style: textStyle,
+                                          ),
+                                          Padding(
+
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0, top: 20.5),
+
+                                            child: Container(
+                                              height: 12,
+                                              width: 12,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius
+                                                    .circular(5),
+                                                color: isSelected == true
+                                                    ? Colors.white
+                                                    : const Color.fromRGBO(
+                                                    50, 213, 131, 100),
+                                              ),
+                                              child: Text('${DateWithCounter[loop]['counter']}',
+                                                  style: TextStyle(
+                                                      color: isSelected == true
+                                                          ? const Color.fromRGBO(
+                                                          50, 213, 131, 100)
+                                                          : Colors.white,
+                                                      fontSize: 9),
+                                                  textAlign: TextAlign.center),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }else{
+                                  Container(
+
+                                  );
+                                }
+                              }
+                              return dayWidget;
+                            },
+
+                          ), value: [setDate],
 
 
 
-                      ),
+                        ),
 
-            );
+              ),
+    );
   }
 
 }

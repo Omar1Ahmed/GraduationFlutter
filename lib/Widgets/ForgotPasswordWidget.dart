@@ -1,0 +1,495 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:learning/Widgets/TestApi.dart';
+import 'package:learning/main.dart';
+
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
+
+  @override
+  State<ForgotPassword> createState() => _ForgotPasswordState();
+}
+
+
+GlobalKey<FormState> ValidatMail = GlobalKey<FormState>();
+TextEditingController txtMail = TextEditingController();
+String Code = '', ErrMsg = '',mail = '';
+bool invalidMail = false,
+    ConfirmedMail = false,
+    newPass = false,
+    passwordVisible = true,
+    passwordVisible2 = true,
+    invalidPass = false,
+    invalidPass2 = false,
+    pressed = false;
+
+GlobalKey<FormState> ValidatePass = GlobalKey<FormState>();
+GlobalKey<FormState> ValidatePass2 = GlobalKey<FormState>();
+
+TextEditingController PassTxt = TextEditingController();
+TextEditingController PassTxt2 = TextEditingController();
+
+late ApiTest api ;
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  @override
+  Widget build(BuildContext context) {
+
+    api = ApiTest(context);
+    return PopScope(
+
+        onPopInvoked: (didPop) {
+
+
+            invalidMail = false;
+            ConfirmedMail = false;
+            newPass = false;
+            passwordVisible = true;
+            passwordVisible2 = true;
+            invalidPass = false;
+            invalidPass2 = false;
+            Code = '';
+            ErrMsg = '';
+            txtMail.text = '';
+            PassTxt.text = '';
+            PassTxt2.text = '';
+            pressed = false;
+
+            Navigator.of(context).maybePop();
+
+
+        },
+     child: Scaffold(
+        backgroundColor: const Color(0xFF272A37),
+
+
+        body: SafeArea(
+
+            child: SingleChildScrollView(
+              child: Center(
+                  child: Column(children: [
+                SvgPicture.asset(
+                  newPass ? 'images/password.svg' : 'images/mail.svg',
+                  height: 300,
+                  width: 300,
+                  fit: BoxFit.contain,
+                ),
+                ConfirmedMail
+                    ? (newPass
+                        ? Container(
+                            child: Column(children: [
+                              Container(
+                                width: 350,
+                                margin:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: Form(
+                                  key: ValidatePass,
+                                  child: Material(
+                                    elevation: 10,
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.transparent,
+                                    child: TextFormField(
+                                      controller: PassTxt,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      maxLines: 1,
+                                      onChanged: (value) => ValidatePass.currentState!.validate(),
+                                      decoration: InputDecoration(
+                                        errorText:
+                                            ErrMsg.isNotEmpty ? ErrMsg : null,
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1)),
+                                        constraints: BoxConstraints(
+                                            minHeight: 50, maxHeight: 70),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 15),
+                                        prefixIcon: SvgPicture.asset(
+                                          "images/password.svg",
+                                          semanticsLabel: 'PassIcon',
+                                          height: 1,
+                                          width: 1,
+                                          fit: BoxFit.scaleDown,
+                                          // ),
+                                        ),
+                                        suffixIcon: IconButton(
+                                          padding: EdgeInsets.only(right: 10),
+                                          icon: SvgPicture.asset(
+                                            passwordVisible
+                                                ? "images/showPassIcon.svg"
+                                                : "images/hidePassIcon.svg",
+                                            semanticsLabel: 'PassIcon',
+                                            height: 25,
+                                            width: 25,
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              passwordVisible =
+                                                  !passwordVisible;
+                                            });
+                                          },
+                                        ),
+                                        labelText: "Password",
+                                        hintText: "Enter your Password",
+                                        labelStyle:
+                                            const TextStyle(color: Colors.grey),
+                                        hintStyle:
+                                            const TextStyle(color: Colors.grey),
+                                        hintMaxLines: 1,
+
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            borderSide: BorderSide.none),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        fillColor: const Color(0xff323644),
+                                        filled: true,
+                                      ),
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      obscureText: passwordVisible,
+                                      obscuringCharacter: "*",
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          ValidatePass2.currentState!.validate();
+                                          return "Password cannot be empty";
+                                        }
+                                        return null;
+                                      },
+                                      textInputAction: TextInputAction.next,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 350,
+                                margin:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: Form(
+                                  key: ValidatePass2,
+                                  child: Material(
+                                    elevation: 10,
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.transparent,
+                                    child: TextFormField(
+                                      controller: PassTxt2,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      maxLines: 1,
+                                      onChanged: (value) => ValidatePass2.currentState!.validate(),
+                                      decoration: InputDecoration(
+                                        errorText:
+                                            ErrMsg.isNotEmpty ? ErrMsg : null,
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1)),
+                                        constraints: BoxConstraints(
+                                            minHeight: 50, maxHeight: 70),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 15),
+                                        prefixIcon: SvgPicture.asset(
+                                          "images/password.svg",
+                                          semanticsLabel: 'PassIcon',
+                                          height: 1,
+                                          width: 1,
+                                          fit: BoxFit.scaleDown,
+                                          // ),
+                                        ),
+                                        suffixIcon: IconButton(
+                                          padding: EdgeInsets.only(right: 10),
+                                          icon: SvgPicture.asset(
+                                            passwordVisible2
+                                                ? "images/showPassIcon.svg"
+                                                : "images/hidePassIcon.svg",
+                                            semanticsLabel: 'PassIcon',
+                                            height: 25,
+                                            width: 25,
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              passwordVisible2 =
+                                                  !passwordVisible2;
+                                            });
+                                          },
+                                        ),
+                                        labelText: "Password",
+                                        hintText: "Confirm your Password",
+                                        labelStyle:
+                                            const TextStyle(color: Colors.grey),
+                                        hintStyle:
+                                            const TextStyle(color: Colors.grey),
+                                        hintMaxLines: 1,
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            borderSide: BorderSide.none),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        fillColor: const Color(0xff323644),
+                                        filled: true,
+                                      ),
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      obscureText: passwordVisible2,
+                                      obscuringCharacter: "*",
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+
+                                          return "Password cannot be empty";
+                                        }
+                                        return null;
+                                      },
+                                      textInputAction: TextInputAction.done,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          )
+                        : Container(
+                            margin: const EdgeInsets.symmetric(vertical: 20),
+                            child: Column(
+                              children: [
+                                OtpTextField(
+                                  numberOfFields: 6,
+                                  keyboardType: TextInputType.number,
+                                  fillColor: const Color(0xff323644),
+                                  filled: true,
+                                  onSubmit: (code) {
+                                    Code = code;
+                                    ButtonClickedSendCode();
+                                  },
+                                  onCodeChanged: (value) => {
+                                    // if(){Code += value};
+                                    if (ErrMsg.isNotEmpty)
+                                      {setState(() => ErrMsg = '')}
+                                  },
+                                  // autoFocus: true,
+                                  showFieldAsBox: true,
+                                  showCursor: true,
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderColor: Colors.transparent,
+                                  enabledBorderColor: Colors.transparent,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  textStyle:
+                                      const TextStyle(color: Colors.white),
+                                  fieldWidth: 50,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: Text(
+                                    ErrMsg,
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            )))
+                    : Container(
+                        width: 360,
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        child: Form(
+                            key: ValidatMail,
+                            child: Material(
+                              elevation: 10,
+                              borderRadius: BorderRadius.circular(100),
+                              color: Colors.transparent,
+                              child: TextFormField(
+                                controller: txtMail,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                  labelText: 'Enter Email',
+                                  labelStyle:
+                                      const TextStyle(color: Colors.grey),
+                                  hintStyle:
+                                      const TextStyle(color: Colors.grey),
+                                  prefixIcon: SvgPicture.asset(
+                                    'images/user.svg',
+                                    width: 1,
+                                    height: 1,
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                  hintMaxLines: 1,
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)),
+                                      borderSide: BorderSide.none),
+                                  border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)),
+                                      borderSide: BorderSide.none),
+                                  fillColor: const Color(0xff323644),
+                                  filled: true,
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.done,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Email cannot be empty";
+                                  } else if (invalidMail) {
+                                    // setState(() {
+
+                                    invalidMail = false;
+                                    // });
+                                    return 'Invalid Email';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            )),
+                      ),
+                Container(
+                    width: newPass ? 180 : 130,
+                    height: 50,
+                    margin: const EdgeInsets.only(top: 20),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff7E7EBE),
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          side: const BorderSide(
+                              color: Color(0xff7E7EBE), width: 1),
+                        ),
+                      ),
+                      onPressed: () async {
+                        pressed = true;
+                        if (ConfirmedMail) {
+                          if (newPass) {
+                            ButtonClickedChangePass();
+
+                          } else {
+                            ButtonClickedSendCode();
+                          }
+                        } else {
+                          if (ValidatMail.currentState!.validate()) {
+                            ButtonClickedSendMail();
+                          }
+                        }
+                          setState(() {
+                            pressed = false;
+                          });
+                      },
+                      child: pressed ? const CircularProgressIndicator( color: Colors.white,strokeWidth: 2,) : Text(
+                        ConfirmedMail
+                            ? (newPass ? "Change Password" : "Send Code")
+                            : "Get Code",
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                    ))
+              ])),
+            ),
+          ),
+        ));
+  }
+
+  Future<void> ButtonClickedSendCode() async {
+    ErrMsg = '';
+
+    var Response = await api.postRequest(
+        'https://meetingss.onrender.com/auth/verifyResetCode',
+        {
+          "Content-Type": "application/json",
+        },
+        jsonEncode({"E_mail": txtMail.text, "code": Code, "role": "Manager"}));
+
+    print(Response);
+    if (api.getValue(Response, 'success')[0] == 'true') {
+      setState(() {
+        newPass = true;
+        ErrMsg = '';
+      });
+    } else if (api.getValue(Response, 'message')[0].contains('empty')) {
+      print('$Code ${Code.length}  Code');
+      setState(() {
+        ErrMsg = Code.length == 0 ? "Code Required" : 'Code Length must be 6';
+      });
+    } else if (api.getValue(Response, 'message')[0].contains('First')) {
+      setState(() {
+        ErrMsg = 'Resend The Code';
+      });
+    } else if (api.getValue(Response, 'message')[0].contains('Invalid')) {
+      setState(() {
+        ErrMsg = 'Invalid Code';
+      });
+    }
+  }
+
+  Future<void> ButtonClickedSendMail() async {
+    var Response = await api.postRequest(
+        'https://meetingss.onrender.com/auth/send-forget-code',
+        {
+          "Content-Type": "application/json",
+        },
+        jsonEncode({"E_mail": txtMail.text, "role": "Manager"}));
+
+    if (api.getValue(Response, 'success')[0] == 'true') {
+      setState(() {
+        ConfirmedMail = true;
+        ErrMsg = '';
+      });
+    } else if (api.getValue(Response, 'message')[0].contains('E_mail')) {
+      invalidMail = true;
+      ValidatMail.currentState!.validate();
+    }
+  }
+
+  Future<void> ButtonClickedChangePass() async {
+    if (ValidatePass.currentState!.validate() &&
+        ValidatePass2.currentState!.validate()) {
+      // if (PassTxt.text == PassTxt2.text) {
+      var Response = await api.postRequest(
+          'https://meetingss.onrender.com/auth/forget-password',
+          {
+            "Content-Type": "application/json",
+          },
+          jsonEncode({
+            "E_mail": txtMail.text,
+            "PassWord": PassTxt.text,
+            "confirmPassword": PassTxt2.text,
+            "role": "Manager"
+          }));
+
+      if (api.getValue(Response, 'success')[0] ==
+          'true') {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainApp(),
+            ));
+      } else if (api
+          .getValue(Response, 'message')[0]
+          .contains('required')) {
+        setState(() {
+          ErrMsg =
+          'at least 8 characters long, only contains [A-Z] and [0-9]';
+        });
+      } else if (api
+          .getValue(Response, 'message')[0]
+          .contains('Equal')) {
+        setState(() {
+          ErrMsg = 'Passwords does not match';
+        });
+      }
+      //   }
+    }
+
+  }
+}

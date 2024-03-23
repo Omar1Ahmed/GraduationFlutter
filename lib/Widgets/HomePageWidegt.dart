@@ -1,11 +1,13 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_quill/extensions.dart';
-import 'package:learning/CalenderView.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:learning/CardView.dart';
 import 'package:learning/Grad.dart';
 import 'package:learning/SqlDb.dart';
@@ -13,23 +15,40 @@ import 'package:learning/SqlDb.dart';
 import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/SearchWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
+import 'package:learning/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
 
+  DateTime setDate =   DateTime.now();
+  ValueNotifier<int> number = ValueNotifier(0);
+  int counter = 0;
+  int dateCounter = 1;
+  late List<Map<String,dynamic>> DateWithCounter = [
+    {'Date' : setDate, 'counter' : -1},
+  ];
+
   late ApiTest api ;
-  late SharedPreferences accData , loginInfo ;
+  late SharedPreferences? accData , loginInfo , Language;
   SqlDb sqldb = SqlDb();
-  HomePage(this.accData, this.loginInfo, {super.key});
+
+
+  HomePage({this.accData, this.loginInfo, this.Language,super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
-  late int _RadioSelected = 0 ;
+
+  bool calenderDataBool = false;
+  var calenderData;
+
 
 }
+late double ScreenWidth ;
+late double ScreenHeight;
 
 class _HomePageState extends State<HomePage> {
   late List<Map> cardData;
+  late int _RadioSelected = 0 ;
 
   late ScrollController listController ;
   bool insertion = false,update = false, deletion = false, isChecked = false;
@@ -45,223 +64,382 @@ class _HomePageState extends State<HomePage> {
     listController = ScrollController();
     nearsetSharedPref();
 
+    languageSharedPrefInitialize();
+    print('Radio $_RadioSelected');
+
+
   }
   @override
+
   Widget build(BuildContext context) {
+
+
+
+    if(MediaQuery.of(context).orientation == Orientation.portrait){
+      ScreenWidth = MediaQuery.of(context).size.width;
+      ScreenHeight = MediaQuery.of(context).size.height;
+    }else{
+      ScreenWidth = MediaQuery.of(context).size.height;
+      ScreenHeight = MediaQuery.of(context).size.width;
+      // ScreenWidth = MediaQuery.of(context).size.width;
+      // ScreenHeight = MediaQuery.of(context).size.height;
+    }
+   print('$ScreenHeight + $ScreenWidth');
+    print('current ${isEnglish() }');
     api = ApiTest(context);
     return SafeArea(
       child: Scaffold(
+
         resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF272A37),
-        body: Stack(
-          children: [
+        body: Center(
+          child: Stack(
+            children: [
 
-            Container(
+              _RadioSelected == 0? Container(
 
-                alignment: Alignment.center,
-               width: 210,
-              height: 50,
-              margin: EdgeInsets.only(left: 25,top: 135),
-                child: Row(
+                  alignment: Alignment.center,
+                 width: ScreenWidth * 0.52,
+                height: ScreenHeight * 0.056,
 
-                  mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
+                margin: isEnglish()  ? EdgeInsets.only(left: ScreenWidth * 0.059,top: ScreenHeight * 0.15):
+                EdgeInsets.only(left: ScreenWidth * 0.50,top: ScreenHeight * 0.15),
 
-                    child: InkWell(
+                  child: Row(
 
-                          onTap: () {
-                            setState(() {
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: isEnglish()  ? [
+                    Container(
 
-                            });
+                      child: InkWell(
 
-                            isChecked = !isChecked;
-                          },
-                          child:  Row(
-                              mainAxisSize: MainAxisSize.min,
+                            onTap: () {
+                              setState(() {
+
+                              });
+
+                              isChecked = !isChecked;
+                            },
+                            child:  Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                                children: [
+                                  Icon(
+                                    isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
+                                    size: 20,
+                                    color: Color(0xFF785FC0),
+                                  ),
+                                  Text("${ S.of(context).nearbyMeetings}",style: TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
+                                ]
+
+                              ),
+
+                          ),
+                    ),
+
+                    Container(
+                      margin: EdgeInsets.only(right: ScreenWidth * 0.071, bottom: ScreenHeight * 0.022),
+                      width: ScreenWidth * 0.059,
+                      height: ScreenHeight * 0.022,
+
+                      child: PopupMenuButton(
+                        offset: Offset(5, 35),
+
+                        popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
+                        iconSize: 19,
+                        position: PopupMenuPosition.over,
+                        color: Colors.black,
+                        icon: Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
+                       padding: EdgeInsets.zero,
+
+                        itemBuilder: (context) {
+                          print(MediaQuery.of(context).orientation);
+                          return [
+                          PopupMenuItem(
+
+                            value: 0,
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
-                                  isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
-                                  size: 20,
-                                  color: Color(0xFF7E7EBE),
-                                ),
-                                Text("Nearby Meetings",style: TextStyle(fontSize: 15, color: Color(0xFF7E7EBE)),),
+                                Text("${ S.of(context).days}",style: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
+                                SizedBox(width: ScreenWidth * 0.024,),
+                                Container(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
+                                    child: TextField(
+                                  onSubmitted: (value) {
+                                    if(value.isNotEmpty){
+                                      Nearest.setInt('Days', int.parse(value));
+                                    NearestMeetingDayDate = DateTime.now().add(Duration(days: int.parse(value))).toString().substring(0,10);
+                                    setState(() {
+
+                                    });
+                                    }
+                                    Navigator.of(context).pop();
+                                    },
+                                  keyboardType: TextInputType.number,
+
+                                  style: TextStyle(color: Colors.white),
+                                  maxLength: 2,
+
+                                  textAlign: TextAlign.center,
+                                  textAlignVertical: TextAlignVertical.center,
+                                  decoration: InputDecoration(
+                                    counterText: '',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(width: ScreenWidth * 0.009),
+                                    ),
+                                    contentPadding: EdgeInsets.only(bottom: ScreenHeight * 0.017),
+                                    hintText: '${Nearest.getInt('Days')}',
+                                    hintStyle: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
+                                    fillColor: Color(0xff323644),
+                                    filled: true,
+                                  )
+                                ))
                               ]
                             ),
+                          )
+                        ];
+                      },),
+                    )
+                  ]:
+                  [
+                    Container(
+                      margin: EdgeInsets.only(right: ScreenWidth * 0.011, bottom: ScreenHeight * 0.022),
+                      width: ScreenWidth * 0.059,
+                      height: ScreenHeight * 0.022,
 
-                        ),
-                  ),
+                      child: PopupMenuButton(
+                        offset: Offset(5, 35),
 
-                  Container(
-                    margin: EdgeInsets.only(right: 30, bottom: 20),
-                    width: 25,
-                    height: 20,
+                        popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
+                        iconSize: 19,
+                        position: PopupMenuPosition.over,
+                        color: Colors.black,
+                        icon: Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
+                        padding: EdgeInsets.zero,
 
-                    child: PopupMenuButton(
-                      offset: Offset(5, 35),
+                        itemBuilder: (context) {
+                          print(MediaQuery.of(context).orientation);
+                          return [
+                            PopupMenuItem(
 
-                      popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
-                      iconSize: 19,
-                      position: PopupMenuPosition.over,
-                      color: Colors.black,
-                      icon: Icon(Icons.settings_suggest,color: Color(0xFF7E7EBE),),
-                     padding: EdgeInsets.zero,
+                              value: 0,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text("${ S.of(context).days}",style: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
+                                    SizedBox(width: ScreenWidth * 0.024,),
+                                    Container(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
+                                        child: TextField(
+                                            onSubmitted: (value) {
+                                              if(value.isNotEmpty){
+                                                Nearest.setInt('Days', int.parse(value));
+                                                NearestMeetingDayDate = DateTime.now().add(Duration(days: int.parse(value))).toString().substring(0,10);
+                                                setState(() {
 
-                      itemBuilder: (context) {
+                                                });
+                                              }
+                                              Navigator.of(context).pop();
+                                            },
+                                            keyboardType: TextInputType.number,
 
-                        return [
-                        PopupMenuItem(
+                                            style: TextStyle(color: Colors.white),
+                                            maxLength: 2,
 
-                          value: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("Days",style: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
-                              SizedBox(width: 10,),
-                              Container(width: 40,height: 40,child:
-                              TextField(
-                                onSubmitted: (value) {
-                                  if(value.isNotEmpty){
-                                    Nearest.setInt('Days', int.parse(value));
-                                  NearestMeetingDayDate = DateTime.now().add(Duration(days: int.parse(value))).toString().substring(0,10);
-                                  setState(() {
+                                            textAlign: TextAlign.center,
+                                            textAlignVertical: TextAlignVertical.center,
+                                            decoration: InputDecoration(
+                                              counterText: '',
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(width: ScreenWidth * 0.009),
+                                              ),
+                                              contentPadding: EdgeInsets.only(bottom: ScreenHeight * 0.017),
+                                              hintText: '${Nearest.getInt('Days')}',
+                                              hintStyle: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
+                                              fillColor: Color(0xff323644),
+                                              filled: true,
+                                            )
+                                        ))
+                                  ]
+                              ),
+                            )
+                          ];
+                        },),
+                    ),
 
-                                  });
-                                  }
-                                  Navigator.of(context).pop();
-                                  },
-                                keyboardType: TextInputType.number,
+                    Container(
 
-                                style: TextStyle(color: Colors.white),
-                                maxLength: 2,
+                      child: InkWell(
 
-                                textAlign: TextAlign.center,
-                                textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 4),
-                                  ),
-                                  contentPadding: EdgeInsets.only(bottom: 15),
-                                  hintText: '${Nearest.getInt('Days')}',
-                                  hintStyle: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
-                                  fillColor: Color(0xff323644),
-                                  filled: true,
-                                )
-                              ))
-                            ]
-                          ),
-                        )
-                      ];
-                    },),
-                  )
-                ],
-              ),
+                        onTap: () {
+                          setState(() {
 
+                          });
 
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 370, top: 30),
-              child:  IconButton(
-                  icon: Icon(Icons.search,size: 32,),
-                  color: Color.fromRGBO(50, 213, 131, 100),
-                onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
-                    },
-              ),
-            ), // Search Icon
-
-            Container(
-                margin: const EdgeInsets.only(left: 310, top: 80),
-
-                decoration: BoxDecoration(
-                    color: const Color(0xa81a1c25),
-                    borderRadius: BorderRadius.circular(100)
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _icon(0, icon: Icons.view_headline),
-                    _icon(1, icon: Icons.calendar_month_rounded),
-                  ],)),
-
-            Container(
-
-                width: 400,
-                height: widget._RadioSelected == 0 ? null : 350,
-                margin: widget._RadioSelected == 0 ? const EdgeInsets.only(
-                    left: 30, right: 30, top: 174) : const EdgeInsets.only(
-                    left: 30, right: 30, top: 300),
-                child: widget._RadioSelected == 0 ?
-
-                RefreshIndicator(
-                  onRefresh: () {print('Refresh'); return readData(); },
-                  child: FutureBuilder(future: readData(), builder: (context, snapshot) {
-
-                    print('${snapshot.connectionState == ConnectionState.done} ${snapshot.data == null} ${!snapshot.hasData}');
-                    if(snapshot.hasData){
-
-                      return ListView.builder(
-                      controller: listController,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                         print('${snapshot.data![index]['person']} ${snapshot.data![index]['meeting_id']}');
-                          return
-                            // Text('${snapshot.data![index] ['name']}',style: TextStyle(color: Colors.white, fontSize: 24),);
-                            CardVu(
-                                PersonOrEntity_title: snapshot.data![index]['person'],
-                                Topic_Content: snapshot.data![index]['about'].toString(),
-                                Address_NoteId: snapshot.data![index]['address'],
-                                Date: snapshot.data![index]['date'],
-                                Time: snapshot.data![index]['time'],
-                                PdfLink: snapshot.data![index]['attachmentLink'],);
-
+                          isChecked = !isChecked;
                         },
-                      );
+                        child:  Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                    }else {
-                      if (ConnectionState.done == snapshot.connectionState) {
-                        return Center(child: Text("No Data Found",
-                          style: TextStyle(
-                              color: Colors.white, fontSize: 24),));
+                            children:
+                            [
+                              Text("${ S.of(context).nearbyMeetings}",style: TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
+                              Icon(
+                                isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
+                                size: 20,
+                                color: Color(0xFF785FC0),
+                              ),
+                            ]
+                        ),
 
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    }
-                  }),
-                )
-                    : CalenderVu(Dates: getDays(),)),
+                      ),
+                    ),
 
-            Container(
+                  ],
+                ),
 
-              width: 50,
-              height: 50,
-              margin: const EdgeInsets.only(left: 40, top: 30),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.green[500],
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Colors.green, spreadRadius: 20, blurRadius: 100)
-                  ]),
-              child: InkWell(
-                onTap: (){
-                  setState(() {
-                    Grad.lol.animateTo(3);
-                  });
-                },
-                child: Text(
-                  accData.getString('userName')!.toUpperCase().substring(0, 1),
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+
+              ) : Container(),
+              Container(
+                margin:  EdgeInsets.only(left: ScreenWidth * 0.87, top: ScreenHeight * 0.033),
+                child:  IconButton(
+                    icon: Icon(Icons.search,size: 32,),
+                    color: Color.fromRGBO(50, 213, 131, 100),
+                  onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
+                      },
+                ),
+              ), // Search Icon
+
+              Container(
+                  margin:  EdgeInsets.only(left: ScreenWidth * 0.73, top: ScreenHeight * 0.09),
+
+                  decoration: BoxDecoration(
+                      color: const Color(0xa81a1c25),
+                      borderRadius: BorderRadius.circular(100)
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _icon(0, icon: Icons.view_headline),
+                      _icon(1, icon: Icons.calendar_month_rounded),
+                    ],)),
+
+              Container(
+
+                  // width: 400,
+                  // height: widget._RadioSelected == 0 ? null : 350,
+                  margin: _RadioSelected == 0 ?  EdgeInsets.only(
+                      left: ScreenWidth * 0.071, right: ScreenWidth * 0.071, top: ScreenHeight * 0.193) :  EdgeInsets.only(
+                      left: ScreenWidth * 0.071, right: ScreenWidth * 0.071, top: ScreenHeight * 0.24),
+                  child: _RadioSelected == 0 ?
+
+                   RefreshIndicator(
+                      onRefresh: () {print('Refresh'); setState(() {
+
+                      });
+                        return readData(); },
+
+                     child: FutureBuilder(future: widget.calenderDataBool ? RadioSelectedSetter(getDays()) :readData(),
+
+                          builder: (context, snapshot) {
+
+                        print('${snapshot.connectionState == ConnectionState.done} ${snapshot.data == null} ${!snapshot.hasData}');
+                        if(snapshot.hasData){
+
+                          return ListView.builder(
+                            physics: AlwaysScrollableScrollPhysics(),
+                          controller: listController,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                             print('${snapshot.data![index]['person']} ${snapshot.data![index]['meeting_id']}');
+                              if(widget.calenderDataBool == true){
+                                print('calenderDataBool22222 ${widget.calenderDataBool}');
+                                if(snapshot.hasData) {
+                                  if(index == snapshot.data!.length -1 ) {
+                                    widget.calenderDataBool = false;
+                                  }print('calenderDataBool ${widget
+                                      .calenderDataBool}');
+                                  return CardVu(
+                                    PersonOrEntity_title: snapshot
+                                        .data![index]['person'],
+                                    Topic_Content: snapshot.data![index]['about']
+                                        .toString(),
+                                    Address_NoteId: snapshot
+                                        .data![index]['address'],
+                                    Date: snapshot.data![index]['date'],
+                                    Time: snapshot.data![index]['time'],
+                                    PdfLink: snapshot
+                                        .data![index]['attachmentLink'],);
+                                }else{
+                                  return CircularProgressIndicator();
+                                }
+                              }else {
+                                print('not calenderDataBool');
+                                return CardVu(
+                                  PersonOrEntity_title: snapshot
+                                      .data![index]['person'],
+                                  Topic_Content: snapshot.data![index]['about']
+                                      .toString(),
+                                  Address_NoteId: snapshot
+                                      .data![index]['address'],
+                                  Date: snapshot.data![index]['date'],
+                                  Time: snapshot.data![index]['time'],
+                                  PdfLink: snapshot
+                                      .data![index]['attachmentLink'],);
+                              }
+                            },
+                          );
+
+                        }else {
+                          if (ConnectionState.done == snapshot.connectionState) {
+                            return Center(child: Text("${S.of(context).noDataFound}",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 24),));
+
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        }
+                      }),
+                    ) :
+
+                          CalenderVuWidget(getDays(),),
+
+              ),
+
+              Container(
+
+                width: ScreenWidth * 0.12,
+                height: ScreenHeight * 0.056,
+                margin: EdgeInsets.only(left: ScreenWidth * 0.094, top: ScreenHeight * 0.033  ),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(ScreenHeight * 0.056  ),//50
+                    color: Colors.green[500],
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.green, spreadRadius: 20, blurRadius: 100)
+                    ]),
+                child: InkWell(
+                  onTap: (){
+                    setState(() {
+                      Grad.lol.animateTo(3);
+                    });
+                  },
+                  child: Text(
+                    accData.getString('userName')!.toUpperCase().substring(0, 1),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -270,7 +448,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _icon(int index, { IconData? icon}) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding:  EdgeInsets.only(left: ScreenWidth * 0.024, right: ScreenWidth * 0.024, top: ScreenHeight * 0.011, bottom: ScreenHeight * 0.011),
       child: InkResponse(
         splashColor: Color.fromRGBO(50,213,131,100),
         radius: 15,
@@ -279,7 +457,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
 
           children: [
-            widget._RadioSelected == index ?  Container(
+            _RadioSelected == index ?  Container(
 
               decoration: BoxDecoration(
                 color: const Color(0xf2292d3b),
@@ -287,7 +465,7 @@ class _HomePageState extends State<HomePage> {
 
               ),
               child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding:  EdgeInsets.only(left: ScreenWidth * 0.0094, right: ScreenWidth * 0.0094, top: ScreenHeight * 0.0045, bottom: ScreenHeight * 0.0045),
                   child : Icon(
                     icon,
                     color:  const Color.fromRGBO(50,213,131,100),
@@ -302,9 +480,10 @@ class _HomePageState extends State<HomePage> {
         ),
         onTap: () => setState(() {
 
-          widget._RadioSelected = index;
+          _RadioSelected = index;
 
           },
+
         ),
       ),
     );
@@ -313,9 +492,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Map>> readData() async {
 
-
-    cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from Meetings where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\' order by date ') :
-    await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from Meetings where manager_id = ${accData.getString('managerId')}) order by date');
+    print('hahaRead');
+    cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\' order by date ') :
+    await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) order by date');
     print(accData.getString('managerId'));
     print(cardData);
      if(await api.hasNetwork()) {
@@ -337,9 +516,9 @@ class _HomePageState extends State<HomePage> {
        } else {
 
 
-        var readData = isChecked? await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from Meetings where manager_id = ${accData
+        var readData = isChecked? await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from meeting_Manager where manager_id = ${accData
             .getString('managerId')} and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\')')
-            :await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from Meetings where manager_id = ${accData.getString('managerId')} )');
+            :await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')} )');
 
         print(DateTime.parse(readData[0]['maxCreated']).toString() + ' ' + currentDayDate);
 
@@ -371,7 +550,7 @@ print(Response +' h3h3h3h3h');
       print(currentDayDate);
       Response = await api.getRequest('https://meetingss.onrender.com/meetings/getMeetingManagers?', {'token': '${loginInfo.getString('token')}'});
       print('lollaya');
-       List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where manager_id = ${accData.getString('managerId')} and date >= \'$currentDayDate\' order by meeting_id');
+       List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' order by meeting_id');
       print('lollaya2');
 
        var ids =  await api.getValue(Response, 'meeting_id');
@@ -386,7 +565,7 @@ print(Response +' h3h3h3h3h');
    ids.sort();
 
 
-       int Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where manager_id = ${accData.getString('managerId')} and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
+       int Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
        int onlineCount = api.getValue(Response, 'meeting_id').length;
 
   print('$Localcount + ' ' + $onlineCount');
@@ -402,7 +581,7 @@ print(Response +' h3h3h3h3h');
          deletion = true;
        }
      }
-      Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where manager_id = ${accData.getString('managerId')} and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
+      Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
       onlineCount = api.getValue(Response, 'meeting_id').length;
 
      if(Localcount > onlineCount){
@@ -428,10 +607,9 @@ print(Response +' h3h3h3h3h');
     }
 
     if(insertion || update || deletion){
-      cardData = isChecked? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from Meetings where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\' order by date ')
+      cardData = isChecked? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\' order by date ')
           :await widget.sqldb.readData(
-          'SELECT * FROM Meetings where manager_id = ${accData.getString(
-              'managerId')} order by date');
+          'SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) order by date');
       insertion = false;
       update = false;
       deletion = false;
@@ -461,7 +639,7 @@ print(Response +' h3h3h3h3h');
 
 
       for(int i = 0; i < meetingIds.length; i++){
-        await widget.sqldb.insertData('INSERT INTO Meetings(meeting_id, time, date, about, in_or_Out, address, notes, person, updatedAt, createdAt, attachmentLink, attachmentName, status,manager_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+        await widget.sqldb.insertData('INSERT INTO Meetings(meeting_id, time, date, about, in_or_Out, address, notes, person, updatedAt, createdAt, attachmentLink, attachmentName, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [
           meetingIds[i],
           meetingTimes[i],
           meetingDates[i],
@@ -475,7 +653,6 @@ print(Response +' h3h3h3h3h');
           meetingAttachLinks[i],
           meetingAttachNames[i],
           meetingStatuses[i],
-          accData.getString('managerId')!,
         ]);
         await widget.sqldb.insertData("insert into meeting_Manager (meeting_id, manager_id) values (?,?)", [
           meetingIds[i],
@@ -518,7 +695,7 @@ print(Response +' h3h3h3h3h');
 
 
       for(int i = 0; i < meetingIds.length; i++){
-        await widget.sqldb.updateData('update Meetings set meeting_id = ?, time = ?, date = ?, about = ?, in_or_Out = ?, address = ?, notes = ?, person = ?, updatedAt = ?, attachmentLink = ?, attachmentName = ?, status = ?,manager_id = ? where meeting_id = ?', [
+        await widget.sqldb.updateData('update Meetings set meeting_id = ?, time = ?, date = ?, about = ?, in_or_Out = ?, address = ?, notes = ?, person = ?, updatedAt = ?, attachmentLink = ?, attachmentName = ?, status = ? where meeting_id = ?', [
           meetingIds[i],
           meetingTimes[i],
           meetingDates[i],
@@ -532,7 +709,6 @@ print(Response +' h3h3h3h3h');
           meetingAttachNames[i],
           meetingStatuses[i],
           meetingManagerIds[i],
-          meetingIds[i],
 
         ]);
 
@@ -572,5 +748,246 @@ print(Response +' h3h3h3h3h');
     }
 
     return Days;
+  }
+
+  bool isEnglish() => Intl.getCurrentLocale() == 'en';
+
+
+  void languageSharedPref() async {
+    if(Language.getString('language') == 'en'){
+      S.load(Locale("en"));
+    }else if(Language.getString('language') == 'ar'){
+      S.load(Locale("ar"));
+
+    }else{
+      S.load(Locale("ar"));
+      Language.setString('language', 'ar');
+    }
+  }
+  void languageSharedPrefInitialize() async {
+    Language = await SharedPreferences.getInstance();
+
+
+    if(Language.getString('language').toString() == 'null'){
+      print('Empty Shared');
+      languageSharedPref();
+    }else{
+      S.load(Locale(Language.getString('language')!));
+      setState(() {
+
+      });
+
+    }
+
+  }
+
+  CalenderVuWidget(List<DateTime> Dates){
+
+    Dates.sort();
+
+    for(int loop = 0 ; loop < Dates.length ; loop ++){
+      if(loop == 0){
+        widget.DateWithCounter[0]['Date'] = Dates[0];
+        widget.DateWithCounter[0]['counter'] = 1;
+
+      }else if(Dates[loop] == Dates[loop-1] && loop != 0 ){
+
+        widget.DateWithCounter[widget.DateWithCounter.length-1]['Date'] = Dates[loop-1];
+        widget.DateWithCounter[widget.DateWithCounter.length-1]['counter'] = widget.DateWithCounter[widget.DateWithCounter.length-1]['counter'] + 1;
+
+      }else{
+        widget.DateWithCounter.add({'Date' : Dates[loop], 'counter' : 1});
+      }
+
+    }
+    initStateCalnder();
+    return   Column(
+
+      children: [
+        Material(
+          elevation: 10,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          child: Container(
+            padding: EdgeInsets.only(top: 10),
+            decoration: const BoxDecoration(
+              color: Color(0xff1E2126),
+              // color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
+            alignment: Alignment.center,
+
+            child: CalendarDatePicker2(
+
+              onValueChanged: (value) {
+                print(value);
+                widget.calenderData = value;
+                print(Dates.length);
+                if(value.isNotEmpty){
+                  for(int loop = 0 ; loop < value.length; loop ++){
+                    value[loop] = DateTime.parse(value[loop].toString().substring(0,10)+' 00:00:00.00');
+                    print(value[loop]);
+                    if(Dates.contains(value[loop])){
+                      widget.counter = (widget.counter + widget.DateWithCounter[widget.DateWithCounter.indexWhere((element) => element['Date'] == value[loop])]['counter'] ) as int;
+                    }
+                  }
+                  widget.number.value = widget.counter;
+                  widget.counter = 0;
+                }else{
+                  print('zero');
+                  widget.number.value = 0;
+                  widget.counter = 0;
+
+                }
+
+              },
+
+              config: CalendarDatePicker2Config(
+                dayTextStyle: TextStyle(
+                    color: Colors.grey
+                ),
+                yearTextStyle: TextStyle(
+                    color: Colors.grey
+                ),
+                controlsTextStyle: TextStyle(
+                    color: Colors.grey
+                ),
+                weekdayLabelTextStyle: TextStyle(
+                    color: Colors.grey
+                ),
+                nextMonthIcon: Icon(Icons.arrow_forward_ios_sharp,color: Color(0xff7E7EBE),),
+                lastMonthIcon: Icon(Icons.arrow_back_ios_sharp,color: Color(0xff7E7EBE),),
+                centerAlignModePicker: true,
+
+                calendarType: CalendarDatePicker2Type.multi,
+
+                selectedDayHighlightColor: const Color(0xff7E7EBE),
+                dayBuilder: ({required date, decoration, isDisabled, isSelected, isToday, textStyle}) {
+                  Widget? dayWidget;
+
+                  for(int loop = 0; loop < widget.DateWithCounter.length; loop ++) {
+                    if (date   == widget.DateWithCounter[loop]['Date']) {
+
+                      dayWidget = Container(
+
+                        decoration: decoration,
+
+                        child: Center(
+
+                          child: Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: [
+                              Text(
+                                MaterialLocalizations.of(context)
+                                    .formatDecimal(date.day),
+                                style: textStyle,
+                              ),
+                              Padding(
+
+                                padding: const EdgeInsets.only(
+                                    left: 15.0, top: 20.5),
+
+                                child: Container(
+                                  height: ScreenHeight * 0.015,
+                                  width: ScreenWidth * 0.03,
+                                  margin: EdgeInsets.only(top: ScreenHeight * 0.005),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius
+                                        .circular(25),
+                                    color: isSelected == true
+                                        ? Colors.white
+                                        : const Color(0xff7E7EBE),
+                                  ),
+                                  child: Text('${widget.DateWithCounter[loop]['counter']}',
+                                      style: TextStyle(
+                                          color: isSelected == true
+                                              ? const Color(0xff7E7EBE)
+                                              : Colors.white,
+                                          fontSize: 9),
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }else{
+                      Container(
+
+                      );
+                    }
+                  }
+                  return dayWidget;
+                },
+
+              ), value: [widget.setDate],
+
+
+
+            ),
+
+          ),
+        ),
+        Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: ScreenHeight * 0.02),
+            child: ValueListenableBuilder(valueListenable: widget.number, builder: (BuildContext context, value, Widget? child) {
+              print('$value value');
+              if(value != 0 ){
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('${S.of(context).totalMeetings(value)}',style: TextStyle(color: Colors.grey),),
+                      ElevatedButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff7E7EBE))),
+                          onPressed: (){
+                            setState(() {
+                              RadioSelectedSetter(Dates);
+                              _RadioSelected = 0;
+                            });
+                          }, child: Text('${S.of(context).showMeeting}',style: TextStyle(color: Colors.white),)),
+                    ]
+                );
+              }else{
+
+                return Text('${S.of(context).noMeetings_Calender}',style: TextStyle(color: Colors.grey ),);
+              }
+            },
+
+            )
+        )
+      ],
+
+    );
+  }
+
+  initStateCalnder(){
+
+    print((widget.DateWithCounter[0]));
+    if(widget.DateWithCounter[0]['Date'].toString().contains(DateTime.now().toString().substring(0,10)+' 00:00:00.00')){
+      widget.counter = widget.DateWithCounter[0]['counter'] as int ;
+      widget.number = ValueNotifier(widget.counter);
+      widget.counter = 0;
+      widget.calenderData = [widget.DateWithCounter[0]['Date']];
+    }else{
+      widget.number = ValueNotifier(0);
+      widget.counter = 0;
+    }
+  print('${widget.counter} ${widget.number.value} lolpopopohaha');
+  }
+
+  Future<List> RadioSelectedSetter(List Dates) async {
+    // _RadioSelected = value;
+    widget.calenderDataBool = true;
+    print('${widget.calenderData} Dateslol');
+    String SearchBy = 'date = "${widget.calenderData[0].toString().substring(0,10)}"';
+    for(int loop = 1 ; loop < widget.calenderData.length ; loop ++){
+      SearchBy += ' or date = "${widget.calenderData[loop].toString().substring(0,10)}"' ;
+    }
+    print('${SearchBy}  hahaBoom');
+    widget.calenderData = await sqldb.readData('select * from Meetings where ${SearchBy} order by date');
+    print('${widget.calenderData} lolData');
+    return widget.calenderData;
+    // _HomePageState().RadioSelected(0);
   }
 }

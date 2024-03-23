@@ -32,13 +32,15 @@ dependencies:
   calendar_date_picker2: ^0.5.3
   sqflite: ^2.3.2
   flutter_otp_text_field: ^1.1.1
-  web_socket_channel: ^2.4.4
+  socket_io_client: ^1.0.2
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.4
   flutter_quill: ^9.3.1
   dropdown_button2: ^2.3.9
-  intl: ^0.18.1
+  flutter_localizations:
+    sdk: flutter
   advance_pdf_viewer: ^2.0.1
+  device_preview: ^1.1.0
   flutter:
     sdk: flutter
 
@@ -106,3 +108,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

@@ -5,17 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill/quill_delta.dart';
 import 'package:learning/Grad.dart';
 import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
 
 class AddNote extends StatefulWidget {
-  String title, content,noteId;
+  String title, content,noteId,meetingId,meetingDate,meetingTopic,meetingPersonOrEntity;
   bool first;
 
-  AddNote(this.first, {this.title = '', this.content = '', this.noteId = ''});
+  AddNote(this.first, {this.title = '', this.content = '', this.noteId = '',this.meetingId = '',this.meetingDate = '',this.meetingTopic = '',this.meetingPersonOrEntity = ''});
 
   @override
   State<AddNote> createState() => _AddNoteState();
@@ -30,32 +28,50 @@ class _AddNoteState extends State<AddNote> {
   @override
   void initState() {
     super.initState();
+    print('lol haha');
     print('${widget.content}');
     // widget.content = widget.content.replaceAll('insert', '\'insert\'');
     print('${widget.title}');
-
     txtTitle = TextEditingController(text: '${widget.title}');
     widget.content = widget.content.replaceAll('\n', '');
         print(widget.content);print('----------');
-        print(widget.content);
     // try{ jsonDecode(widget.content);}catch(e){widget.content = r'{"insert":"lol\n"}';};
         print('----------');
+        widget.content = widget.content.replaceAll(']', '').replaceAll('[', '');
+        print(widget.content);
+// widget.content = r'{"insert":"widget.contentghb\n"}';
+// Map<String, dynamic> json = jsonDecode(widget.content);
     _controller = quill.QuillController(
       // [{'insert': 'sdfgTransitions\n\nYou can animate the opening and closing of the Popup using CSS transitions, CSS animations, or third-party animation libraries. It supports the API described on the Base UI hhjjjjjjjjjjjjhjjjhjhnnnnTransitions page.cvvvvv\nJ\nDisable portal\n'},
       //       {'insert': 'Hgghh', 'attributes': {'bold': true}}, {'insert': 'hjjjjukk', 'attributes': {'bold': true, 'italic': true, 'underline': true, 'color': '#FFF48FB1'}}, {'insert':'\nTo render the Popup where it\'sbb'}, {'insert': 'k', 'attributes': {'bold': true}}, {'insert':'\n'}]
-
       document: quill.Document.fromJson(
       // jsonDecode(widget.content)
       //       widget.content == r'{"insert":"lol\n"}' ?
       //       jsonDecode(widget.content) :
-            jsonDecode(widget.content)
-   // [
-   //          {"insert": "widget.content\n"}
-   //        ]
+            jsonDecode(r'[{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"loll\nHaha\n"},{"insert":"Unvnn","attributes":{"bold":true}},{"insert":"\n"},{"insert":"Dbgvbbj","attributes":{"bold":true,"color":"#FFFFFFFF"}},{"insert":"\n"},{"insert":"زؤءنءنؤوؤ","attributes":{"bold":true,"color":"#FFFFFFFF","italic":true}},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"\n"},{"insert":"last\n"}]')
+     // [
+       // json,
+       //      {"insert": "widget.content\n"}
+          // ]
       ),
       selection: TextSelection.collapsed(offset: 0),
     );
 
+    txtTitle.addListener(() {
+
+      if(newContent == false && '[${widget.title}]' != txtTitle.text && txtTitle.text.isNotEmpty) {
+        setState(() {
+
+          newContent = true;
+        });
+      }else{
+        if(newContent && txtTitle.text.isEmpty){
+          setState(() {
+            newContent =false;
+          });
+        }
+      }
+    });
 
     _controller.document.changes.listen((event) {
       // print(event.before);
@@ -65,7 +81,6 @@ class _AddNoteState extends State<AddNote> {
       print('[${widget.content}]' != jsonEncode(_controller.document.toDelta().toJson()));
       if(newContent == false && '[${widget.content}]' != jsonEncode(_controller.document.toDelta().toJson())) {
         setState(() {
-
           newContent = true;
         });
       }else{
@@ -98,9 +113,16 @@ class _AddNoteState extends State<AddNote> {
                   IconButton(onPressed: (){ Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios_new,color: Color(0xFF252936),)),
                   Container(width: 100 ,child: TextField(controller: txtTitle, style: TextStyle(color: Colors.white),decoration: InputDecoration(hintText: 'Add Title....',hintStyle: TextStyle(color: Colors.grey[600])),)),
                   ],),
-                  InkWell(onTap:() async {
-                  if(newContent) {
+                  InkWell(
+
+                      onTap:() async {
+
+                  if(!widget.first ) {
+                    print('not The First');
+                    setState(() {
+
                     newContent =false;
+                    });
                      var json = jsonEncode(_controller.document.toDelta().toJson());
                     widget.content = json;
 
@@ -110,15 +132,58 @@ class _AddNoteState extends State<AddNote> {
                          'UPDATE notes SET content = ?,title = ? WHERE notes_id = ?',[json, txtTitle.text, widget.noteId]);
                    if(await api.hasNetwork()) {
 
-
+                        print(widget.noteId);
                      var haha = jsonEncode({"title": "${txtTitle.text}", "content": "${jsonEncode(_controller.document.toDelta().toJson())}"});
 
                      print('https://meetingss.onrender.com/notes/${widget.noteId}  ${jsonEncode({"title": "${txtTitle.text}", "content": "${jsonEncode(_controller.document.toDelta().toJson())}"})}');
-                      var s = await api.patchRequest('https://meetingss.onrender.com/notes/61', {'Content-Type':'application/json','token': '${loginInfo.getString('token')}'}, jsonEncode({"title": "${txtTitle.text}", "content": "${jsonEncode(_controller.document.toDelta().toJson())}"}));
+                      var s = await api.patchRequest('https://meetingss.onrender.com/notes/${widget.noteId}', {'Content-Type':'application/json','token': '${loginInfo.getString('token')}'}, jsonEncode({"title": "${txtTitle.text}", "content": "${jsonEncode(_controller.document.toDelta().toJson())}"}));
                     print('$s lololol');
                    }else{
                     print('no Internt');
                    }
+                  }else{
+                    if(txtTitle.text.isNotEmpty) {
+                      setState(() {
+                        newContent = false;
+                      });
+                      // if(widget.meetingId.isNotEmpty){
+                        if(await api.hasNetwork()){
+                        var lol = await  api.postRequest('https://meetingss.onrender.com/notes/',{
+                            'token': '${loginInfo.getString('token')}',
+                            'Content-Type': 'application/json',
+                          },
+                              jsonEncode({
+                                "title": txtTitle.text,
+                                "content": jsonEncode(_controller.document.toDelta().toJson()),
+                              }));
+
+                        print('${jsonEncode(_controller.document.toDelta().toJson())}');
+                        print(await api.getValue(lol, 'noteId'));
+
+                        // await sqldb.insertData('insert into notes (notes_id,title,content,updatedAt,manager_id,meeting_id) values(?,?,?,?,?,?)', [
+                        //   await api.getValue(lol, 'noteId')[0],
+                        //   txtTitle.text,
+                        //   jsonEncode(_controller.document.toDelta().toJson()),
+                        //   DateTime.now().toString(),
+                        //   accData.getString('managerId')!,
+                        //   'null'
+                        //
+                        // ]);
+                        try{await sqldb.insertData('INSERT INTO notes(notes_id, title, content, meeting_id, updatedAt,manager_id) VALUES (?,?,?,?,?,?)', [
+                          await api.getValue(lol, 'noteId')[0],
+                          txtTitle.text,
+                          jsonEncode(_controller.document.toDelta().toJson()),
+                          'null',
+                          DateTime.now().toString(),
+                          accData.getString('managerId')!,
+                        ]);}catch(e){
+                          print(e);
+                        }
+                        print('insert');
+                        Navigator.pop(context);
+                        // }
+                      }
+                    }
                   }
                   },
 

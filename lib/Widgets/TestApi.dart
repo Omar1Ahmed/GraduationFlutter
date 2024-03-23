@@ -67,6 +67,7 @@ class ApiTest  {
 
       for (int loop = 1; loop < array.length; loop++) {
         values[loop - 1] = array[loop].trim();
+
         if (values[loop - 1].startsWith('"')) {
          if(key == 'message') {
            values[loop - 1] = values[loop - 1].substring(1, values[loop - 1].indexOf('"', 40));
@@ -82,9 +83,6 @@ class ApiTest  {
 
           values[loop - 1] = values[loop - 1].substring(1, values[loop - 1].indexOf('}', 2));
         } else {
-          if(key == 'content'){
-            values[loop -1 ] = values[loop - 1].substring(values[loop - 1].indexOf('['), values[loop - 1].indexOf(']'));
-          }
           if( (values[loop - 1].endsWith('},{') || values[loop - 1].endsWith('},')) && values[loop - 1].length < 20){
 
             values[loop - 1] = values[loop - 1].substring(0, values[loop - 1].indexOf('}',1));
@@ -103,6 +101,20 @@ class ApiTest  {
       values.add(jsonData);
     } else {
       values.add('There is no value for this key');
+    }
+
+    return values;
+  }
+
+  List<String> getContent(String jsonData) {
+    var values;
+
+  List<String> array = jsonData.split('"content":');
+  values = List<String>.filled(array.length - 1, '');
+
+    for (int loop = 1; loop < array.length; loop++) {
+      values[loop - 1] = array[loop].trim();
+       values[loop - 1] = values[loop - 1].substring(1, values[loop - 1].indexOf(']')+1);
     }
 
     return values;

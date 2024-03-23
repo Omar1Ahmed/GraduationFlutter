@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:learning/CardView.dart';
 import 'package:learning/SqlDb.dart';
+import 'package:learning/Widgets/HomePageWidegt.dart';
+import 'package:learning/generated/l10n.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -70,11 +72,12 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   Future searchDb() async {
     late var data;
     if (SearchByDatebool) {
-      DateFormat d = DateFormat('yyyy-MM-dd');
+      DateFormat d = Intl.withLocale('en', () => DateFormat('yyyy-MM-dd'));
+      print(fromTxtController.text);
       print(
-          "${d.format(DateFormat('dd/MMM/yyyy').parse(fromTxtController.text))} lolololol ${d.format(DateFormat('dd/MMM/yyyy').parse(toTxtController.text))}");
+          "${d.format(Intl.withLocale('en', () => DateFormat('dd/MMM/yyyy').parse(fromTxtController.value.text)))} lolololol ${Intl.withLocale('en', () => d.format(DateFormat('dd/MMM/yyyy').parse(toTxtController.text)))}");
       data = await sqldb.readData(
-          'select * from meetings where date >= \'${d.format(DateFormat('dd/MMM/yyyy').parse(fromTxtController.text))}\' and date <= \'${d.format(DateFormat('dd/MMM/yyyy').parse(toTxtController.text))}\'');
+          'select * from meetings where date >= \'${d.format(Intl.withLocale('en', () => DateFormat('dd/MMM/yyyy').parse(fromTxtController.text)))}\' and date <= \'${d.format(Intl.withLocale('en', () => DateFormat('dd/MMM/yyyy').parse(toTxtController.text)))}\'');
       print('data12345');
       print('$data popopo');
       SearchByDatebool = false;
@@ -84,8 +87,10 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         if (searchTxt.length == 0) {
           data = 'no';
         } else {
+          print(selectedItems);
+          print(              'select * from meetings where ${selectedItems.contains('Topic') || selectedItems.contains('الموضوع') ? ' about like "%' + searchTxt + '%" ${selectedItems.length > 1 ? ' or ' : ''}' : ''} ${selectedItems.contains('Person or Entity') || selectedItems.contains('الشخص أو العنوان') ? ' person like "%$searchTxt%" ${selectedItems.contains('Address') || selectedItems.contains('العنوان') ? ' or ' : ''}' : ''}  ${selectedItems.contains('Address') || selectedItems.contains('العنوان')? ' address like "%' + searchTxt + '%"' : ''}');
           data = await sqldb.readData(
-              'select * from meetings where ${selectedItems.contains('Topic') ? ' about like "%' + searchTxt + '%" ${selectedItems.length > 1 ? ' or ' : ''}' : ''} ${selectedItems.contains('Person or Entity') ? ' person like "%$searchTxt%" ${selectedItems.contains('Address') ? ' or ' : ''}' : ''}  ${selectedItems.contains('Address') ? ' address like "%' + searchTxt + '%"' : ''}');
+              'select * from meetings where ${selectedItems.contains('Topic') || selectedItems.contains('الموضوع') ? ' about like "%' + searchTxt + '%" ${selectedItems.length > 1 ? ' or ' : ''}' : ''} ${selectedItems.contains('Person or Entity') || selectedItems.contains('الشخص أو الجهة') ? ' person like "%$searchTxt%" ${selectedItems.contains('Address') || selectedItems.contains('العنوان') ? ' or ' : ''}' : ''}  ${selectedItems.contains('Address') || selectedItems.contains('العنوان')? ' address like "%' + searchTxt + '%"' : ''}');
 
           if (data.length == 0) {
             data = 'no';
@@ -100,9 +105,9 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   }
 
   final List<String> items = [
-    'Topic',
-    'Address',
-    'Person or Entity',
+    '${S.current.topic}',
+    '${S.current.address}',
+    '${S.current.personOrEntity}',
   ];
   List<String> selectedItems = [];
 
@@ -151,13 +156,14 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 },
                 child: TextField(
                   controller: txtField,
+                  style: TextStyle(color: Colors.white),
                   onChanged: (value) {
                     setState(() {
                       searchTxt = value;
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: 'Search...',
+                    hintText: '${S.current.searchHint}',
                     prefixIcon: Icon(
                       Icons.search,
                       color: Color(0xFF7E7EBE),
@@ -165,6 +171,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                     hintStyle: TextStyle(color: Colors.grey),
                     fillColor: Color(0xff323644),
                     filled: true,
+
                     contentPadding: EdgeInsets.zero,
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
@@ -177,10 +184,17 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
             Container(
               margin: EdgeInsets.only(top: 10, left: 1),
-              child: Stack(children: [
-                Text(
-                  'Search By',
-                  style: TextStyle(color: Colors.grey[300]),
+
+              child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: ScreenWidth * 0.06),
+                  child: Text(
+                    '${S.current.searchBy}',
+                    style: TextStyle(color: Colors.grey[300]),
+
+                  ),
                 ),
                 DropdownButtonHideUnderline(
                   child: DropdownButton2<String>(
@@ -281,7 +295,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${snapshot.data!.length} Results Found',
+                              '${snapshot.data!.length} ${S.current.resultsTxt}',
                               style: TextStyle(color: Colors.grey[300]),
                             ),
                             Expanded(
@@ -311,7 +325,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                       } else {
                         return Center(
                             child: Text(
-                          'No Data Found',
+                          '${S.current.noResultsTxt}',
                           style: TextStyle(color: Colors.grey[300]),
                         ));
                       }
@@ -321,14 +335,14 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Select a Search Filter First',
+                            '${S.current.selectFilterTxt}',
                             style: TextStyle(color: Colors.grey[300]),
                           ),
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            'Swipe to Search By Date',
+                            '${S.current.swipeTxt}',
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           Icon(
@@ -363,7 +377,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                     hintText: '--/--/----',
                     hintStyle: TextStyle(color: Colors.grey),
                     label: Text(
-                      'From',
+                      '${S.current.fromTxt}',
                       style: TextStyle(color: Colors.grey[300]),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -393,7 +407,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                     hintText: '--/--/----',
                     hintStyle: TextStyle(color: Colors.grey),
                     label: Text(
-                      'To',
+                      '${S.current.toTxt}',
                       style: TextStyle(color: Colors.grey[300]),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -542,7 +556,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                               borderRadius: BorderRadius.circular(70)),
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            'Please Select Date',
+                            '${S.current.selectDatesTxt}',
                             style: TextStyle(color: Colors.white),
                           ),
                         ));
@@ -554,7 +568,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                               borderRadius: BorderRadius.circular(70)),
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            'Please Select (To) Date',
+                            '${S.current.selectToDateTxt}',
                             style: TextStyle(color: Colors.white),
                           ),
                         ));
@@ -566,7 +580,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                               borderRadius: BorderRadius.circular(70)),
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            'Please Select (From) Date',
+                            '${S.current.selectFromDateTxt}',
                             style: TextStyle(color: Colors.white),
                           ),
                         ));
@@ -576,7 +590,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         Tc.animateTo(0);
                       }
                     },
-                    child: Text('data')))
+                    child: Text('${S.current.searchBtn}')))
           ],
         ),
       );
@@ -688,4 +702,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           ),
         ],
       );
+
+
 }

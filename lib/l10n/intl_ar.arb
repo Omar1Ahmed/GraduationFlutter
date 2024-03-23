@@ -1,0 +1,78 @@
+{
+  "@@locale": "ar",
+
+  "mailLabelText" : "البريد الإلكتروني أو اسم المستخدم",
+  "mailHintText" : "أدخل البريد الإلكتروني أو اسم المستخدم",
+  "mailEmptyErrorText" : "لا يمكن أن يكون البريد الإلكتروني/اسم المستخدم فارغاً",
+  "mailInvalidErrorText" : "البريد الإلكتروني/اسم المستخدم خاطئ",
+  "passworInvalidErrorText" : "كلمة مرور خاطئة",
+  "passwordEmptyErrorText" : "كلمة المرور لا يمكن أن تكون فارغة",
+  "passwordHintText" : "أدخل كلمة المرور",
+  "passwordLabelText" : "كلمة المرور",
+
+  "ForgotPassword" : "نسيت كلمة المرور؟",
+  "RememberMe" : "تذكرني",
+  "Login" : "تسجيل الدخول",
+
+  "emailInvalidErrorText" : "بريد إلكتروني خاطئ",
+  "emailEmptyErrorText" : "يجب إدخال البريد الإلكتروني",
+  "emailLabelText" : "أدخل البريد الإلكتروني",
+
+  "passwordLabelConfirmText" : "تأكيد كلمة المرور",
+  "changePassword" : "تغيير كلمة المرور",
+  "sendCode" : "إرسال الكود",
+  "getCode" : "احصل على كود",
+  "codeEmptyErrorText" : "يجب كتابة الكود",
+  "codeLengthErrorText" : "يجب أن يكون الكود من 6 خانات",
+  "codeResendErrorText" : "أعد إرسال الكود",
+  "codeInvalidErrorText" : "الكود خاطئ",
+  "passwordInvalidErrorText": "على الأقل أدخل 8 خانات, حروف وأرقام فقط",
+  "passwordNotMatchErrorText" : "كلمات المرور ليست متطابقة",
+
+  "personOrEntity" : "الشخص أو الجهة",
+  "topic" : "الموضوع",
+  "address" : "العنوان",
+
+  "nearbyMeetings" : "المواعيد القريبة",
+  "days" : "أيام",
+  "Today" : "اليوم",
+  "Tomorrow" : "غداً",
+  "comments" : "عن الاجتماع",
+  "openPdf" : "افتح الملف",
+  "addNote" : "أضف ملاحظات",
+  "Time" : "الموعد",
+  "noMeetings" : "بلا اجتماع",
+  "yourName" : "اسمك",
+  "userName" : ":اسم المستخدم",
+  "email" : ":البريد الإلكتروني",
+  "password" : ":كلمة المرور",
+  "personalInfo" : "تفاصيل الحساب",
+  "logOut" : "تسجيل الخروج",
+
+  "searchHint" : "...ابحث",
+  "searchBy" : "البحث عن",
+  "resultsTxt" : "نتيجة للبحث",
+  "noResultsTxt" : "لا يوجد نتائج",
+  "selectFilterTxt" : "اختر مرشح(البحث عن) للبحث أولاً",
+  "swipeTxt" : "اسحب للبحث عن طريق التاريخ",
+  "selectDatesTxt" : "اختر تاريخ",
+  "selectToDateTxt" : "اختر تاريخ خانة (إلى)",
+  "selectFromDateTxt" : "اختر تاريخ خانة (من)",
+  "searchBtn" : "تم",
+  "toTxt" : "إلى",
+  "fromTxt" : "من",
+  "noDataFound" : "لا يوجد بيانات",
+
+  "showMeeting" : "اعرض الإجتماعات",
+  "noMeetings_Calender" : "اضغط على الأيام لعرض الإجتماعات",
+
+  "totalMeetings": "عرض {numberOfMeetings} اجتماع",
+  "@totalMeetings": {
+    "description": "Greet the user by their name.",
+    "placeholders": {
+      "numberOfMeetings": {
+        "type": "int"
+      }
+    }
+  }
+}

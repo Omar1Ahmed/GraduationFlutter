@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning/Widgets/TestApi.dart';
+import 'package:learning/generated/l10n.dart';
 import 'package:learning/main.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -36,7 +37,13 @@ late ApiTest api ;
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   @override
+  void initState() {
+    super.initState();
+  // S.load(const Locale('ar'));
+  }
+  @override
   Widget build(BuildContext context) {
+
 
     api = ApiTest(context);
     return PopScope(
@@ -135,8 +142,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                             });
                                           },
                                         ),
-                                        labelText: "Password",
-                                        hintText: "Enter your Password",
+                                      labelText: "${S.of(context).passwordLabelText}",
+                                        hintText: "${S.of(context).passwordHintText}",
                                         labelStyle:
                                             const TextStyle(color: Colors.grey),
                                         hintStyle:
@@ -162,7 +169,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       validator: (value) {
                                         if (value!.isEmpty) {
                                           ValidatePass2.currentState!.validate();
-                                          return "Password cannot be empty";
+                                          return "${S.of(context).passwordEmptyErrorText}";
                                         }
                                         return null;
                                       },
@@ -225,8 +232,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                             });
                                           },
                                         ),
-                                        labelText: "Password",
-                                        hintText: "Confirm your Password",
+                                        labelText: "${S.of(context).passwordLabelConfirmText}",
+                                        hintText: "${S.of(context).passwordHintConfirmText}",
                                         labelStyle:
                                             const TextStyle(color: Colors.grey),
                                         hintStyle:
@@ -251,7 +258,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       validator: (value) {
                                         if (value!.isEmpty) {
 
-                                          return "Password cannot be empty";
+                                          return "${S.of(context).passwordEmptyErrorText}";
                                         }
                                         return null;
                                       },
@@ -314,7 +321,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 controller: txtMail,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
-                                  labelText: 'Enter Email',
+                                  labelText: '${S.of(context).emailLabelText}',
                                   labelStyle:
                                       const TextStyle(color: Colors.grey),
                                   hintStyle:
@@ -341,13 +348,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 textInputAction: TextInputAction.done,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return "Email cannot be empty";
+                                    return "${S.of(context).emailEmptyErrorText}";
                                   } else if (invalidMail) {
                                     // setState(() {
 
                                     invalidMail = false;
                                     // });
-                                    return 'Invalid Email';
+                                    return '${S.of(context).emailInvalidErrorText}';
                                   }
                                   return null;
                                 },
@@ -369,7 +376,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                       ),
                       onPressed: () async {
+                        setState(() {
+
                         pressed = true;
+                        });
+
                         if (ConfirmedMail) {
                           if (newPass) {
                             ButtonClickedChangePass();
@@ -388,10 +399,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       },
                       child: pressed ? const CircularProgressIndicator( color: Colors.white,strokeWidth: 2,) : Text(
                         ConfirmedMail
-                            ? (newPass ? "Change Password" : "Send Code")
-                            : "Get Code",
+                            ? (newPass ? "${S.of(context).changePassword}" : "${S.of(context).sendCode}")
+                            : "${S.of(context).getCode}",
                         style:
-                            const TextStyle(color: Colors.white, fontSize: 15),
+                             TextStyle(color: Colors.white, fontSize: S.current == 'en' ? 15: 14),
                       ),
                     ))
               ])),
@@ -417,17 +428,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ErrMsg = '';
       });
     } else if (api.getValue(Response, 'message')[0].contains('empty')) {
-      print('$Code ${Code.length}  Code');
       setState(() {
-        ErrMsg = Code.length == 0 ? "Code Required" : 'Code Length must be 6';
+        ErrMsg = Code.length == 0 ? "${S.of(context).codeEmptyErrorText}" : '${S.of(context).codeLengthErrorText}';
       });
     } else if (api.getValue(Response, 'message')[0].contains('First')) {
       setState(() {
-        ErrMsg = 'Resend The Code';
+        ErrMsg = '${S.of(context).codeResendErrorText}';
       });
     } else if (api.getValue(Response, 'message')[0].contains('Invalid')) {
       setState(() {
-        ErrMsg = 'Invalid Code';
+        ErrMsg = '${S.of(context).codeInvalidErrorText}';
       });
     }
   }
@@ -479,13 +489,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           .contains('required')) {
         setState(() {
           ErrMsg =
-          'at least 8 characters long, only contains [A-Z] and [0-9]';
+          '${S.of(context).passwordInvalidErrorText}';
         });
       } else if (api
           .getValue(Response, 'message')[0]
           .contains('Equal')) {
         setState(() {
-          ErrMsg = 'Passwords does not match';
+          ErrMsg = '${S.of(context).passwordNotMatchErrorText}';
         });
       }
       //   }

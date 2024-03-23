@@ -36,18 +36,19 @@ _onCreate(Database database, int version) async {
                             "createdAt" text,
                              "attachmentLink" longText,
                              "attachmentName" text,
-                             "status" text,
-                             "manager_id" int)
+                             "status" text)
   ''');
   await database.execute(
       "CREATE TABLE `notes` (\n" +
-      "  `notes_id` int(11) NOT NULL,\n" +
+      "  `notes_id` INTEGER unique,\n" +
       "  `title` varchar(255) NOT NULL,\n" +
       "  `content` longtext DEFAULT NULL,\n" +
       "  `meeting_id` int(11) DEFAULT NULL,\n" +
       "  `manager_id` int(11) DEFAULT NULL,\n" +
-      "  `updatedAt` datetime NOT NULL\n" +
-      ")");
+      "  `updatedAt` datetime NOT NULL,\n" +
+          "'about' varchar,\n"+
+          "'date' date ,\n"+
+          "'person' varchar(255))");
 
   await database.execute('''CREATE TABLE "meeting_Manager" (
   "manager_id" int(3) NOT NULL,

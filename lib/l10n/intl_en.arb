@@ -1,0 +1,84 @@
+{
+ "@@locale": "en",
+
+ "mailLabelText" : "Email or Username",
+  "mailHintText" : "Enter your Email or Username",
+  "mailEmptyErrorText" : "Email/Username cannot be Empty",
+  "mailInvalidErrorText" : "Invalid Email/Username",
+  "passworInvalidErrorText" : "Invalid Password",
+  "passwordEmptyErrorText" : "Password cannot be Empty",
+ "passwordHintText" : "Enter Your Password",
+ "passwordHintConfirmText" : "Confirm Your Password",
+ "passwordLabelText" : "Password",
+
+  "ForgotPassword" : "Forgot Password?",
+  "RememberMe" : "Remember Me",
+  "Login" : "Login",
+
+  "emailInvalidErrorText" : "Invalid Email",
+  "emailEmptyErrorText" : "Email cannot be Empty",
+  "emailLabelText" : "Enter Email",
+
+  "passwordLabelConfirmText" : "Confirm Password",
+  "changePassword" : "Change Password",
+  "sendCode" : "Send Code",
+  "getCode" : "Get Code",
+  "codeEmptyErrorText" : "Code is Required",
+  "codeLengthErrorText" : "Code Length must be 6",
+  "codeResendErrorText" : "Resend The Code",
+  "codeInvalidErrorText" : "Code is Invalid",
+  "passwordInvalidErrorText": "at least 8 characters long, only contains [A-Z] and [0-9]",
+  "passwordNotMatchErrorText" : "Passwords does not match",
+
+  "personOrEntity" : "Person or Entity",
+  "topic" : "Topic",
+  "address" : "Address",
+
+  "nearbyMeetings" : "Nearby Meetings",
+  "days" : "Days",
+  "Today" : "Today",
+  "Tomorrow" : "Tomorrow",
+  "comments" : "About the Meeting",
+  "openPdf" : "Open Pdf",
+ "addNote" : "Add Note",
+ "Time" : "Time",
+ "noMeetings" : "Without Meetings",
+ "yourName" : "Your Name",
+ "userName" : "User Name:",
+ "email" : "Email:",
+ "password" : "Password:",
+ "personalInfo" : "Account Info",
+ "logOut" : "Log Out",
+
+ "searchHint" : "Search...",
+ "searchBy" : "Search By",
+ "resultsTxt" : "Results Found",
+ "noResultsTxt" : "No Results Found",
+ "selectFilterTxt" : "Select a Search Filter First",
+ "swipeTxt" : "Swipe to Search By Date",
+ "selectDatesTxt" : "Please Select Date",
+ "selectToDateTxt" : "Please Select (To) Date",
+ "selectFromDateTxt" : "Please Select (From) Date",
+ "searchBtn" : "Done",
+ "toTxt" : "To",
+ "fromTxt" : "From",
+ "noDataFound" : "No Data Found",
+ "showMeeting" : "Show Meetings",
+ "noMeetings_Calender" : "Click on The Days to Show Meetings",
+
+ "totalMeetings": "{numberOfMeetings} Meetings to Show",
+ "@totalMeetings": {
+  "description": "Greet the user by their name.",
+  "placeholders": {
+   "numberOfMeetings": {
+    "type": "int"
+   }
+  }
+ },
+ "ShowNote" : "Show Note",
+ "noTitle" : "Write Your title",
+ "noContent" : "Write Your Content",
+  "notes" : "Notes",
+ "NearestMeetings" : "Nearest Meetings"
+
+}

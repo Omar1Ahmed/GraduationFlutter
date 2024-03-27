@@ -39,7 +39,10 @@ dependencies:
   dropdown_button2: ^2.3.9
   flutter_localizations:
     sdk: flutter
-  advance_pdf_viewer: ^2.0.1
+  advance_pdf_viewer:
+    git:
+      url: https://github.com/lohanidamodar/pdf_viewer.git
+      ref: 4e5d96be29de515f1081c0b6897741b8dca84722 
   device_preview: ^1.1.0
   flutter:
     sdk: flutter

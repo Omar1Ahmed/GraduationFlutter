@@ -9,25 +9,23 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/Widgets/Hahalol.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/l10n/intl_ar.arb" afterDir="false" />
+    <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="V2">
+      <change afterPath="$PROJECT_DIR$/lib/QuillData.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/CalenderView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CalenderView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/CalenderView.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/CardView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CardView.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Grad.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Grad.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/SqlDb.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SqlDb.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/ForgotPasswordWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/ForgotPasswordWidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/Hahalol.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/NearestMeetingsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NearestMeetingsWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/SearchWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/SearchWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/SettingsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/SettingsWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/TestApi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/TestApi.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/pdfViewer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/pdfViewer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/l10n/intl_ar.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/intl_ar.arb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/webSocket.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/webSocket.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
@@ -57,25 +55,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "com.google.services.firebase.aqiPopupShown": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "C:/Users/Omar/Desktop",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Omar/Desktop&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Omar\Programming\Mobile_Projects\Flutter\Learning\images" />
@@ -99,6 +97,19 @@
       <option name="presentableId" value="Default" />
       <updated>1706974347163</updated>
     </task>
+    <task id="LOCAL-00001" summary="V2">
+      <option name="closed" value="true" />
+      <created>1711179710423</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1711179710423</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="V2" />
+    <option name="LAST_COMMIT_MESSAGE" value="V2" />
   </component>
 </project>

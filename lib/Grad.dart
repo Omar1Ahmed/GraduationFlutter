@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:learning/CardView.dart';
 import 'package:learning/Widgets/HomePageWidegt.dart';
@@ -14,8 +15,8 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'Widgets/SettingsWidget.dart';
 
 class Grad extends StatefulWidget {
-  SharedPreferences accData , loginInfo,Language ;
-   Grad(this.accData, this.loginInfo,this.Language, {super.key});
+  SharedPreferences accData , loginInfo,Language, Nearest;
+   Grad(this.accData, this.loginInfo,this.Language,this.Nearest, {super.key});
 
   static late TabController lol;
 
@@ -58,6 +59,13 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
     // connectToSocket();
 
     languageSharedPrefInitialize();
+    nearsetSharedPref();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+
+    ]);
 
   }
 
@@ -117,10 +125,10 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
 
             controller: Grad.lol,
               children: [
-                HomePage(accData: accData, loginInfo: loginInfo,Language: Language),
+                HomePage(accData: accData, loginInfo: loginInfo,Language: Language,Nearest: Nearest,),
 
                 NearestMeetings(),
-                Notes(accData, loginInfo,Language),
+                Notes( accData, loginInfo, Language),
                 Settings(),
               ],
 
@@ -188,6 +196,14 @@ setState(() {
 
     });
     }
+
+  }
+  void nearsetSharedPref() async {
+    widget.Nearest = await SharedPreferences.getInstance();
+    if(widget.Nearest!.getInt('Days') == null){
+      widget.Nearest!.setInt('Days', 3);
+    }
+
 
   }
 }

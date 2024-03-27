@@ -2,27 +2,44 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learning/CardView.dart';
 import 'package:learning/Grad.dart';
+import 'package:learning/Widgets/HomePageWidegt.dart';
+import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
+import 'package:learning/generated/l10n.dart';
+import 'package:intl/intl.dart';
+
 
 class NearestMeetings extends StatelessWidget{
   late ApiTest api;
+
+  String currentDayDate = DateTime.now().toString().substring(0,10);
+
+  var NearestMeetingDayDate = DateTime.now().add(Duration(days: Nearest.getInt("Days")! )).toString().substring(0,10);
+
   @override
   Widget build(BuildContext context) {
   api = ApiTest(context);
-
+  print(currentDayDate);
+  // print(NearestMeetingDayDate);
     return SingleChildScrollView(
       child: SafeArea(
         child: Column(
 
           children: [
-            Container(margin: const EdgeInsets.only(top: 60),
-                child: const Text('Nearest Meetings', style: TextStyle(
-                    color: Colors.deepPurple,fontSize: 30,fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,decorationThickness: 2,decorationColor: Colors.deepPurpleAccent))),
+            Container(margin:  isEnglish() ?EdgeInsets.only(top: ScreenHeight * 0.02,bottom: ScreenHeight * 0.02 ,right: ScreenWidth * 0.37) :EdgeInsets.only(top: ScreenHeight * 0.02,bottom: ScreenHeight * 0.02 ,left: ScreenWidth * 0.52),
+              child: Column(
+
+                children: [
+                  Text(S.current.NearestMeetings, style: TextStyle(
+                        color: Color(0xFF785FC0),fontSize: 26,fontWeight: FontWeight.bold)),
+                 isEnglish()? Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.05,endIndent: ScreenWidth * 0.06) : Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.06,endIndent: ScreenWidth * 0.05,),
+                ],
+              )),
+
             Container(
 
-              height: 695,
-              margin: const EdgeInsets.only(left: 30,right: 30),
+              height: ScreenHeight * 0.76,
+              margin: EdgeInsets.only(left: ScreenWidth * 0.04,right: ScreenWidth * 0.04),
               child: FutureBuilder(future: readData1(), builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -37,6 +54,8 @@ class NearestMeetings extends StatelessWidget{
                           Time: snapshot.data![index]['time']);
                     },
                   );
+                }if(ConnectionState.done == snapshot.connectionState && !snapshot.hasData){
+                  return Center(child: Text(S.of(context).noDataFound));
                 }else {
                   return CircularProgressIndicator();
                 }
@@ -49,7 +68,7 @@ class NearestMeetings extends StatelessWidget{
 
   Future<List<Map>> readData1() async {
 
-    cardData = await sqldb.readData('SELECT * FROM Meetings');
+    cardData = await sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ');
     // "time" time
     //  , "date" date,
     //  "about" text,
@@ -63,11 +82,12 @@ class NearestMeetings extends StatelessWidget{
     if(cardData.isEmpty ){
       // var request = await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&date[gte]=' + DateTime.now().toString(), {'token':'${loginInfo.getString('token')}'});
       // print(request);
-      cardData = await sqldb.readData('SELECT * FROM Meetings');
+      cardData = await sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ');
     }
 
 
     return cardData;
   }
+  bool isEnglish() => Intl.getCurrentLocale() == 'en';
 
 }

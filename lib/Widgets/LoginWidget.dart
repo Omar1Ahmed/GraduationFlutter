@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning/Widgets/ForgotPasswordWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
@@ -44,7 +45,7 @@ GlobalKey<FormState> ValidatePass = GlobalKey<FormState>();
 TextEditingController txtMail = TextEditingController();
 TextEditingController PassTxt = TextEditingController();
 
-late SharedPreferences accData, loginInfo,Language;
+late SharedPreferences accData, loginInfo,Language, Nearest;
 
 class _LoginState extends State<Login> {
   @override
@@ -61,7 +62,13 @@ class _LoginState extends State<Login> {
     isRememberd();
 
     languageSharedPrefInitialize();
+    nearsetSharedPref();
 
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    //
+    // ]);
 
 
   }
@@ -158,8 +165,8 @@ class _LoginState extends State<Login> {
                             // Adjust the padding as needed
                             prefixIcon: SvgPicture.asset(
                               'images/user.svg',
-                              width: 1,
-                              height: 1,
+
+                              height: ScreenHeight * 0.06,
                               fit: BoxFit.scaleDown,
                             ),
                             labelText: "${S.of(context).mailLabelText}",
@@ -209,20 +216,19 @@ class _LoginState extends State<Login> {
                             prefixIcon: SvgPicture.asset(
                               "images/password.svg",
                               semanticsLabel: 'PassIcon',
-                              height: 1,
-                              width: 1,
+                              height: ScreenHeight * 0.06,
                               fit: BoxFit.scaleDown,
                               // ),
                             ),
                             suffixIcon: IconButton(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: EdgeInsets.only(right: ScreenHeight * 0.02),
                               icon: SvgPicture.asset(
                                 passwordVisible
                                     ? "images/showPassIcon.svg"
                                     : "images/hidePassIcon.svg",
                                 semanticsLabel: 'PassIcon',
-                                height: 25,
-                                width: 25,
+                                height: ScreenHeight * 0.04,
+
                                 fit: BoxFit.scaleDown,
                               ),
                               onPressed: () {
@@ -263,7 +269,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 220),
+                    margin: EdgeInsets.only(left: ScreenHeight * 0.25),
                     child: InkWell(
                       splashFactory: NoSplash.splashFactory,
                       onTap: () {
@@ -309,7 +315,7 @@ class _LoginState extends State<Login> {
                   Container(
                     width: ScreenWidth * 0.31,
                     height: ScreenHeight * 0.056,
-                    margin: const EdgeInsets.only(top: 20),
+                    margin:  EdgeInsets.only(top: ScreenHeight * 0.034),
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
@@ -352,7 +358,6 @@ class _LoginState extends State<Login> {
                                     api.getValue(Response, 'token')[0]);
                                 loginInfo.setBool('remember', false);
                               }
-                              connectToSocket();
 
                               Response = await api.getRequest(
                                   'https://meetingss.onrender.com/manager/getManagerDetails',
@@ -378,13 +383,14 @@ class _LoginState extends State<Login> {
                                         api.getValue(
                                             Response, 'Secretaries')[0] + ',',
                                         'secretary_id'));
+                                print(loginInfo.getString('token'));
                               }
                               // connectToSocket();
 
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          Grad(accData, loginInfo,Language)));
+                                          Grad(accData, loginInfo,Language,Nearest)));
                             } else if (api
                                 .getValue(Response, 'message')[0]
                                 .contains('Email') ||
@@ -408,7 +414,7 @@ class _LoginState extends State<Login> {
                       child: pressed
                           ? CircularProgressIndicator(
                         color: Colors.white,
-                        strokeWidth: 2,
+                        strokeWidth: ScreenWidth * 0.0015,
                       )
                           : Text(
                         '${S.of(context).Login}',
@@ -425,9 +431,9 @@ class _LoginState extends State<Login> {
     loginInfo = await SharedPreferences.getInstance();
     accData = await SharedPreferences.getInstance();
     if (loginInfo.getBool('remember') == true) {
-      connectToSocket();
+
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Grad(accData, loginInfo,Language)));
+          MaterialPageRoute(builder: (context) => Grad(accData, loginInfo,Language,Nearest)));
     }
   }
   void languageSharedPref() async {
@@ -460,22 +466,12 @@ class _LoginState extends State<Login> {
 
   }
 
-  void connectToSocket() {
-    try {
-      IO.Socket socket = IO.io('https://meetingss.onrender.com',{
-        'transports': ['websocket'],
-        'autoConnect': true
-      });
-      socket.connect();
-
-    socket.onConnect((_) {
-      print('socket Connected');
-    });
-
-    }catch(e){
-      print('Socket error');
-      print(e);
+  void nearsetSharedPref() async {
+    Nearest = await SharedPreferences.getInstance();
+    if(Nearest!.getInt('Days') == null){
+      Nearest!.setInt('Days', 3);
     }
+    // NearestMeetingDayDate = DateTime.now().add(Duration(days: widget.Nearest!.getInt("Days")! )).toString().substring(0,10);
 
   }
 }

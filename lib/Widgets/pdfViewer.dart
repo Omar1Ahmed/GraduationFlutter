@@ -53,8 +53,10 @@ class _pdfViewer extends State<pdfViewer> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: PDFViewer(document: document,),
+    return SafeArea(
+      child: Scaffold(
+        body: _isLoading ? Center(child: CircularProgressIndicator()) : PDFViewer(document: document,tooltip: PDFViewerTooltip(first: 'lol'),enableSwipeNavigation: true),
+      ),
     );
   }
 }

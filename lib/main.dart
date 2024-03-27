@@ -19,13 +19,19 @@ void main (){
 
 class MainApp extends StatefulWidget{
   State<MainApp> createState() => _MainAppState();
+
+
 }
 
 class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
 
+    ]);
 
    // connectToSocket();
   }

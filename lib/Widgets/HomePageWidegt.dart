@@ -1,12 +1,5 @@
-import 'dart:ffi';
-import 'dart:io';
-
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:learning/CardView.dart';
 import 'package:learning/Grad.dart';
@@ -29,11 +22,11 @@ class HomePage extends StatefulWidget {
   ];
 
   late ApiTest api ;
-  late SharedPreferences? accData , loginInfo , Language;
+  late SharedPreferences? accData , loginInfo , Language,Nearest;
   SqlDb sqldb = SqlDb();
 
 
-  HomePage({this.accData, this.loginInfo, this.Language,super.key});
+  HomePage({this.accData, this.loginInfo, this.Language,this.Nearest,super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -52,7 +45,6 @@ class _HomePageState extends State<HomePage> {
 
   late ScrollController listController ;
   bool insertion = false,update = false, deletion = false, isChecked = false;
-  late SharedPreferences Nearest ;
 
   String currentDayDate = DateTime.now().toString().substring(0,10);
   late String NearestMeetingDayDate;
@@ -65,7 +57,6 @@ class _HomePageState extends State<HomePage> {
     nearsetSharedPref();
 
     languageSharedPrefInitialize();
-    print('Radio $_RadioSelected');
 
 
   }
@@ -84,8 +75,7 @@ class _HomePageState extends State<HomePage> {
       // ScreenWidth = MediaQuery.of(context).size.width;
       // ScreenHeight = MediaQuery.of(context).size.height;
     }
-   print('$ScreenHeight + $ScreenWidth');
-    print('current ${isEnglish() }');
+
     api = ApiTest(context);
     return SafeArea(
       child: Scaffold(
@@ -109,34 +99,31 @@ class _HomePageState extends State<HomePage> {
 
                     mainAxisAlignment: MainAxisAlignment.center,
                   children: isEnglish()  ? [
-                    Container(
+                    InkWell(
 
-                      child: InkWell(
+                          onTap: () {
+                            setState(() {
 
-                            onTap: () {
-                              setState(() {
+                            });
 
-                              });
+                            isChecked = !isChecked;
+                          },
+                          child:  Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                              isChecked = !isChecked;
-                            },
-                            child:  Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
+                                  size: 20,
+                                  color: const Color(0xFF785FC0),
+                                ),
+                                Text(S.of(context).nearbyMeetings,style: const TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
+                              ]
 
-                                children: [
-                                  Icon(
-                                    isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
-                                    size: 20,
-                                    color: Color(0xFF785FC0),
-                                  ),
-                                  Text("${ S.of(context).nearbyMeetings}",style: TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
-                                ]
+                            ),
 
-                              ),
-
-                          ),
-                    ),
+                        ),
 
                     Container(
                       margin: EdgeInsets.only(right: ScreenWidth * 0.071, bottom: ScreenHeight * 0.022),
@@ -144,17 +131,17 @@ class _HomePageState extends State<HomePage> {
                       height: ScreenHeight * 0.022,
 
                       child: PopupMenuButton(
-                        offset: Offset(5, 35),
+                        offset: const Offset(5, 35),
 
                         popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
                         iconSize: 19,
                         position: PopupMenuPosition.over,
                         color: Colors.black,
-                        icon: Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
+                        icon: const Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
                        padding: EdgeInsets.zero,
 
                         itemBuilder: (context) {
-                          print(MediaQuery.of(context).orientation);
+
                           return [
                           PopupMenuItem(
 
@@ -163,13 +150,13 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("${ S.of(context).days}",style: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
+                                Text(S.of(context).days,style: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
                                 SizedBox(width: ScreenWidth * 0.024,),
-                                Container(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
+                                SizedBox(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
                                     child: TextField(
                                   onSubmitted: (value) {
                                     if(value.isNotEmpty){
-                                      Nearest.setInt('Days', int.parse(value));
+                                      widget.Nearest!.setInt('Days', int.parse(value));
                                     NearestMeetingDayDate = DateTime.now().add(Duration(days: int.parse(value))).toString().substring(0,10);
                                     setState(() {
 
@@ -179,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                                     },
                                   keyboardType: TextInputType.number,
 
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                   maxLength: 2,
 
                                   textAlign: TextAlign.center,
@@ -191,9 +178,9 @@ class _HomePageState extends State<HomePage> {
                                       borderSide: BorderSide(width: ScreenWidth * 0.009),
                                     ),
                                     contentPadding: EdgeInsets.only(bottom: ScreenHeight * 0.017),
-                                    hintText: '${Nearest.getInt('Days')}',
-                                    hintStyle: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
-                                    fillColor: Color(0xff323644),
+                                    hintText: '${widget.Nearest!.getInt('Days')}',
+                                    hintStyle: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
+                                    fillColor: const Color(0xff323644),
                                     filled: true,
                                   )
                                 ))
@@ -211,17 +198,17 @@ class _HomePageState extends State<HomePage> {
                       height: ScreenHeight * 0.022,
 
                       child: PopupMenuButton(
-                        offset: Offset(5, 35),
+                        offset: const Offset(5, 35),
 
                         popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
                         iconSize: 19,
                         position: PopupMenuPosition.over,
                         color: Colors.black,
-                        icon: Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
+                        icon: const Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
                         padding: EdgeInsets.zero,
 
                         itemBuilder: (context) {
-                          print(MediaQuery.of(context).orientation);
+
                           return [
                             PopupMenuItem(
 
@@ -230,13 +217,13 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text("${ S.of(context).days}",style: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
+                                    Text(S.of(context).days,style: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
                                     SizedBox(width: ScreenWidth * 0.024,),
-                                    Container(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
+                                    SizedBox(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
                                         child: TextField(
                                             onSubmitted: (value) {
                                               if(value.isNotEmpty){
-                                                Nearest.setInt('Days', int.parse(value));
+                                                widget.Nearest!.setInt('Days', int.parse(value));
                                                 NearestMeetingDayDate = DateTime.now().add(Duration(days: int.parse(value))).toString().substring(0,10);
                                                 setState(() {
 
@@ -246,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                                             },
                                             keyboardType: TextInputType.number,
 
-                                            style: TextStyle(color: Colors.white),
+                                            style: const TextStyle(color: Colors.white),
                                             maxLength: 2,
 
                                             textAlign: TextAlign.center,
@@ -258,9 +245,9 @@ class _HomePageState extends State<HomePage> {
                                                 borderSide: BorderSide(width: ScreenWidth * 0.009),
                                               ),
                                               contentPadding: EdgeInsets.only(bottom: ScreenHeight * 0.017),
-                                              hintText: '${Nearest.getInt('Days')}',
-                                              hintStyle: TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
-                                              fillColor: Color(0xff323644),
+                                              hintText: '${widget.Nearest!.getInt('Days')}',
+                                              hintStyle: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
+                                              fillColor: const Color(0xff323644),
                                               filled: true,
                                             )
                                         ))
@@ -271,33 +258,30 @@ class _HomePageState extends State<HomePage> {
                         },),
                     ),
 
-                    Container(
+                    InkWell(
 
-                      child: InkWell(
+                      onTap: () {
+                        setState(() {
 
-                        onTap: () {
-                          setState(() {
+                        });
 
-                          });
+                        isChecked = !isChecked;
+                      },
+                      child:  Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                          isChecked = !isChecked;
-                        },
-                        child:  Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                            children:
-                            [
-                              Text("${ S.of(context).nearbyMeetings}",style: TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
-                              Icon(
-                                isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
-                                size: 20,
-                                color: Color(0xFF785FC0),
-                              ),
-                            ]
-                        ),
-
+                          children:
+                          [
+                            Text(S.of(context).nearbyMeetings,style: const TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
+                            Icon(
+                              isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
+                              size: 20,
+                              color: const Color(0xFF785FC0),
+                            ),
+                          ]
                       ),
+
                     ),
 
                   ],
@@ -308,8 +292,8 @@ class _HomePageState extends State<HomePage> {
               Container(
                 margin:  EdgeInsets.only(left: ScreenWidth * 0.87, top: ScreenHeight * 0.033),
                 child:  IconButton(
-                    icon: Icon(Icons.search,size: 32,),
-                    color: Color.fromRGBO(50, 213, 131, 100),
+                    icon: const Icon(Icons.search,size: 32,),
+                    color: const Color.fromRGBO(50, 213, 131, 100),
                   onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
                       },
@@ -340,7 +324,8 @@ class _HomePageState extends State<HomePage> {
                   child: _RadioSelected == 0 ?
 
                    RefreshIndicator(
-                      onRefresh: () {print('Refresh'); setState(() {
+                      onRefresh: () {
+                        setState(() {
 
                       });
                         return readData(); },
@@ -349,23 +334,23 @@ class _HomePageState extends State<HomePage> {
 
                           builder: (context, snapshot) {
 
-                        print('${snapshot.connectionState == ConnectionState.done} ${snapshot.data == null} ${!snapshot.hasData}');
+
                         if(snapshot.hasData){
 
                           return ListView.builder(
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: const AlwaysScrollableScrollPhysics(),
                           controller: listController,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                             print('${snapshot.data![index]['person']} ${snapshot.data![index]['meeting_id']}');
+
                               if(widget.calenderDataBool == true){
-                                print('calenderDataBool22222 ${widget.calenderDataBool}');
+
                                 if(snapshot.hasData) {
                                   if(index == snapshot.data!.length -1 ) {
                                     widget.calenderDataBool = false;
-                                  }print('calenderDataBool ${widget
-                                      .calenderDataBool}');
+                                  }
                                   return CardVu(
+                                    MeetingId: snapshot.data![index]['meeting_id'].toString(),
                                     PersonOrEntity_title: snapshot
                                         .data![index]['person'],
                                     Topic_Content: snapshot.data![index]['about']
@@ -377,11 +362,12 @@ class _HomePageState extends State<HomePage> {
                                     PdfLink: snapshot
                                         .data![index]['attachmentLink'],);
                                 }else{
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
                               }else {
-                                print('not calenderDataBool');
+
                                 return CardVu(
+                                  MeetingId: snapshot.data![index]['meeting_id'].toString(),
                                   PersonOrEntity_title: snapshot
                                       .data![index]['person'],
                                   Topic_Content: snapshot.data![index]['about']
@@ -398,12 +384,12 @@ class _HomePageState extends State<HomePage> {
 
                         }else {
                           if (ConnectionState.done == snapshot.connectionState) {
-                            return Center(child: Text("${S.of(context).noDataFound}",
-                              style: TextStyle(
+                            return Center(child: Text(S.of(context).noDataFound,
+                              style: const TextStyle(
                                   color: Colors.white, fontSize: 24),));
 
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                         }
                       }),
@@ -434,7 +420,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Text(
                     accData.getString('userName')!.toUpperCase().substring(0, 1),
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -450,7 +436,7 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding:  EdgeInsets.only(left: ScreenWidth * 0.024, right: ScreenWidth * 0.024, top: ScreenHeight * 0.011, bottom: ScreenHeight * 0.011),
       child: InkResponse(
-        splashColor: Color.fromRGBO(50,213,131,100),
+        splashColor: const Color.fromRGBO(50,213,131,100),
         radius: 15,
 
         child: Column(
@@ -492,18 +478,17 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Map>> readData() async {
 
-    print('hahaRead');
-    cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\' order by date ') :
+
+    cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ') :
     await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) order by date');
-    print(accData.getString('managerId'));
-    print(cardData);
+
      if(await api.hasNetwork()) {
 
        var Response;
 
        if (cardData.isEmpty) {
-        print('empty');
-        Response = isChecked? await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&date[lte]=${NearestMeetingDayDate}&date[gte]=${currentDayDate}&isUpdated=true',{'token': '${loginInfo.getString('token')}'})
+
+        Response = isChecked? await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&isUpdated=true',{'token': '${loginInfo.getString('token')}'})
             : await api.getRequest(
             'https://meetingss.onrender.com/meetings?sort=date&date[gte]=' +
                 currentDayDate,
@@ -517,28 +502,28 @@ class _HomePageState extends State<HomePage> {
 
 
         var readData = isChecked? await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from meeting_Manager where manager_id = ${accData
-            .getString('managerId')} and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\')')
+            .getString('managerId')} and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\')')
             :await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')} )');
 
-        print(DateTime.parse(readData[0]['maxCreated']).toString() + ' ' + currentDayDate);
 
-         Response = isChecked ? await api.getRequest( 'https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&date[lte]=${NearestMeetingDayDate}&date[gte]=${currentDayDate}&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}', {'token': '${loginInfo.getString('token')}'} )
-             :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}&date[gte]=${currentDayDate}',
+
+         Response = isChecked ? await api.getRequest( 'https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}', {'token': '${loginInfo.getString('token')}'} )
+             :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}&date[gte]=$currentDayDate',
             {'token': '${loginInfo.getString('token')}'});
 
         if(api.getValue(Response, 'count')[0] != '0'){
-          print('$Response opopopopo');
+
           await insertDataToLocalDb(Response);
           insertion = true;
         }else{
           insertion = false;
         }
-      print('${DateTime.parse(readData[0]['maxUpdated'])} + ' ' + ${readData[0]['maxUpdated'].toString().substring(0,19)} ${currentDayDate}');
-        Response = isChecked? await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[lte]=${NearestMeetingDayDate}&date[gte]=${currentDayDate}&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}',{'token': '${loginInfo.getString('token')}'} )
-            :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[gte]=${currentDayDate}&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}' ,
+
+        Response = isChecked? await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}',{'token': '${loginInfo.getString('token')}'} )
+            :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[gte]=$currentDayDate&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}' ,
             {'token': '${loginInfo.getString('token')}'});
 
-print(Response +' h3h3h3h3h');
+
       if(api.getValue(Response, 'count')[0] != '0'){
         await insertOrUpdateDataToLocalDb(Response);
         update = true;
@@ -547,11 +532,11 @@ print(Response +' h3h3h3h3h');
       }
        }
 
-      print(currentDayDate);
+
       Response = await api.getRequest('https://meetingss.onrender.com/meetings/getMeetingManagers?', {'token': '${loginInfo.getString('token')}'});
-      print('lollaya');
+
        List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' order by meeting_id');
-      print('lollaya2');
+
 
        var ids =  await api.getValue(Response, 'meeting_id');
 
@@ -568,14 +553,14 @@ print(Response +' h3h3h3h3h');
        int Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
        int onlineCount = api.getValue(Response, 'meeting_id').length;
 
-  print('$Localcount + ' ' + $onlineCount');
+
    if( Localcount != onlineCount){
 
 
      for(int loop = 0 ; loop < onlineCount; loop++){
-       print('${lol[loop]['meeting_id']} ${ids[loop]}');
+
        if(!ids.contains(lol[loop]['meeting_id'].toString())){
-         print('${lol[loop]['meeting_id']} lol1');
+
          await widget.sqldb.deleteData('delete from meetings where meeting_id = ${lol[loop]['meeting_id']}');
          await widget.sqldb.deleteData('delete from meeting_Manager where meeting_id = ${lol[loop]['meeting_id']}');
          deletion = true;
@@ -587,7 +572,7 @@ print(Response +' h3h3h3h3h');
      if(Localcount > onlineCount){
 
         for(int loop = 1 ; loop <= Localcount - onlineCount; loop++){
-         print('${lol[loop]['meeting_id']} lol2');
+
          await widget.sqldb.deleteData('delete from meetings where meeting_id = ${lol[lol.length- loop]['meeting_id']}');
          await widget.sqldb.deleteData('delete from meeting_Manager where meeting_id = ${lol[loop]['meeting_id']}');
 
@@ -599,15 +584,15 @@ print(Response +' h3h3h3h3h');
 
 
      }else{
-        print('nothing to delete');
-       deletion = false;
+
+     deletion = false;
      }
 
 
     }
 
     if(insertion || update || deletion){
-      cardData = isChecked? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'${NearestMeetingDayDate}\' order by date ')
+      cardData = isChecked? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ')
           :await widget.sqldb.readData(
           'SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) order by date');
       insertion = false;
@@ -616,7 +601,7 @@ print(Response +' h3h3h3h3h');
 
     }
 
-    print(cardData.length);
+
         return cardData;
   }
 
@@ -658,7 +643,7 @@ print(Response +' h3h3h3h3h');
           meetingIds[i],
           accData.getString('managerId')!
         ] );
-        print('${meetingIds[i]} Inserted');
+
       }
      // if(meetingIds.isNotEmpty){ meetingIds.clear();
      //  meetingTimes.clear();
@@ -712,7 +697,7 @@ print(Response +' h3h3h3h3h');
 
         ]);
 
-          print(' ${meetingIds[i]} Updated');
+
       }
       // meetingIds.clear();
       // meetingTimes.clear();
@@ -726,16 +711,16 @@ print(Response +' h3h3h3h3h');
       // meetingAttachLinks.clear();
       // meetingAttachNames.clear();
       // meetingStatuses.clear();
-      print('update Successful');
+
     }
   }
 
   void nearsetSharedPref() async {
-    Nearest = await SharedPreferences.getInstance();
-    if(Nearest.getInt('Days') == null){
-      Nearest.setInt('Days', 3);
+    widget.Nearest = await SharedPreferences.getInstance();
+    if(widget.Nearest!.getInt('Days') == null){
+      widget.Nearest!.setInt('Days', 3);
     }
-    NearestMeetingDayDate = DateTime.now().add(Duration(days: Nearest.getInt("Days")! )).toString().substring(0,10);
+    NearestMeetingDayDate = DateTime.now().add(Duration(days: widget.Nearest!.getInt("Days")! )).toString().substring(0,10);
 
   }
 
@@ -755,12 +740,12 @@ print(Response +' h3h3h3h3h');
 
   void languageSharedPref() async {
     if(Language.getString('language') == 'en'){
-      S.load(Locale("en"));
+      S.load(const Locale("en"));
     }else if(Language.getString('language') == 'ar'){
-      S.load(Locale("ar"));
+      S.load(const Locale("ar"));
 
     }else{
-      S.load(Locale("ar"));
+      S.load(const Locale("ar"));
       Language.setString('language', 'ar');
     }
   }
@@ -769,7 +754,7 @@ print(Response +' h3h3h3h3h');
 
 
     if(Language.getString('language').toString() == 'null'){
-      print('Empty Shared');
+
       languageSharedPref();
     }else{
       S.load(Locale(Language.getString('language')!));
@@ -806,9 +791,9 @@ print(Response +' h3h3h3h3h');
       children: [
         Material(
           elevation: 10,
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
           child: Container(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             decoration: const BoxDecoration(
               color: Color(0xff1E2126),
               // color: Colors.white,
@@ -819,13 +804,13 @@ print(Response +' h3h3h3h3h');
             child: CalendarDatePicker2(
 
               onValueChanged: (value) {
-                print(value);
+
                 widget.calenderData = value;
-                print(Dates.length);
+
                 if(value.isNotEmpty){
                   for(int loop = 0 ; loop < value.length; loop ++){
                     value[loop] = DateTime.parse(value[loop].toString().substring(0,10)+' 00:00:00.00');
-                    print(value[loop]);
+
                     if(Dates.contains(value[loop])){
                       widget.counter = (widget.counter + widget.DateWithCounter[widget.DateWithCounter.indexWhere((element) => element['Date'] == value[loop])]['counter'] ) as int;
                     }
@@ -833,7 +818,7 @@ print(Response +' h3h3h3h3h');
                   widget.number.value = widget.counter;
                   widget.counter = 0;
                 }else{
-                  print('zero');
+
                   widget.number.value = 0;
                   widget.counter = 0;
 
@@ -842,20 +827,20 @@ print(Response +' h3h3h3h3h');
               },
 
               config: CalendarDatePicker2Config(
-                dayTextStyle: TextStyle(
+                dayTextStyle: const TextStyle(
                     color: Colors.grey
                 ),
-                yearTextStyle: TextStyle(
+                yearTextStyle: const TextStyle(
                     color: Colors.grey
                 ),
-                controlsTextStyle: TextStyle(
+                controlsTextStyle: const TextStyle(
                     color: Colors.grey
                 ),
-                weekdayLabelTextStyle: TextStyle(
+                weekdayLabelTextStyle: const TextStyle(
                     color: Colors.grey
                 ),
-                nextMonthIcon: Icon(Icons.arrow_forward_ios_sharp,color: Color(0xff7E7EBE),),
-                lastMonthIcon: Icon(Icons.arrow_back_ios_sharp,color: Color(0xff7E7EBE),),
+                nextMonthIcon: const Icon(Icons.arrow_forward_ios_sharp,color: Color(0xff7E7EBE),),
+                lastMonthIcon: const Icon(Icons.arrow_back_ios_sharp,color: Color(0xff7E7EBE),),
                 centerAlignModePicker: true,
 
                 calendarType: CalendarDatePicker2Type.multi,
@@ -883,8 +868,8 @@ print(Response +' h3h3h3h3h');
                               ),
                               Padding(
 
-                                padding: const EdgeInsets.only(
-                                    left: 15.0, top: 20.5),
+                                padding:  EdgeInsets.only(
+                                    left: ScreenWidth * 0.05, top: ScreenHeight * 0.021),
 
                                 child: Container(
                                   height: ScreenHeight * 0.015,
@@ -932,25 +917,25 @@ print(Response +' h3h3h3h3h');
             alignment: Alignment.center,
             margin: EdgeInsets.only(top: ScreenHeight * 0.02),
             child: ValueListenableBuilder(valueListenable: widget.number, builder: (BuildContext context, value, Widget? child) {
-              print('$value value');
+
               if(value != 0 ){
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text('${S.of(context).totalMeetings(value)}',style: TextStyle(color: Colors.grey),),
+                      Text(S.of(context).totalMeetings(value),style: const TextStyle(color: Colors.grey),),
                       ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff7E7EBE))),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff7E7EBE))),
                           onPressed: (){
                             setState(() {
                               RadioSelectedSetter(Dates);
                               _RadioSelected = 0;
                             });
-                          }, child: Text('${S.of(context).showMeeting}',style: TextStyle(color: Colors.white),)),
+                          }, child: Text(S.of(context).showMeeting,style: const TextStyle(color: Colors.white),)),
                     ]
                 );
               }else{
 
-                return Text('${S.of(context).noMeetings_Calender}',style: TextStyle(color: Colors.grey ),);
+                return Text(S.of(context).noMeetings_Calender,style: const TextStyle(color: Colors.grey ),);
               }
             },
 
@@ -963,7 +948,7 @@ print(Response +' h3h3h3h3h');
 
   initStateCalnder(){
 
-    print((widget.DateWithCounter[0]));
+
     if(widget.DateWithCounter[0]['Date'].toString().contains(DateTime.now().toString().substring(0,10)+' 00:00:00.00')){
       widget.counter = widget.DateWithCounter[0]['counter'] as int ;
       widget.number = ValueNotifier(widget.counter);
@@ -973,20 +958,19 @@ print(Response +' h3h3h3h3h');
       widget.number = ValueNotifier(0);
       widget.counter = 0;
     }
-  print('${widget.counter} ${widget.number.value} lolpopopohaha');
+
   }
 
   Future<List> RadioSelectedSetter(List Dates) async {
     // _RadioSelected = value;
     widget.calenderDataBool = true;
-    print('${widget.calenderData} Dateslol');
+
     String SearchBy = 'date = "${widget.calenderData[0].toString().substring(0,10)}"';
     for(int loop = 1 ; loop < widget.calenderData.length ; loop ++){
       SearchBy += ' or date = "${widget.calenderData[loop].toString().substring(0,10)}"' ;
     }
-    print('${SearchBy}  hahaBoom');
-    widget.calenderData = await sqldb.readData('select * from Meetings where ${SearchBy} order by date');
-    print('${widget.calenderData} lolData');
+
+    widget.calenderData = await sqldb.readData('select * from Meetings where $SearchBy order by date');
     return widget.calenderData;
     // _HomePageState().RadioSelected(0);
   }

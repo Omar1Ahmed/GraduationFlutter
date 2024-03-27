@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learning/Grad.dart';
 import 'package:learning/Widgets/HomePageWidegt.dart';
+import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/NoteViewerWidget.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:intl/intl.dart';
@@ -51,21 +52,14 @@ class _CardVuState extends State<CardVu> {
     _controller.addListener(() {
       _scrollListener();
     });
-    // if(widget.Grid){
-    //   if(widget.Date_MeetingId != 'null'){
-    //     MeetingDate_Grid =
-    //
-    //   }
-    // }
-    print('${widget.PersonOrEntity} ${widget.Topic} ${widget.MeetingId} ${widget.PersonOrEntity_title}');
-    // S.load( Locale('en'));
+
     super.initState();
 
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.DateToShow = widget.Date.toString().compareTo(DateTime.now().toString().substring(0, 10)) == 0 ? '${S.of(context).Today}' : widget.Date.toString().compareTo(DateTime.now().add(const Duration(days: 1)).toString().substring(0, 10))== 0 ? '${S.of(context).Tomorrow}' : widget.Date;
+    widget.DateToShow = widget.Date.toString().compareTo(DateTime.now().toString().substring(0, 10)) == 0 ? S.current.Today : widget.Date.toString().compareTo(DateTime.now().add(const Duration(days: 1)).toString().substring(0, 10))== 0 ? S.of(context).Tomorrow : widget.Date;
 
    if(!widget.Grid){ widget.TimeToShow = DateFormat('hh:mm a').format(DateFormat('hh:mm:ss','en').parse(widget.Time));}
     return Container(
@@ -73,22 +67,23 @@ class _CardVuState extends State<CardVu> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       // height: widget.Grid == true ? 150 : null,
       child: InkWell(
-        onTap: () async => {
-          if (widget.Grid)
-            {
+        onTap: () async  {
+          if (widget.Grid){
               if (widget.first)
                 {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddNote(true)))
+                      MaterialPageRoute(builder: (context) => AddNote(true)));
                 }
               else
                 {
                   widget.note = await sqldb.readData(
-                      'select * from notes where notes_id = ${widget.Address_NoteId}'),
+                      'select * from notes where notes_id = ${widget.Address_NoteId}');
                   // print(' hh' +widget.note[16]['content'].toString()),
+                  print(' lol haha pop ${widget.note[0]['content'].runtimeType}');
                   Navigator.push(
                       context,
                       MaterialPageRoute(
+
                           builder: (context) => AddNote(
                                 false,
                                 title: widget.note[0]['title'],
@@ -98,13 +93,13 @@ class _CardVuState extends State<CardVu> {
                                 meetingTopic: widget.Topic,
                                 meetingDate: widget.Date,
                                 meetingPersonOrEntity: widget.PersonOrEntity,
-                              )))
+                              )));
                 }
-            }
-          else
-            {
-          // widget.DateToShow = widget.Date.toString().compareTo(DateTime.now().toString().substring(0, 10)) == 0 ? '${S.of(context).Today}' : widget.Date.toString().compareTo(DateTime.now().add(const Duration(days: 1)).toString().substring(0, 10))== 0 ? '${S.of(context).Tomorrow}' : widget.Date,
-              ShowModal()}
+            }else{
+            print('${widget.MeetingId} ${widget.Topic} ${widget.PersonOrEntity_title} shhheeeeeesh');
+            var id = await sqldb.readData('select * from notes where meeting_id = ${widget.MeetingId} and manager_id = ${accData.getString('managerId')}');
+            ShowModal(id);
+          }
         },
         child: Card(
 
@@ -124,7 +119,7 @@ class _CardVuState extends State<CardVu> {
                             ),
                           ),
                           Text(
-                            '${S.of(context).addNote}',
+                            S.current.addNote,
                             style: TextStyle(
                                 color: Colors.grey[700], fontSize: 20),
                           )
@@ -135,15 +130,15 @@ class _CardVuState extends State<CardVu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 60),
+                            margin: const EdgeInsets.only(top: 60),
                               child :Column(
                                children :[Text(
                             widget.PersonOrEntity_title,
                             style: const TextStyle(color: Colors.white),
                           ),
                           Text(
-                            '${widget.MeetingId == 'null' ? '${S.of(context).noMeetings}' : widget.Topic} ',
-                            style: TextStyle(color: Colors.white54),
+                            '${widget.MeetingId == 'null' ? S.current.noMeetings : widget.Topic} ',
+                            style: const TextStyle(color: Colors.white54),
                           ),])),
                          SizedBox(height: ScreenHeight * 0.06,),
                           Container(
@@ -154,10 +149,10 @@ class _CardVuState extends State<CardVu> {
                               children: [
                                 Text(
                                   widget.Date == 'null' ? '' : widget.Date ,
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 Text(widget.PersonOrEntity == 'null' ? '': widget.PersonOrEntity ,
-                                  style: TextStyle(color: Colors.white),)
+                                  style: const TextStyle(color: Colors.white),)
                               ]
                             ),
                           )
@@ -167,9 +162,9 @@ class _CardVuState extends State<CardVu> {
                     children: [
                       ListTile(
                         title:  Text(
-                          '${S.of(context).personOrEntity}',
+                          S.current.personOrEntity,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFF7E7EBE),
                               fontWeight: FontWeight.bold),
                         ),
@@ -181,9 +176,9 @@ class _CardVuState extends State<CardVu> {
                       ),
                       ListTile(
                         title:  Text(
-                          '${S.of(context).topic}',
+                          S.current.topic,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFF7E7EBE),
                               fontWeight: FontWeight.bold),
                         ),
@@ -195,9 +190,9 @@ class _CardVuState extends State<CardVu> {
                       ),
                       ListTile(
                         title:  Text(
-                          '${ S.of(context).address} ',
+                          '${ S.current.address} ',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xFF7E7EBE),
                               fontWeight: FontWeight.bold),
                         ),
@@ -216,7 +211,7 @@ class _CardVuState extends State<CardVu> {
                             ),
                             Text(
                               isEnglish() ? widget.TimeToShow : widget.DateToShow,
-                              style:  TextStyle(color: Color(0xFF7E7EBE),fontSize: isEnglish()? 15 : 16),
+                              style:  TextStyle(color: const Color(0xFF7E7EBE),fontSize: isEnglish()? 15 : 16),
                             ),
                           ])
                     ],
@@ -225,13 +220,13 @@ class _CardVuState extends State<CardVu> {
     );
   }
 
-  Future<void> ShowModal() async {
+  Future<void> ShowModal(dynamic id) async {
     await showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: true,
       backgroundColor: Colors.transparent,
       context: context,
-      builder: (context) => _showModalBottomSheet(),
+      builder: (context) => _showModalBottomSheet(id),
     );
   }
 
@@ -241,126 +236,158 @@ class _CardVuState extends State<CardVu> {
 
   _scrollListener() {}
 
-  Widget _showModalBottomSheet() => DraggableScrollableSheet(
+  Widget _showModalBottomSheet(dynamic id) => DraggableScrollableSheet(
         expand: false,
         key: UniqueKey(),
         initialChildSize: 0.4,
         maxChildSize: 0.7,
         minChildSize: .3,
-        builder: (context, controller) => Stack(
-          children: [
-            Column(
-              children: [
+        builder: (context, controller)
 
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                    color: const Color(0xFF272A37),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(70),
-                          topRight: Radius.circular(70)),
-                    ),
-                    padding: const EdgeInsets.only(left: 20),
-                    child: ListView(
-                      controller: controller,
-                      children: [
-                        Container(
-                          height: 59,
-
-                          child: const Divider(
-                            thickness: 3,
-                            indent: 150,
-                            endIndent: 150,
+        {
+ return Stack(
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF272A37),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(70),
+                            topRight: Radius.circular(70)),
+                      ),
+                      padding: const EdgeInsets.only(left: 20),
+                      child: ListView(
+                        controller: controller,
+                        children: [
+                          SizedBox(
+                            height: 59,
+                            child: const Divider(
+                              thickness: 3,
+                              indent: 150,
+                              endIndent: 150,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: ScreenHeight * 0.02,),
-                         Text(
-                          '${S.of(context).personOrEntity}',
-                          style:
-                              TextStyle(color: Color(0xFF7E7EBE), fontSize: 19),
-                        ),
-                        Text(
-                          '  ${widget.PersonOrEntity_title}',
-                          style:  TextStyle(
-                              color: Colors.white70, fontSize: 15),
-                        ),
-                         Text(
-                          '${S.of(context).topic}',
-                          style:
-                              TextStyle(color: Color(0xFF7E7EBE), fontSize: 19),
-                        ),
-                        Text(
-                          '  ${widget.Topic_Content}',
-                          style: const TextStyle(
-                              color: Colors.white70, fontSize: 15),
-                        ),
-                         Text(
-                          '${S.of(context).address} ',
-                          style:
-                              TextStyle(color: Color(0xFF7E7EBE), fontSize: 19),
-                        ),
-                        Text(
-                          '  ${widget.Address_NoteId}',
-                          style: const TextStyle(
-                              color: Colors.white70, fontSize: 15),
-                        ),
-                         Text(
-                          '${S.of(context).Time} ',
-                          style:
-                              TextStyle(color: Color(0xFF7E7EBE), fontSize: 19),
-                        ),
-                        Text(
-                          '  ${widget.DateToShow} ${widget.TimeToShow}',
-                          style: const TextStyle(
-                              color: Colors.white70, fontSize: 15),
-                        ),
-                         Text(
-                          '${S.of(context).comments} ',
-                          style:
-                              TextStyle(color: Color(0xFF7E7EBE), fontSize: 19),
-                        ),
-                        Text(
-                          '  ${widget.Comments.isEmpty ? '--------' : widget.Comments }',
-                          style: const TextStyle(
-                              color: Colors.white70, fontSize: 15),
-                        ),
-                        Container(
-                            alignment: AlignmentDirectional.centerStart,
-                            margin: const EdgeInsets.only(top: 10),
-                            width: 10,
-                            child: widget.PdfLink != 'null'
-                                ? ElevatedButton(
-                                    onPressed: () async {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  pdfViewer(widget.PdfLink)));
-                                    },
-                                    child:  Text('${S.of(context).openPdf}',))
-                                : const Text('No Pdf'))
-                      ],
+                          SizedBox(
+                            height: ScreenHeight * 0.02,
+                          ),
+                          Text(
+                            S.current.personOrEntity,
+                            style: const TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: 19),
+                          ),
+                          Text(
+                            '  ${widget.PersonOrEntity_title}',
+                            style:
+                                const TextStyle(color: Colors.white70, fontSize: 15),
+                          ),
+                          Text(
+                            S.current.topic,
+                            style: const TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: 19),
+                          ),
+                          Text(
+                            '  ${widget.Topic_Content}',
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 15),
+                          ),
+                          Text(
+                            '${S.current.address} ',
+                            style: const TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: 19),
+                          ),
+                          Text(
+                            '  ${widget.Address_NoteId}',
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 15),
+                          ),
+                          Text(
+                            '${S.current.Time} ',
+                            style: const TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: 19),
+                          ),
+                          Text(
+                            '  ${widget.DateToShow} ${widget.TimeToShow}',
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 15),
+                          ),
+                          Text(
+                            '${S.current.comments} ',
+                            style: const TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: 19),
+                          ),
+                          Text(
+                            '  ${widget.Comments.isEmpty ? '--------' : widget.Comments}',
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 15),
+                          ),
+                          Container(
+                              alignment: AlignmentDirectional.centerStart,
+                              margin: const EdgeInsets.only(top: 10),
+                              width: 10,
+                              child: widget.PdfLink != 'null'
+                                  ? ElevatedButton(
+                                      onPressed: () async {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    pdfViewer(widget.PdfLink)));
+                                      },
+                                      child: Text(
+                                        S.current.openPdf,
+                                      ))
+                                  : const Text('No Pdf'))
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Align(
-                alignment: AlignmentDirectional.bottomEnd,
-                child: Container(
-                    width: ScreenWidth * 0.25,
-                    margin: EdgeInsets.only(
-                        bottom: ScreenHeight * 0.03 , right: ScreenWidth * 0.04),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AddNote(true,meetingId: widget.MeetingId,meetingDate: widget.Date, meetingTopic: widget.Topic_Content, meetingPersonOrEntity: widget.PersonOrEntity_title,)));
-                      },
-                      child: Row(
-                        children:  [Icon(Icons.add), Text('${S.of(context).addNote}')],
-                      ),
-                    )))
-          ],
-        ),
+                ],
+              ),
+              Align(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  child: Container(
+                      width: id.isEmpty? ScreenWidth * 0.25 : ScreenWidth * 0.3,
+                      margin: EdgeInsets.only(
+                          bottom: ScreenHeight * 0.03,
+                          right: ScreenWidth * 0.04),
+                      child: FloatingActionButton(
+                        onPressed: () async {
+                          if (id.isEmpty) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddNote(
+                                          true,
+                                          meetingId: widget.MeetingId,
+                                          meetingDate: widget.Date,
+                                          meetingTopic: widget.Topic_Content,
+                                          meetingPersonOrEntity:
+                                              widget.PersonOrEntity_title,
+                                        )));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddNote(
+                                          false,
+                                          meetingId: widget.MeetingId,
+                                          content: id[0]['content'],
+                                          title: id[0]['title'],
+                                        )));
+                          }
+                        },
+                        child: Row(
+                          children: id.isNotEmpty ? [const Icon(Icons.sticky_note_2_outlined), Text(S.current.ShowNote)] :
+                          [
+                            const Icon(Icons.add),
+                            Text(S.current.addNote)
+                          ],
+                        ),
+                      )))
+            ],
+          );
+        },
       );
   bool isEnglish() => Intl.getCurrentLocale() == 'en';
 }

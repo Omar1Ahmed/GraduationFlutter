@@ -8,6 +8,8 @@ import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/generated/l10n.dart';
 
 class Search extends StatefulWidget {
+  const Search({super.key});
+
   @override
   State<Search> createState() => _SearchState();
 }
@@ -51,6 +53,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     yearController = FixedExtentScrollController(
       initialItem: 5,
     );
+    searchTxt = txtField.text;
     fromTxtController.text = '--/--/----';
     toTxtController.text = '--/--/----';
     monthController =
@@ -59,7 +62,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         FixedExtentScrollController(initialItem: DateTime.now().day - 1);
     for (int loop = 0; loop < 100; loop++) {
       Years.add(DateTime.now()
-          .subtract(Duration(days: 5 * 365))
+          .subtract(const Duration(days: 5 * 365))
           .add(Duration(days: loop * 365))
           .year);
     }
@@ -70,27 +73,26 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   SqlDb sqldb = SqlDb();
 
   Future searchDb() async {
+    print('lol');
     late var data;
     if (SearchByDatebool) {
       DateFormat d = Intl.withLocale('en', () => DateFormat('yyyy-MM-dd'));
-      print(fromTxtController.text);
-      print(
-          "${d.format(Intl.withLocale('en', () => DateFormat('dd/MMM/yyyy').parse(fromTxtController.value.text)))} lolololol ${Intl.withLocale('en', () => d.format(DateFormat('dd/MMM/yyyy').parse(toTxtController.text)))}");
+
       data = await sqldb.readData(
           'select * from meetings where date >= \'${d.format(Intl.withLocale('en', () => DateFormat('dd/MMM/yyyy').parse(fromTxtController.text)))}\' and date <= \'${d.format(Intl.withLocale('en', () => DateFormat('dd/MMM/yyyy').parse(toTxtController.text)))}\'');
-      print('data12345');
-      print('$data popopo');
+
       SearchByDatebool = false;
       data.length == 0 ? data = 'no' : null;
     } else {
+
       if (selectedItems.isNotEmpty) {
-        if (searchTxt.length == 0) {
-          data = 'no';
+
+        if (searchTxt.isEmpty) {
+          data = 'Filter';
         } else {
-          print(selectedItems);
-          print(              'select * from meetings where ${selectedItems.contains('Topic') || selectedItems.contains('الموضوع') ? ' about like "%' + searchTxt + '%" ${selectedItems.length > 1 ? ' or ' : ''}' : ''} ${selectedItems.contains('Person or Entity') || selectedItems.contains('الشخص أو العنوان') ? ' person like "%$searchTxt%" ${selectedItems.contains('Address') || selectedItems.contains('العنوان') ? ' or ' : ''}' : ''}  ${selectedItems.contains('Address') || selectedItems.contains('العنوان')? ' address like "%' + searchTxt + '%"' : ''}');
+
           data = await sqldb.readData(
-              'select * from meetings where ${selectedItems.contains('Topic') || selectedItems.contains('الموضوع') ? ' about like "%' + searchTxt + '%" ${selectedItems.length > 1 ? ' or ' : ''}' : ''} ${selectedItems.contains('Person or Entity') || selectedItems.contains('الشخص أو الجهة') ? ' person like "%$searchTxt%" ${selectedItems.contains('Address') || selectedItems.contains('العنوان') ? ' or ' : ''}' : ''}  ${selectedItems.contains('Address') || selectedItems.contains('العنوان')? ' address like "%' + searchTxt + '%"' : ''}');
+              'select * from meetings where ${selectedItems.contains('Topic') || selectedItems.contains('الموضوع') ? ' about like "%$searchTxt%" ${selectedItems.length > 1 ? ' or ' : ''}' : ''} ${selectedItems.contains('Person or Entity') || selectedItems.contains('الشخص أو الجهة') ? ' person like "%$searchTxt%" ${selectedItems.contains('Address') || selectedItems.contains('العنوان') ? ' or ' : ''}' : ''}  ${selectedItems.contains('Address') || selectedItems.contains('العنوان')? ' address like "%$searchTxt%"' : ''}');
 
           if (data.length == 0) {
             data = 'no';
@@ -100,16 +102,19 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         data = 'Filter';
       }
     }
-
     return data;
   }
 
   final List<String> items = [
-    '${S.current.topic}',
-    '${S.current.address}',
-    '${S.current.personOrEntity}',
+    (S.current.topic),
+    (S.current.address),
+    (S.current.personOrEntity),
   ];
-  List<String> selectedItems = [];
+  List<String> selectedItems = [
+    (S.current.topic),
+    (S.current.address),
+    (S.current.personOrEntity),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -125,21 +130,21 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   }
 
   SearchByTxt() => Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: EdgeInsets.only(top: ScreenHeight * 0.018),
         child: Column(children: [
           Row(children: [
             IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 color: Color(0xFF7E7EBE),
               ),
             ),
-            Container(
-              width: 300,
-              height: 45,
+            SizedBox(
+              width: ScreenWidth * 0.71,
+              height: ScreenHeight * 0.06,
               child: Focus(
                 onFocusChange: (value) {
                   if (value) {
@@ -156,20 +161,20 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 },
                 child: TextField(
                   controller: txtField,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   onChanged: (value) {
                     setState(() {
                       searchTxt = value;
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: '${S.current.searchHint}',
-                    prefixIcon: Icon(
+                    hintText: S.current.searchHint,
+                    prefixIcon: const Icon(
                       Icons.search,
                       color: Color(0xFF7E7EBE),
                     ),
-                    hintStyle: TextStyle(color: Colors.grey),
-                    fillColor: Color(0xff323644),
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    fillColor: const Color(0xff323644),
                     filled: true,
 
                     contentPadding: EdgeInsets.zero,
@@ -183,7 +188,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
             //   ])
 
             Container(
-              margin: EdgeInsets.only(top: 10, left: 1),
+              margin: EdgeInsets.only(top: ScreenHeight * 0.01),
 
               child: Stack(
                   alignment: Alignment.center,
@@ -191,7 +196,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 Container(
                   margin: EdgeInsets.only(bottom: ScreenWidth * 0.06),
                   child: Text(
-                    '${S.current.searchBy}',
+                    S.current.searchBy,
                     style: TextStyle(color: Colors.grey[300]),
 
                   ),
@@ -201,8 +206,8 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                     isExpanded: false,
 
                     dropdownStyleData: DropdownStyleData(
-                        width: 140,
-                        decoration: BoxDecoration(
+                        width: ScreenWidth * 0.4,
+                        decoration: const BoxDecoration(
                           color: Color(0xff323644),
                         )),
                     items: items.map((item) {
@@ -225,8 +230,8 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                               },
                               child: Container(
                                 height: double.infinity,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: ScreenWidth * 0.02),
                                 child: Row(
                                   children: [
                                     if (isSelected)
@@ -239,7 +244,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                                         Icons.check_box_outline_blank,
                                         color: Color(0xFF7E7EBE),
                                       ),
-                                    const SizedBox(width: 16),
+                                     SizedBox(width: ScreenWidth * 0.02),
                                     Expanded(
                                       child: Text(
                                         item,
@@ -267,13 +272,14 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         },
                       ).toList();
                     },
-                    buttonStyleData: const ButtonStyleData(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      height: 50,
-                      width: 70,
+                    buttonStyleData:  ButtonStyleData(
+
+                      padding: EdgeInsets.symmetric(horizontal: ScreenWidth * 0.045),
+                      height: ScreenHeight * 0.06,
+                      width: ScreenWidth * 0.15,
                     ),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 40,
+                    menuItemStyleData:  MenuItemStyleData(
+                      height: ScreenHeight * 0.05,
                       padding: EdgeInsets.zero,
                     ),
                   ),
@@ -283,12 +289,12 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           ]),
           Flexible(
               child: Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: EdgeInsets.only(top: ScreenHeight * 0.01),
             child: FutureBuilder(
                 future: searchDb(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print(snapshot.data!.toString());
+
                     if (snapshot.data!.toString() != 'Filter') {
                       if (snapshot.data!.toString() != 'no') {
                         return Column(
@@ -325,7 +331,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                       } else {
                         return Center(
                             child: Text(
-                          '${S.current.noResultsTxt}',
+                          S.current.noResultsTxt,
                           style: TextStyle(color: Colors.grey[300]),
                         ));
                       }
@@ -335,17 +341,17 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${S.current.selectFilterTxt}',
+                            S.current.selectFilterTxt,
                             style: TextStyle(color: Colors.grey[300]),
                           ),
                           SizedBox(
-                            height: 5,
+                            height: ScreenHeight * 0.01,
                           ),
                           Text(
-                            '${S.current.swipeTxt}',
+                            S.current.swipeTxt,
                             style: TextStyle(color: Colors.grey[600]),
                           ),
-                          Icon(
+                          const Icon(
                             Icons.swipe_left_outlined,
                             color: Color(0xFF7E7EBE),
                           ),
@@ -353,246 +359,34 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                       ));
                     }
                   }
-                  return CircularProgressIndicator();
+                  // if(searchTxt.isEmpty){
+                  //   return Center(
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text(
+                  //             S.current.selectFilterTxt,
+                  //             style: TextStyle(color: Colors.grey[300]),
+                  //           ),
+                  //           SizedBox(
+                  //             height: ScreenHeight * 0.01,
+                  //           ),
+                  //           Text(
+                  //             S.current.swipeTxt,
+                  //             style: TextStyle(color: Colors.grey[600]),
+                  //           ),
+                  //           const Icon(
+                  //             Icons.swipe_left_outlined,
+                  //             color: Color(0xFF7E7EBE),
+                  //           ),
+                  //         ],
+                  //       ));
+                  // }else {
+                    return const CircularProgressIndicator();
+                  // }
                 }),
           )),
         ]),
-      );
-
-  SearchByDate() => Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              Container(
-                width: 140,
-                child: TextField(
-                  controller: fromTxtController,
-                  focusNode: fromTxtFocus,
-                  readOnly: true,
-                  showCursor: false,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
-                  decoration: InputDecoration(
-                    hintText: '--/--/----',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    label: Text(
-                      '${S.current.fromTxt}',
-                      style: TextStyle(color: Colors.grey[300]),
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Color(0xff1E2126),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: 140,
-                child: TextField(
-                  focusNode: toTxtFocus,
-                  controller: toTxtController,
-                  readOnly: true,
-                  showCursor: false,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
-                  decoration: InputDecoration(
-                    hintText: '--/--/----',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    label: Text(
-                      '${S.current.toTxt}',
-                      style: TextStyle(color: Colors.grey[300]),
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    filled: true,
-                    fillColor: Color(0xff1E2126),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            Center(
-              child: Material(
-                elevation: 10,
-                borderRadius: BorderRadius.circular(70),
-                child: Container(
-                  width: 260,
-                  height: 210,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(70),
-                    color: Color(0xff1E2126),
-                  ),
-                  child: Stack(alignment: Alignment.center, children: [
-                    DatePickerSpinner(),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(children: [
-                              SizedBox(
-                                width: 28,
-                              ),
-                              Container(
-                                width: 30,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 3.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 45,
-                              ),
-                              Container(
-                                width: 50,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 3.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 35,
-                              ),
-                              Container(
-                                width: 55,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 3.0),
-                                  ),
-                                ),
-                              ),
-                            ]),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Row(children: [
-                              // Expanded  (child: Divider(thickness: 1,color: Colors.green,indent: 50,endIndent: 50,)),
-                              // Expanded(child: Divider(thickness: 1,color: Colors.green,indent: 50,endIndent: 50,)),
-                              // Expanded(child: Divider(thickness: 1,color: Colors.green,indent: 50,endIndent: 50,)),
-
-                              SizedBox(
-                                width: 28,
-                              ),
-                              Container(
-                                width: 30,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 3.0),
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(
-                                width: 45,
-                              ),
-
-                              Container(
-                                width: 50,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 3.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 35,
-                              ),
-                              Container(
-                                width: 55,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey, width: 3.0),
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ]),
-                    )
-                  ]),
-                ),
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.only(left: 220, bottom: 50),
-                child: ElevatedButton(
-                    onPressed: () {
-                      FToast f = FToast();
-                      f.init(context);
-
-                      if (toTxtController.text == '--/--/----' &&
-                          fromTxtController.text == '--/--/----') {
-                        f.showToast(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.black45,
-                              borderRadius: BorderRadius.circular(70)),
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            '${S.current.selectDatesTxt}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ));
-                      } else if (toTxtController.text == '--/--/----') {
-                        f.showToast(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.black45,
-                              borderRadius: BorderRadius.circular(70)),
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            '${S.current.selectToDateTxt}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ));
-                      } else if (fromTxtController.text == '--/--/----') {
-                        f.showToast(
-                            child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.black45,
-                              borderRadius: BorderRadius.circular(70)),
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            '${S.current.selectFromDateTxt}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ));
-                      } else {
-                        SearchByDatebool = true;
-                        setState(() {});
-                        Tc.animateTo(0);
-                      }
-                    },
-                    child: Text('${S.current.searchBtn}')))
-          ],
-        ),
       );
 
   Widget DatePickerSpinner() => Row(
@@ -606,7 +400,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
               diameterRatio: 1.2,
               perspective: 0.006,
               itemExtent: 50,
-              physics: FixedExtentScrollPhysics(),
+              physics: const FixedExtentScrollPhysics(),
               onSelectedItemChanged: (value) => setState(() {
                 if (toTxtFocus.hasFocus) {
                   toTxtController.text =
@@ -614,9 +408,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 } else if (fromTxtFocus.hasFocus) {
                   fromTxtController.text =
                       '${dayController.selectedItem < 9 ? '0' : ''}${dayController.selectedItem + 1}/${Months[monthController.selectedItem]}/${Years[yearController.selectedItem]}';
-                  print('From');
-                } else {
-                  print('search');
+
                 }
               }),
               childDelegate: ListWheelChildBuilderDelegate(
@@ -628,7 +420,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 builder: (context, index) {
                   return Text(
                     '${index < 9 ? '0' : ''}${index + 1}',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
                   );
                 },
               ),
@@ -643,7 +435,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
               diameterRatio: 1.2,
               perspective: 0.006,
               itemExtent: 50,
-              physics: FixedExtentScrollPhysics(),
+              physics: const FixedExtentScrollPhysics(),
               onSelectedItemChanged: (value) => setState(() {
                 if (toTxtFocus.hasFocus) {
                   toTxtController.text =
@@ -651,17 +443,15 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 } else if (fromTxtFocus.hasFocus) {
                   fromTxtController.text =
                       '${dayController.selectedItem < 9 ? '0' : ''}${dayController.selectedItem + 1}/${Months[monthController.selectedItem]}/${Years[yearController.selectedItem]}';
-                  print('From');
-                } else {
-                  print('search');
+
                 }
               }),
               childDelegate: ListWheelChildBuilderDelegate(
                 childCount: 12,
                 builder: (context, index) {
                   return Text(
-                    '${Months[index]}',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    Months[index],
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
                   );
                 },
               ),
@@ -676,7 +466,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
               diameterRatio: 1.2,
               perspective: 0.006,
               itemExtent: 50,
-              physics: FixedExtentScrollPhysics(),
+              physics: const FixedExtentScrollPhysics(),
               onSelectedItemChanged: (value) => setState(() {
                 if (toTxtFocus.hasFocus) {
                   toTxtController.text =
@@ -684,9 +474,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 } else if (fromTxtFocus.hasFocus) {
                   fromTxtController.text =
                       '${dayController.selectedItem < 9 ? '0' : ''}${dayController.selectedItem + 1}/${Months[monthController.selectedItem]}/${Years[yearController.selectedItem]}';
-                  print('From');
-                } else {
-                  print('search');
+
                 }
               }),
               childDelegate: ListWheelChildBuilderDelegate(
@@ -694,13 +482,254 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 builder: (context, index) {
                   return Text(
                     '${Years[index]}',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
                   );
                 },
               ),
             ),
           ),
         ],
+      );
+
+  SearchByDate() => Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              SizedBox(
+                width: ScreenWidth * 0.3,
+                child: TextField(
+                  controller: fromTxtController,
+                  focusNode: fromTxtFocus,
+                  readOnly: true,
+                  showCursor: false,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                    hintText: '--/--/----',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    label: Text(
+                      S.current.fromTxt,
+                      style: TextStyle(color: Colors.grey[300]),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: const Color(0xff1E2126),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide: BorderSide(color: Colors.white, width: ScreenWidth * 0.001),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide: BorderSide(color: Colors.white, width: ScreenWidth * 0.002),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: ScreenWidth * 0.3,
+                child: TextField(
+                  focusNode: toTxtFocus,
+                  controller: toTxtController,
+                  readOnly: true,
+                  showCursor: false,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                    hintText: '--/--/----',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    label: Text(
+                      S.current.toTxt,
+                      style: TextStyle(color: Colors.grey[300]),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                    fillColor: const Color(0xff1E2126),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide: BorderSide(color: Colors.white, width: ScreenWidth * 0.001),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide: BorderSide(color: Colors.white, width: ScreenWidth * 0.002),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+            Center(
+              child: Material(
+                elevation: ScreenWidth * 0.09,
+                borderRadius: BorderRadius.circular(70),
+                child: Container(
+                  width: ScreenWidth * 0.62,
+                  height: ScreenHeight * 0.27,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(70),
+                    color: const Color(0xff1E2126),
+                  ),
+                  child: Stack(alignment: Alignment.center, children: [
+                    DatePickerSpinner(),
+                    Container(
+                      margin: EdgeInsets.only(bottom: ScreenHeight * 0.031),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(children: [
+                              SizedBox(
+                                width: ScreenWidth * 0.0715,
+                              ),
+                              Container(
+                                width: ScreenHeight * 0.033,
+                                height: ScreenHeight * 0.01,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: ScreenWidth * 0.0025),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: ScreenWidth * 0.118,
+                              ),
+                              Container(
+                                width: ScreenHeight * 0.046,
+                                height: ScreenHeight * 0.01,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: ScreenWidth * 0.0025),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: ScreenWidth * 0.0895,
+                              ),
+                              Container(
+                                width: ScreenHeight * 0.062,
+                                height: ScreenHeight * 0.01,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: ScreenWidth * 0.0025),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                            SizedBox(
+                              height: ScreenHeight * 0.024,
+                            ),
+                            Row(children: [
+                              // Expanded  (child: Divider(thickness: 1,color: Colors.green,indent: 50,endIndent: 50,)),
+                              // Expanded(child: Divider(thickness: 1,color: Colors.green,indent: 50,endIndent: 50,)),
+                              // Expanded(child: Divider(thickness: 1,color: Colors.green,indent: 50,endIndent: 50,)),
+
+                              SizedBox(
+                                width: ScreenWidth * 0.0715,
+                              ),
+                              Container(
+                                width: ScreenHeight * 0.033,
+                                height: ScreenHeight * 0.01,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: ScreenWidth * 0.0025),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: ScreenWidth * 0.118,
+                              ),
+                              Container(
+                                width: ScreenHeight * 0.046,
+                                height: ScreenHeight * 0.01,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: ScreenWidth * 0.0025),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: ScreenWidth * 0.0895,
+                              ),
+                              Container(
+                                width: ScreenHeight * 0.062,
+                                height: ScreenHeight * 0.01,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: ScreenWidth * 0.0025),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ]),
+                    )
+                  ]),
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: ScreenHeight * 0.25, bottom: ScreenWidth * 0.12),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: ScreenWidth * 0.07,
+                  ),
+                    onPressed: () {
+                      FToast f = FToast();
+                      f.init(context);
+
+                      if (toTxtController.text == '--/--/----' &&
+                          fromTxtController.text == '--/--/----') {
+                        f.showToast(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(70)),
+
+                              padding: EdgeInsets.all(ScreenWidth * 0.02),
+
+                              child: Text(
+                            S.current.selectDatesTxt,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ));
+                      } else if (toTxtController.text == '--/--/----') {
+                        f.showToast(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(70)),
+
+                              padding: EdgeInsets.all(ScreenWidth * 0.02),
+                          child: Text(
+                            S.current.selectToDateTxt,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ));
+                      } else if (fromTxtController.text == '--/--/----') {
+                        f.showToast(
+                            child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(70)),
+
+                              padding: EdgeInsets.all(ScreenWidth * 0.02),
+                              child: Text(
+                            S.current.selectFromDateTxt,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ));
+                      } else {
+                        SearchByDatebool = true;
+                        setState(() {});
+                        Tc.animateTo(0);
+                      }
+                    },
+                    child: Text(S.current.searchBtn)))
+          ],
+        ),
       );
 
 

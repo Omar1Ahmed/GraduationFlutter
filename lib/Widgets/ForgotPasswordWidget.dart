@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:learning/main.dart';
@@ -40,6 +42,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   void initState() {
     super.initState();
   // S.load(const Locale('ar'));
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+
+    ]);
+
   }
   @override
   Widget build(BuildContext context) {
@@ -80,8 +88,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   child: Column(children: [
                 SvgPicture.asset(
                   newPass ? 'images/password.svg' : 'images/mail.svg',
-                  height: 300,
-                  width: 300,
+                  height: ScreenHeight * 0.35,
                   fit: BoxFit.contain,
                 ),
                 ConfirmedMail
@@ -89,9 +96,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ? Container(
                             child: Column(children: [
                               Container(
-                                width: 350,
+                                width: ScreenWidth * 0.85,
                                 margin:
-                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                     EdgeInsets.only(top: ScreenHeight * 0.02, bottom: ScreenHeight * 0.02),
                                 child: Form(
                                   key: ValidatePass,
                                   child: Material(
@@ -113,26 +120,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                             borderSide: BorderSide(
                                                 color: Colors.red, width: 1)),
                                         constraints: BoxConstraints(
-                                            minHeight: 50, maxHeight: 70),
+                                            minHeight: ScreenHeight * 0.07, maxHeight: ScreenHeight * 0.080),
                                         contentPadding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 15),
+                                            vertical: ScreenHeight * 0.001, horizontal: ScreenWidth * 0.02),
                                         prefixIcon: SvgPicture.asset(
                                           "images/password.svg",
                                           semanticsLabel: 'PassIcon',
-                                          height: 1,
-                                          width: 1,
+                                          height: ScreenHeight * 0.05,
                                           fit: BoxFit.scaleDown,
                                           // ),
                                         ),
                                         suffixIcon: IconButton(
-                                          padding: EdgeInsets.only(right: 10),
+                                          padding: EdgeInsets.only(right: ScreenHeight * 0.01),
                                           icon: SvgPicture.asset(
                                             passwordVisible
                                                 ? "images/showPassIcon.svg"
                                                 : "images/hidePassIcon.svg",
                                             semanticsLabel: 'PassIcon',
-                                            height: 25,
-                                            width: 25,
+                                            height: ScreenHeight * 0.05,
+
                                             fit: BoxFit.scaleDown,
                                           ),
                                           onPressed: () {
@@ -179,9 +185,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 ),
                               ),
                               Container(
-                                width: 350,
+                                width: ScreenWidth * 0.85,
                                 margin:
-                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                EdgeInsets.only(top: ScreenHeight * 0.02, bottom: ScreenHeight * 0.02),
                                 child: Form(
                                   key: ValidatePass2,
                                   child: Material(
@@ -203,26 +209,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                             borderSide: BorderSide(
                                                 color: Colors.red, width: 1)),
                                         constraints: BoxConstraints(
-                                            minHeight: 50, maxHeight: 70),
+                                            minHeight: ScreenHeight * 0.07, maxHeight: ScreenHeight * 0.080),
                                         contentPadding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 15),
+                                            vertical: ScreenHeight * 0.001, horizontal: ScreenWidth * 0.02),
                                         prefixIcon: SvgPicture.asset(
                                           "images/password.svg",
                                           semanticsLabel: 'PassIcon',
-                                          height: 1,
-                                          width: 1,
+                                          height: ScreenHeight * 0.05,
                                           fit: BoxFit.scaleDown,
                                           // ),
                                         ),
                                         suffixIcon: IconButton(
-                                          padding: EdgeInsets.only(right: 10),
+                                          padding: EdgeInsets.only(right: ScreenHeight * 0.01),
                                           icon: SvgPicture.asset(
                                             passwordVisible2
                                                 ? "images/showPassIcon.svg"
                                                 : "images/hidePassIcon.svg",
                                             semanticsLabel: 'PassIcon',
-                                            height: 25,
-                                            width: 25,
+                                            height: ScreenHeight * 0.05,
                                             fit: BoxFit.scaleDown,
                                           ),
                                           onPressed: () {
@@ -450,14 +454,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         },
         jsonEncode({"E_mail": txtMail.text, "role": "Manager"}));
 
+    print(Response);
     if (api.getValue(Response, 'success')[0] == 'true') {
       setState(() {
         ConfirmedMail = true;
         ErrMsg = '';
       });
-    } else if (api.getValue(Response, 'message')[0].contains('E_mail')) {
+    } else if (api.getValue(Response, 'message')[0].contains('E_mail') || api.getValue(Response, 'message')[0].contains('Incorrect')) {
+      setState(() {
+
       invalidMail = true;
       ValidatMail.currentState!.validate();
+      });
     }
   }
 

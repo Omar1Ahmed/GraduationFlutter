@@ -58,14 +58,14 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
     Grad.lol = TabController(length: 4, vsync: this,);
     // connectToSocket();
 
-    languageSharedPrefInitialize();
-    nearsetSharedPref();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-
-    ]);
+    // languageSharedPrefInitialize();
+    // nearsetSharedPref();
+    //
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    //
+    // ]);
 
   }
 

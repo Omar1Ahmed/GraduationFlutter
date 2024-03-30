@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:learning/Widgets/ForgotPasswordWidget.dart';
+import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +65,7 @@ class _LoginState extends State<Login> {
     languageSharedPrefInitialize();
     nearsetSharedPref();
 
+    // WidgetsFlutterBinding.ensureInitialized();
     // SystemChrome.setPreferredOrientations([
     //   DeviceOrientation.portraitUp,
     //   DeviceOrientation.portraitDown,
@@ -110,7 +112,7 @@ class _LoginState extends State<Login> {
       child: SingleChildScrollView(
         child: Center(
             child: Column(
-
+             crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: ScreenHeight * 0.056,
@@ -119,9 +121,9 @@ class _LoginState extends State<Login> {
                     height: ScreenHeight * 0.12,
                     child: SvgPicture.asset('images/Logo.svg'),
                   ),
-                  const Text(
+                  Text(
                     "Meetings",
-                    style: TextStyle(fontSize: 36, color: Colors.white),
+                    style: TextStyle(fontSize: ScreenWidth * 0.07, color: Colors.white),
                   ),
                   Divider(
                     indent: ScreenWidth * 0.24,
@@ -134,8 +136,8 @@ class _LoginState extends State<Login> {
                     child: Form(
                       key: ValidateEmail,
                       child: Material(
-                        elevation: 10,
-                        borderRadius: BorderRadius.circular(100),
+                        elevation: ScreenWidth * 0.03,
+                        borderRadius: BorderRadius.circular(ScreenWidth * 0.06),
                         color: Colors.transparent,
                         child: TextFormField(
                           controller: txtMail,
@@ -155,13 +157,13 @@ class _LoginState extends State<Login> {
                               ValidateEmail.currentState!.validate(),
                           decoration: InputDecoration(
                             errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(ScreenWidth * 0.06),
                                 borderSide: BorderSide(
-                                    color: Colors.red, width: 1)),
+                                    color: Colors.red, width: ScreenWidth * 0.0025)),
                             constraints: BoxConstraints(
-                                minHeight: 50, maxHeight: 70),
+                                minHeight: ScreenWidth * 0.11, maxHeight: ScreenWidth * 0.18),
                             contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: ScreenHeight * 0.01, horizontal: ScreenWidth * 0.04),
                             // Adjust the padding as needed
                             prefixIcon: SvgPicture.asset(
                               'images/user.svg',
@@ -176,7 +178,7 @@ class _LoginState extends State<Login> {
                             hintStyle: const TextStyle(color: Colors.grey),
                             hintMaxLines: 1,
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(ScreenWidth * 0.09),
                                 borderSide: BorderSide.none),
                             fillColor: const Color(0xff323644),
                             filled: true,
@@ -195,8 +197,8 @@ class _LoginState extends State<Login> {
                     child: Form(
                       key: ValidatePass,
                       child: Material(
-                        elevation: 10,
-                        borderRadius: BorderRadius.circular(100),
+                        elevation: ScreenWidth * 0.03,
+                        borderRadius: BorderRadius.circular(ScreenWidth * 0.06),
                         color: Colors.transparent,
                         child: TextFormField(
                           controller: PassTxt,
@@ -206,13 +208,13 @@ class _LoginState extends State<Login> {
                               ValidatePass.currentState!.validate(),
                           decoration: InputDecoration(
                             errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(ScreenWidth * 0.06),
                                 borderSide: BorderSide(
-                                    color: Colors.red, width: 1)),
+                                    color: Colors.red, width: ScreenWidth * 0.0025)),
                             constraints: BoxConstraints(
-                                minHeight: 50, maxHeight: 70),
+                                minHeight: ScreenWidth * 0.11, maxHeight: ScreenWidth * 0.18),
                             contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: ScreenHeight * 0.01, horizontal: ScreenWidth * 0.04),
                             prefixIcon: SvgPicture.asset(
                               "images/password.svg",
                               semanticsLabel: 'PassIcon',
@@ -244,10 +246,10 @@ class _LoginState extends State<Login> {
                             hintStyle: const TextStyle(color: Colors.grey),
                             hintMaxLines: 1,
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(ScreenWidth * 0.09),
                                 borderSide: BorderSide.none),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(ScreenWidth * 0.09),
                                 borderSide: BorderSide.none),
                             fillColor: const Color(0xff323644),
                             filled: true,
@@ -269,7 +271,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: ScreenHeight * 0.25),
+                    margin: EdgeInsets.only(left: ScreenHeight * 0.25,),
                     child: InkWell(
                       splashFactory: NoSplash.splashFactory,
                       onTap: () {
@@ -280,6 +282,7 @@ class _LoginState extends State<Login> {
                       child: Text('${S.of(context).ForgotPassword}',
                           style: TextStyle(
                             color: Color(0xff7E7EBE),
+                            fontSize: ScreenWidth * 0.034,
                           )),
                     ),
                   ),
@@ -290,6 +293,7 @@ class _LoginState extends State<Login> {
                       children: [
                         Checkbox(
                           value: checkedValue,
+
                           onChanged: (newValue) {
                             setState(() {
                               checkedValue = newValue!;
@@ -306,7 +310,7 @@ class _LoginState extends State<Login> {
                           },
                           child: Text(
                             '${S.of(context).RememberMe}',
-                            style: TextStyle(color: Color(0xff7E7EBE)),
+                            style: TextStyle(color: Color(0xff7E7EBE),fontSize: ScreenWidth * 0.032),
                           ),
                         ),
                       ],
@@ -318,11 +322,13 @@ class _LoginState extends State<Login> {
                     margin:  EdgeInsets.only(top: ScreenHeight * 0.034),
                     child: ElevatedButton(
                       style: ButtonStyle(
+                        alignment: Alignment.center,
                         backgroundColor:
                         MaterialStateProperty.all(const Color(0xff7E7EBE)),
                         elevation: MaterialStateProperty.all(6),
                       ),
                       onPressed: () async {
+                        print(MediaQuery.of(context).orientation);
                         if (await api.hasNetwork()) {
                           setState(() {
                             pressed = true;
@@ -418,7 +424,7 @@ class _LoginState extends State<Login> {
                       )
                           : Text(
                         '${S.of(context).Login}',
-                        style: TextStyle(color: Colors.white, fontSize: S.current == 'en' ?20 : 15),
+                        style: TextStyle(color: Colors.white, fontSize: S.current == 'en' ? ScreenWidth * 0.04 : ScreenWidth * 0.033),
                       ),
                     ),
                   )

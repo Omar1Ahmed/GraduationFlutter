@@ -24,7 +24,7 @@ class _pdfViewer extends State<pdfViewer> {
 
   void loadDocument() async {
     document = await PDFDocument.fromURL(widget.pdfLink);
-    print('done');
+
     setState(() => _isLoading = false);
   }
 
@@ -54,8 +54,13 @@ class _pdfViewer extends State<pdfViewer> {
   Widget build(BuildContext context) {
 
     return SafeArea(
-      child: Scaffold(
-        body: _isLoading ? Center(child: CircularProgressIndicator()) : PDFViewer(document: document,tooltip: PDFViewerTooltip(first: 'lol'),enableSwipeNavigation: true),
+      child: PopScope(
+        onPopInvoked: (back) {
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          body: _isLoading ? Center(child: CircularProgressIndicator()) : PDFViewer(document: document,tooltip: PDFViewerTooltip(first: 'lol'),enableSwipeNavigation: true),
+        ),
       ),
     );
   }

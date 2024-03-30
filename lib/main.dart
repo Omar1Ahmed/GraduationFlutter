@@ -8,13 +8,10 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 void main (){
 
-  // runApp(DevicePreview(
-  //     enabled: false  ,
-  //     devices: [
-  //       buildGenericPhoneDevice(platform: TargetPlatform.iOS, id: 'ioslol', name: 'ioslol', screenSize: Size(1170 ,2532))
-  //     ],
-  //     builder: (context) =>MainApp()));
-  runApp(MainApp());
+  runApp(DevicePreview(
+      enabled: false ,
+      builder: (context) =>MainApp()));
+  // runApp(MainApp());
 }
 
 class MainApp extends StatefulWidget{
@@ -27,6 +24,9 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsFlutterBinding.ensureInitialized();
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -38,7 +38,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp (
-      // builder: DevicePreview.appBuilder,
+      builder: DevicePreview.appBuilder,
         locale: const Locale('en'),
 
         localizationsDelegates: const [

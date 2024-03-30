@@ -49,7 +49,7 @@ class _NotesState extends State<Notes> {
                 Text(
                   S.of(context).notes,
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: ScreenWidth * 0.06,
                       color: Color(0xFF785FC0),),
                 ),
                 isEnglish()? Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.04,endIndent: ScreenWidth * 0.04) : Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.01,endIndent: ScreenWidth * 0.01),

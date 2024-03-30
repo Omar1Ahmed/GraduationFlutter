@@ -21,49 +21,50 @@ class NearestMeetings extends StatelessWidget{
   api = ApiTest(context);
   print(currentDayDate);
   // print(NearestMeetingDayDate);
-    return SingleChildScrollView(
-      child: SafeArea(
+    return  SafeArea(
         child: Column(
-
+        mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(margin:  isEnglish() ?EdgeInsets.only(top: ScreenHeight * 0.02,bottom: ScreenHeight * 0.02 ,right: ScreenWidth * 0.37) :EdgeInsets.only(top: ScreenHeight * 0.02,bottom: ScreenHeight * 0.02 ,left: ScreenWidth * 0.52),
               child: Column(
 
                 children: [
                   Text(S.current.NearestMeetings, style: TextStyle(
-                        color: Color(0xFF785FC0),fontSize: 26,fontWeight: FontWeight.bold)),
+                        color: Color(0xFF785FC0),fontSize: ScreenWidth * 0.06,fontWeight: FontWeight.bold)),
                  isEnglish()? Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.05,endIndent: ScreenWidth * 0.06) : Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.06,endIndent: ScreenWidth * 0.05,),
                 ],
               )),
 
-            Container(
-
-              height: ScreenHeight * 0.76,
-              margin: EdgeInsets.only(left: ScreenWidth * 0.04,right: ScreenWidth * 0.04),
-              child: FutureBuilder(future: readData1(), builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return   CardVu(
-                          PersonOrEntity_title: snapshot.data![index]['person'],
-                          Topic_Content: snapshot.data![index]['about'].toString(),
-                          Address_NoteId: snapshot.data![index]['address'],
-                          Date: snapshot.data![index]['date'],
-                          Time: snapshot.data![index]['time']);
-                    },
-                  );
-                }if(ConnectionState.done == snapshot.connectionState && !snapshot.hasData){
-                  return Center(child: Text(S.of(context).noDataFound));
-                }else {
-                  return CircularProgressIndicator();
-                }
-              }),)
+            Flexible(
+              child: Container(
+              alignment: Alignment.center,
+                margin: EdgeInsets.only(left: ScreenWidth * 0.04,right: ScreenWidth * 0.04,top: ScreenHeight * 0.02),
+                child: FutureBuilder(future: readData1(), builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return   CardVu(
+                            MeetingId: snapshot.data![index]['meeting_id'].toString(),
+                            PersonOrEntity_title: snapshot.data![index]['person'],
+                            Topic_Content: snapshot.data![index]['about'].toString(),
+                            Address_NoteId: snapshot.data![index]['address'],
+                            PdfLink: snapshot.data![index]['attachmentLink'].toString(),
+                            Date: snapshot.data![index]['date'],
+                            Time: snapshot.data![index]['time']);
+                      },
+                    );
+                  }if(ConnectionState.done == snapshot.connectionState && !snapshot.hasData){
+                    return Center(child: Text(S.of(context).noDataFound));
+                  }else {
+                    return CircularProgressIndicator();
+                  }
+                }),),
+            )
           ],
         ),
-      ),
-    );
+      );
   }
 
   Future<List<Map>> readData1() async {
@@ -84,6 +85,7 @@ class NearestMeetings extends StatelessWidget{
       // print(request);
       cardData = await sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ');
     }
+    print('Notes $cardData');
 
 
     return cardData;

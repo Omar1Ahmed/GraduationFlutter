@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:learning/main.dart';
@@ -35,7 +36,7 @@ class _SettingsState extends State<Settings> {
       // ScreenWidth = MediaQuery.of(context).size.width;
       // ScreenHeight = MediaQuery.of(context).size.height;
     }
-
+print('$ScreenWidth $ScreenHeight');
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Color(0xFF272A37),
@@ -62,7 +63,7 @@ class _SettingsState extends State<Settings> {
                   //   color: Color(0xFF272A37),
                   // ),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(ScreenWidth * 0.04),
                     onTap: (){
                         print(Language.getString('language'));
                         if(Language.getString('language') == 'en'){
@@ -79,10 +80,10 @@ class _SettingsState extends State<Settings> {
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(ScreenWidth * 0.05),
                         boxShadow:  [
                           BoxShadow(
-                              color: Colors.grey[900]!, spreadRadius: 4, blurRadius: 10
+                              color: Colors.grey[900]!, spreadRadius: ScreenWidth * 0.009, blurRadius: ScreenWidth * 0.019
                           )
                         ],
                         color: Color(0xFF272A37),
@@ -94,13 +95,13 @@ class _SettingsState extends State<Settings> {
                         children: [
                           Container(
                               margin: EdgeInsets.only(right: ScreenWidth * 0.045,bottom: ScreenHeight * 0.019),
-                              child: Text('En',style: TextStyle(color: isEnglish()? Colors.white : Colors.grey[600],fontWeight: FontWeight.bold),)),
+                              child: Text('En',style: TextStyle(fontSize: ScreenWidth * 0.033,color: isEnglish()? Colors.white : Colors.grey[600],fontWeight: FontWeight.bold),)),
                           Container(
                               margin: EdgeInsets.only(left: ScreenWidth * 0.035,top: ScreenHeight * 0.0041),
-                              child: Text('/',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
+                              child: Text('/',style: TextStyle(fontSize: ScreenWidth * 0.050 ,color: Colors.white,fontWeight: FontWeight.bold),)),
                           Container(
                               margin: EdgeInsets.only(left: ScreenWidth * 0.055,top: ScreenHeight * 0.0135),
-                              child: Text('ع',style: TextStyle(color: isEnglish() ? Colors.grey : Colors.white,fontWeight: FontWeight.bold),)),
+                              child: Text('ع',style: TextStyle(fontSize: ScreenWidth * 0.033,color: isEnglish() ? Colors.grey : Colors.white,fontWeight: FontWeight.bold),)),
                         ]
                       ),
                     ),
@@ -117,16 +118,17 @@ class _SettingsState extends State<Settings> {
                       height: ScreenHeight * 0.08, // 70
                       margin:  EdgeInsets.only(top: ScreenHeight * 0.056),
                       alignment: Alignment.center,
+
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(ScreenWidth * 0.13),
                           color: Colors.green[500],
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                                color: Colors.green, spreadRadius: 20, blurRadius: 100)
+                                color: Colors.green, spreadRadius: ScreenWidth * 0.023, blurRadius: ScreenWidth * 0.5)
                           ]),
                       child:  Text(
                   accData.getString('userName')!.toUpperCase().substring(0, 1),
-                        style: TextStyle(fontSize: 50, fontWeight: FontWeight.w400),
+                        style: TextStyle(fontSize: ScreenWidth * 0.08, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -135,7 +137,7 @@ class _SettingsState extends State<Settings> {
                     EdgeInsets.only(top: ScreenHeight * 0.090, left: ScreenWidth * 0.85),
                     child:  Text(
                       '${ S.of(context).yourName}',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color: Colors.white, fontSize: ScreenWidth * 0.033),
                     ),
                   ),
                   Center(
@@ -143,7 +145,7 @@ class _SettingsState extends State<Settings> {
                       width: ScreenWidth * 0.83,
                       height: ScreenHeight * 0.045,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(ScreenWidth * 0.038),
                           color: const Color(0xff1E2126),
                           border: Border.all(color: Colors.grey)),
                       margin:  EdgeInsets.only(top: ScreenHeight * 0.017),
@@ -152,7 +154,7 @@ class _SettingsState extends State<Settings> {
                       child: Text(
                         accData.getString('firstName')![0].toUpperCase() +
                             accData.getString('firstName')!.substring(1).toLowerCase(),
-                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                        style: TextStyle(color: Colors.grey, fontSize: ScreenWidth * 0.035),
                       ),
                     ),
                   ),
@@ -161,7 +163,7 @@ class _SettingsState extends State<Settings> {
                       width: ScreenWidth * 0.83,
                       height: ScreenHeight * 0.045,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(ScreenWidth * 0.038),
                           color: const Color(0xff1E2126),
                           border: Border.all(color: Colors.grey)),
                       margin: EdgeInsets.only(top: ScreenHeight * 0.045),
@@ -170,7 +172,8 @@ class _SettingsState extends State<Settings> {
                       child: Text(
                           accData.getString('lastName')![0].toUpperCase() +
                               accData.getString('lastName')!.substring(1).toLowerCase(),
-                          style: TextStyle(color: Colors.grey, fontSize: 15)),
+                        style: TextStyle(color: Colors.grey, fontSize: ScreenWidth * 0.035),
+                      ),
                     ),
                   ),
 
@@ -180,7 +183,7 @@ class _SettingsState extends State<Settings> {
 
                     child:  Text(
                       '${ S.of(context).personalInfo}',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color: Colors.white, fontSize: ScreenWidth * 0.035),
                     ),
                   ),
                   Container(
@@ -188,7 +191,7 @@ class _SettingsState extends State<Settings> {
                       margin: EdgeInsets.only(top:  ScreenHeight * 0.0111, left: ScreenWidth * 0.071),
                       height: ScreenHeight * 0.17,
                       child: Card(
-                        elevation: 15,
+                        elevation: ScreenWidth * 0.035,
                         color: const Color(0xff1E2126),
                         child: Row(
 
@@ -204,13 +207,13 @@ class _SettingsState extends State<Settings> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('${ S.of(context).userName}',
-                                    style: TextStyle(color: Color(0xff727272))),
+                                    style: TextStyle(color: Color(0xff727272),fontSize: ScreenWidth * 0.033)),
                                 SizedBox(height: ScreenHeight * 0.020),
                                 Text('${S.of(context).email}',
-                                    style: TextStyle(color: Color(0xff727272))),
+                                    style: TextStyle(color: Color(0xff727272),fontSize: ScreenWidth * 0.033)),
                                 SizedBox(height: ScreenHeight * 0.020),
                                 Text('${S.of(context).password}',
-                                    style: TextStyle(color: Color(0xff727272))),
+                                    style: TextStyle(color: Color(0xff727272),fontSize: ScreenWidth * 0.033)),
                               ],
                             ),
                           ),
@@ -222,7 +225,7 @@ class _SettingsState extends State<Settings> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(accData.getString('userName')!,
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(color: Colors.white,fontSize: ScreenWidth * 0.033)),
                                 SizedBox(height: ScreenHeight * 0.020),
                                 SizedBox(
                                     width: ScreenWidth * 0.58,
@@ -232,12 +235,13 @@ class _SettingsState extends State<Settings> {
                                           accData.getString('email')!,
                                           style: TextStyle(
                                             color: Colors.white,
+                                              fontSize: ScreenWidth * 0.033
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ))),
                                 SizedBox(height: ScreenHeight * 0.020),
-                                Text('12345678', style: TextStyle(color: Colors.white, )),
+                                Text('********', style: TextStyle(color: Colors.white, fontSize: ScreenWidth * 0.033)),
                               ],
                             ),
                           )
@@ -250,7 +254,7 @@ class _SettingsState extends State<Settings> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(accData.getString('userName')!,
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(color: Colors.white,fontSize: ScreenWidth * 0.033)),
                                 SizedBox(height: ScreenHeight * 0.020),
                                 Container(
                                     alignment: Alignment.centerRight,
@@ -263,12 +267,13 @@ class _SettingsState extends State<Settings> {
                                           accData.getString('email')!,
                                           style: TextStyle(
                                             color: Colors.white,
+                                              fontSize: ScreenWidth * 0.033
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ))),
                                 SizedBox(height: ScreenHeight * 0.020),
-                                Text('12345678', style: TextStyle(color: Colors.white, )),
+                                Text('*******', style: TextStyle(color: Colors.white, fontSize: ScreenWidth * 0.033)),
                               ],
                             ),
                           ),
@@ -282,13 +287,13 @@ class _SettingsState extends State<Settings> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('${ S.of(context).userName}',
-                                    style: TextStyle(color: Color(0xff727272))),
+                                    style: TextStyle(color: Color(0xff727272),fontSize: ScreenWidth * 0.033)),
                                 SizedBox(height: ScreenHeight * 0.020),
                                 Text('${S.of(context).email}',
-                                    style: TextStyle(color: Color(0xff727272))),
+                                    style: TextStyle(color: Color(0xff727272),fontSize: ScreenWidth * 0.033)),
                                 SizedBox(height: ScreenHeight * 0.020),
                                 Text('${S.of(context).password}',
-                                    style: TextStyle(color: Color(0xff727272))),
+                                    style: TextStyle(color: Color(0xff727272),fontSize: ScreenWidth * 0.033)),
                               ],
                             ),
                           ),
@@ -313,11 +318,11 @@ class _SettingsState extends State<Settings> {
                           overlayColor:
                               MaterialStateProperty.all(const Color(0xff61619D)),
                           splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
-                          elevation: MaterialStateProperty.all(15),
+                          elevation: MaterialStateProperty.all(ScreenWidth * 0.033),
                         ),
                         child:  Text(
                           '${S.of(context).logOut}',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,fontSize: ScreenWidth * 0.033),
                         ),
                       ),
                     ),

@@ -115,10 +115,10 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Icon(
                                   isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
-                                  size: 20,
+                                  size: ScreenWidth * 0.04,
                                   color: const Color(0xFF785FC0),
                                 ),
-                                Text(S.of(context).nearbyMeetings,style: const TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
+                                Text(S.of(context).nearbyMeetings,style:  TextStyle(fontSize: ScreenWidth * 0.035, color: Color(0xFF785FC0)),),
                               ]
 
                             ),
@@ -131,10 +131,10 @@ class _HomePageState extends State<HomePage> {
                       height: ScreenHeight * 0.022,
 
                       child: PopupMenuButton(
-                        offset: const Offset(5, 35),
+                        offset:  Offset(ScreenWidth * 0.01, ScreenHeight * 0.023),
 
                         popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
-                        iconSize: 19,
+                        iconSize: ScreenWidth * 0.04,
                         position: PopupMenuPosition.over,
                         color: Colors.black,
                         icon: const Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(S.of(context).days,style: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
+                                Text(S.of(context).days,style: TextStyle(fontSize: ScreenWidth * 0.03, color: Color(0xFF7E7EBE)),),
                                 SizedBox(width: ScreenWidth * 0.024,),
                                 SizedBox(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
                                     child: TextField(
@@ -174,12 +174,12 @@ class _HomePageState extends State<HomePage> {
                                   decoration: InputDecoration(
                                     counterText: '',
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(ScreenWidth * 0.01),
                                       borderSide: BorderSide(width: ScreenWidth * 0.009),
                                     ),
                                     contentPadding: EdgeInsets.only(bottom: ScreenHeight * 0.017),
                                     hintText: '${widget.Nearest!.getInt('Days')}',
-                                    hintStyle: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
+                                    hintStyle: TextStyle(fontSize: ScreenWidth * 0.03, color: Color(0xFF7E7EBE)),
                                     fillColor: const Color(0xff323644),
                                     filled: true,
                                   )
@@ -191,6 +191,8 @@ class _HomePageState extends State<HomePage> {
                       },),
                     )
                   ]:
+
+                      //Arabic --------------------------------------------
                   [
                     Container(
                       margin: EdgeInsets.only(right: ScreenWidth * 0.011, bottom: ScreenHeight * 0.022),
@@ -198,17 +200,16 @@ class _HomePageState extends State<HomePage> {
                       height: ScreenHeight * 0.022,
 
                       child: PopupMenuButton(
-                        offset: const Offset(5, 35),
+                        offset: Offset(ScreenWidth * 0.01, ScreenHeight * 0.03),
 
                         popUpAnimationStyle: AnimationStyle(curve: Curves.easeInCirc,reverseCurve: Curves.easeInCirc),
-                        iconSize: 19,
+                        iconSize: ScreenWidth * 0.04,
                         position: PopupMenuPosition.over,
                         color: Colors.black,
                         icon: const Icon(Icons.settings_suggest,color: Color( 0xFF8C7EBE),),
                         padding: EdgeInsets.zero,
 
                         itemBuilder: (context) {
-
                           return [
                             PopupMenuItem(
 
@@ -217,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(S.of(context).days,style: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),),
+                                    Text(S.of(context).days,style: TextStyle(fontSize: ScreenWidth * 0.04, color: Color(0xFF7E7EBE)),),
                                     SizedBox(width: ScreenWidth * 0.024,),
                                     SizedBox(width: ScreenWidth * 0.09,height: ScreenHeight * 0.045,
                                         child: TextField(
@@ -241,12 +242,12 @@ class _HomePageState extends State<HomePage> {
                                             decoration: InputDecoration(
                                               counterText: '',
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
+                                                borderRadius: BorderRadius.circular(ScreenWidth * 0.03),
                                                 borderSide: BorderSide(width: ScreenWidth * 0.009),
                                               ),
                                               contentPadding: EdgeInsets.only(bottom: ScreenHeight * 0.017),
                                               hintText: '${widget.Nearest!.getInt('Days')}',
-                                              hintStyle: const TextStyle(fontSize: 13, color: Color(0xFF7E7EBE)),
+                                              hintStyle: TextStyle(fontSize: ScreenWidth * 0.03, color: Color(0xFF7E7EBE)),
                                               fillColor: const Color(0xff323644),
                                               filled: true,
                                             )
@@ -273,10 +274,10 @@ class _HomePageState extends State<HomePage> {
 
                           children:
                           [
-                            Text(S.of(context).nearbyMeetings,style: const TextStyle(fontSize: 15, color: Color(0xFF785FC0)),),
+                            Text(S.of(context).nearbyMeetings,style: TextStyle(fontSize: ScreenWidth * 0.035, color: Color(0xFF785FC0)),),
                             Icon(
                               isChecked ? Icons.check_box :Icons.check_box_outline_blank_rounded,
-                              size: 20,
+                              size: ScreenWidth * 0.04,
                               color: const Color(0xFF785FC0),
                             ),
                           ]
@@ -290,9 +291,9 @@ class _HomePageState extends State<HomePage> {
 
               ) : Container(),
               Container(
-                margin:  EdgeInsets.only(left: ScreenWidth * 0.87, top: ScreenHeight * 0.033),
+                margin:  EdgeInsets.only(left: ScreenWidth * 0.87, top: ScreenHeight * 0.030),
                 child:  IconButton(
-                    icon: const Icon(Icons.search,size: 32,),
+                    icon: Icon(Icons.search,size: ScreenWidth * 0.072,),
                     color: const Color.fromRGBO(50, 213, 131, 100),
                   onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
@@ -305,12 +306,12 @@ class _HomePageState extends State<HomePage> {
 
                   decoration: BoxDecoration(
                       color: const Color(0xa81a1c25),
-                      borderRadius: BorderRadius.circular(100)
+                      borderRadius: BorderRadius.circular(ScreenWidth * 0.05),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _icon(0, icon: Icons.view_headline),
+                      _icon(0, icon: Icons.view_headline,),
                       _icon(1, icon: Icons.calendar_month_rounded),
                     ],)),
 
@@ -385,8 +386,8 @@ class _HomePageState extends State<HomePage> {
                         }else {
                           if (ConnectionState.done == snapshot.connectionState) {
                             return Center(child: Text(S.of(context).noDataFound,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 24),));
+                              style:  TextStyle(
+                                  color: Colors.white, fontSize: ScreenWidth * 0.05),));
 
                           } else {
                             return const Center(child: CircularProgressIndicator());
@@ -408,9 +409,9 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(ScreenHeight * 0.056  ),//50
                     color: Colors.green[500],
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                          color: Colors.green, spreadRadius: 20, blurRadius: 100)
+                          color: Colors.green, spreadRadius: ScreenWidth * 0.06, blurRadius: ScreenWidth * 0.3)
                     ]),
                 child: InkWell(
                   onTap: (){
@@ -420,7 +421,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Text(
                     accData.getString('userName')!.toUpperCase().substring(0, 1),
-                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style:  TextStyle(fontSize: ScreenWidth * 0.06, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -437,7 +438,8 @@ class _HomePageState extends State<HomePage> {
       padding:  EdgeInsets.only(left: ScreenWidth * 0.024, right: ScreenWidth * 0.024, top: ScreenHeight * 0.011, bottom: ScreenHeight * 0.011),
       child: InkResponse(
         splashColor: const Color.fromRGBO(50,213,131,100),
-        radius: 15,
+        radius: ScreenWidth * 0.04,
+        highlightColor: const Color.fromRGBO(50,213,131,100),
 
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -447,7 +449,7 @@ class _HomePageState extends State<HomePage> {
 
               decoration: BoxDecoration(
                 color: const Color(0xf2292d3b),
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(ScreenWidth * 0.04),
 
               ),
               child: Padding(
@@ -455,9 +457,11 @@ class _HomePageState extends State<HomePage> {
                   child : Icon(
                     icon,
                     color:  const Color.fromRGBO(50,213,131,100),
+                    size: ScreenWidth * 0.06,
                   )),) : Icon(
               icon,
               color:  null,
+              size: ScreenWidth * 0.06,
             ),
             // Text('text!', style: TextStyle(color: Radtioselected == index ? Colors.red : null)),
 
@@ -482,8 +486,9 @@ class _HomePageState extends State<HomePage> {
     cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ') :
     await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) order by date');
 
-     if(await api.hasNetwork()) {
+    print(cardData);
 
+     if(await api.hasNetwork()) {
        var Response;
 
        if (cardData.isEmpty) {
@@ -513,6 +518,7 @@ class _HomePageState extends State<HomePage> {
 
         if(api.getValue(Response, 'count')[0] != '0'){
 
+
           await insertDataToLocalDb(Response);
           insertion = true;
         }else{
@@ -522,7 +528,6 @@ class _HomePageState extends State<HomePage> {
         Response = isChecked? await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}',{'token': '${loginInfo.getString('token')}'} )
             :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[gte]=$currentDayDate&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}' ,
             {'token': '${loginInfo.getString('token')}'});
-
 
       if(api.getValue(Response, 'count')[0] != '0'){
         await insertOrUpdateDataToLocalDb(Response);
@@ -534,6 +539,7 @@ class _HomePageState extends State<HomePage> {
 
 
       Response = await api.getRequest('https://meetingss.onrender.com/meetings/getMeetingManagers?', {'token': '${loginInfo.getString('token')}'});
+
 
        List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' order by meeting_id');
 
@@ -552,7 +558,6 @@ class _HomePageState extends State<HomePage> {
 
        int Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
        int onlineCount = api.getValue(Response, 'meeting_id').length;
-
 
    if( Localcount != onlineCount){
 
@@ -790,14 +795,14 @@ class _HomePageState extends State<HomePage> {
 
       children: [
         Material(
-          elevation: 10,
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
+          elevation: ScreenWidth * 0.04,
+          borderRadius: BorderRadius.all(Radius.circular(ScreenWidth * 0.06)),
           child: Container(
-            padding: const EdgeInsets.only(top: 10),
-            decoration: const BoxDecoration(
+            padding:  EdgeInsets.only(top: ScreenHeight * 0.01),
+            decoration:  BoxDecoration(
               color: Color(0xff1E2126),
               // color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderRadius: BorderRadius.all(Radius.circular(ScreenWidth * 0.06)),
             ),
             alignment: Alignment.center,
 
@@ -869,16 +874,16 @@ class _HomePageState extends State<HomePage> {
                               Padding(
 
                                 padding:  EdgeInsets.only(
-                                    left: ScreenWidth * 0.05, top: ScreenHeight * 0.021),
+                                    left: ScreenWidth * 0.05, top: ScreenHeight * 0.016),
 
                                 child: Container(
                                   height: ScreenHeight * 0.015,
-                                  width: ScreenWidth * 0.03,
-                                  margin: EdgeInsets.only(top: ScreenHeight * 0.005),
+                                  width: ScreenWidth * 0.025,
+                                  margin: EdgeInsets.only(top: ScreenHeight * 0.001),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius
-                                        .circular(25),
+                                        .circular(ScreenWidth * 0.03),
                                     color: isSelected == true
                                         ? Colors.white
                                         : const Color(0xff7E7EBE),

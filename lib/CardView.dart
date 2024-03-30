@@ -61,10 +61,11 @@ class _CardVuState extends State<CardVu> {
   Widget build(BuildContext context) {
     widget.DateToShow = widget.Date.toString().compareTo(DateTime.now().toString().substring(0, 10)) == 0 ? S.current.Today : widget.Date.toString().compareTo(DateTime.now().add(const Duration(days: 1)).toString().substring(0, 10))== 0 ? S.of(context).Tomorrow : widget.Date;
 
-   if(!widget.Grid){ widget.TimeToShow = DateFormat('hh:mm a').format(DateFormat('hh:mm:ss','en').parse(widget.Time));}
+   if(!widget.Grid){
+     widget.TimeToShow = DateFormat('hh:mm a').format(DateFormat('hh:mm:ss','en').parse(widget.Time));}
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      margin: EdgeInsets.only(bottom: ScreenHeight * 0.01),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(ScreenWidth * 0.11)),
       // height: widget.Grid == true ? 150 : null,
       child: InkWell(
         onTap: () async  {
@@ -104,7 +105,7 @@ class _CardVuState extends State<CardVu> {
         child: Card(
 
             color: const Color(0xff1E2126),
-            elevation: 10,
+            elevation: ScreenWidth * 0.026,
             child: widget.Grid == true
                 ? (widget.first
                     ? Column(
@@ -115,13 +116,13 @@ class _CardVuState extends State<CardVu> {
                             child: Icon(
                               Icons.add,
                               color: Colors.grey[300],
-                              size: 40,
+                              size: ScreenWidth * 0.09,
                             ),
                           ),
                           Text(
                             S.current.addNote,
                             style: TextStyle(
-                                color: Colors.grey[700], fontSize: 20),
+                                color: Colors.grey[700], fontSize: ScreenWidth * 0.04),
                           )
                         ],
                       )
@@ -130,7 +131,7 @@ class _CardVuState extends State<CardVu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(top: 60),
+                            margin: EdgeInsets.only(top: ScreenHeight * 0.07),
                               child :Column(
                                children :[Text(
                             widget.PersonOrEntity_title,
@@ -211,7 +212,7 @@ class _CardVuState extends State<CardVu> {
                             ),
                             Text(
                               isEnglish() ? widget.TimeToShow : widget.DateToShow,
-                              style:  TextStyle(color: const Color(0xFF7E7EBE),fontSize: isEnglish()? 15 : 16),
+                              style:  TextStyle(color: const Color(0xFF7E7EBE),fontSize: isEnglish()? ScreenWidth * 0.034 : ScreenWidth * 0.044),
                             ),
                           ])
                     ],
@@ -246,27 +247,28 @@ class _CardVuState extends State<CardVu> {
 
         {
  return Stack(
-            children: [
+
+          children: [
               Column(
                 children: [
                   Expanded(
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Color(0xFF272A37),
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(70),
-                            topRight: Radius.circular(70)),
+                            topLeft: Radius.circular(ScreenWidth * 0.2),
+                            topRight: Radius.circular(ScreenWidth * 0.2),),
                       ),
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: ScreenWidth * 0.05),
                       child: ListView(
                         controller: controller,
                         children: [
                           SizedBox(
-                            height: 59,
-                            child: const Divider(
-                              thickness: 3,
-                              indent: 150,
-                              endIndent: 150,
+                            height: ScreenWidth * 0.09,
+                            child:  Divider(
+                              thickness: ScreenHeight * 0.003,
+                              indent: ScreenWidth * 0.3,
+                              endIndent: ScreenWidth * 0.36,
                             ),
                           ),
                           SizedBox(
@@ -274,58 +276,59 @@ class _CardVuState extends State<CardVu> {
                           ),
                           Text(
                             S.current.personOrEntity,
-                            style: const TextStyle(
-                                color: Color(0xFF7E7EBE), fontSize: 19),
+                            style: TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: ScreenWidth * 0.042),
                           ),
                           Text(
                             '  ${widget.PersonOrEntity_title}',
                             style:
-                                const TextStyle(color: Colors.white70, fontSize: 15),
+                                 TextStyle(color: Colors.white70, fontSize: ScreenWidth * 0.037),
                           ),
                           Text(
                             S.current.topic,
-                            style: const TextStyle(
-                                color: Color(0xFF7E7EBE), fontSize: 19),
+                            style:  TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: ScreenWidth * 0.042),
                           ),
                           Text(
                             '  ${widget.Topic_Content}',
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 15),
+                            style:  TextStyle(
+                                color: Colors.white70, fontSize: ScreenWidth * 0.037),
                           ),
                           Text(
                             '${S.current.address} ',
-                            style: const TextStyle(
-                                color: Color(0xFF7E7EBE), fontSize: 19),
+                            style:  TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: ScreenWidth * 0.042),
                           ),
                           Text(
                             '  ${widget.Address_NoteId}',
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 15),
+                            style:  TextStyle(
+                                color: Colors.white70, fontSize: ScreenWidth * 0.037),
                           ),
                           Text(
                             '${S.current.Time} ',
-                            style: const TextStyle(
-                                color: Color(0xFF7E7EBE), fontSize: 19),
+                            style:  TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: ScreenWidth * 0.042),
                           ),
                           Text(
                             '  ${widget.DateToShow} ${widget.TimeToShow}',
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 15),
+                            style:  TextStyle(
+                                color: Colors.white70, fontSize: ScreenWidth * 0.037),
                           ),
                           Text(
                             '${S.current.comments} ',
-                            style: const TextStyle(
-                                color: Color(0xFF7E7EBE), fontSize: 19),
+                            style:  TextStyle(
+                                color: Color(0xFF7E7EBE), fontSize: ScreenWidth * 0.042),
                           ),
                           Text(
                             '  ${widget.Comments.isEmpty ? '--------' : widget.Comments}',
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 15),
+                            style:  TextStyle(
+                                color: Colors.white70, fontSize: ScreenWidth * 0.037),
                           ),
                           Container(
                               alignment: AlignmentDirectional.centerStart,
-                              margin: const EdgeInsets.only(top: 10),
-                              width: 10,
+                              margin:  EdgeInsets.only(top: ScreenHeight * 0.02),
+
+
                               child: widget.PdfLink != 'null'
                                   ? ElevatedButton(
                                       onPressed: () async {
@@ -347,11 +350,15 @@ class _CardVuState extends State<CardVu> {
               Align(
                   alignment: AlignmentDirectional.bottomEnd,
                   child: Container(
-                      width: id.isEmpty? ScreenWidth * 0.25 : ScreenWidth * 0.3,
+
+                      width: id.isEmpty? ScreenWidth * 0.26 : ScreenWidth * 0.26,
+                      height: id.isEmpty? ScreenHeight * 0.05 : ScreenHeight * 0.06,
                       margin: EdgeInsets.only(
                           bottom: ScreenHeight * 0.03,
                           right: ScreenWidth * 0.04),
                       child: FloatingActionButton(
+                        elevation: ScreenWidth * 0.1,
+
                         onPressed: () async {
                           if (id.isEmpty) {
                             Navigator.push(
@@ -378,10 +385,11 @@ class _CardVuState extends State<CardVu> {
                           }
                         },
                         child: Row(
-                          children: id.isNotEmpty ? [const Icon(Icons.sticky_note_2_outlined), Text(S.current.ShowNote)] :
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: id.isNotEmpty ? [ Icon(Icons.sticky_note_2_outlined,size: ScreenWidth * 0.05,), Text(S.current.ShowNote,style: TextStyle(fontSize: ScreenWidth * 0.032),)] :
                           [
-                            const Icon(Icons.add),
-                            Text(S.current.addNote)
+                             Icon(Icons.add,size: ScreenWidth * 0.05),
+                            Text(S.current.addNote,style: TextStyle(fontSize: ScreenWidth * 0.032))
                           ],
                         ),
                       )))

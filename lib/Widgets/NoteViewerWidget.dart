@@ -102,6 +102,7 @@ class _AddNoteState extends State<AddNote> {
 
   @override
   Widget build(BuildContext context) {
+    print('${widget.first} ${widget.content} ${widget.title} ${widget.noteId} ${widget.meetingId} ${widget.meetingDate} ${widget.meetingTopic} ${widget.meetingPersonOrEntity} notes Data ');
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF272A37),
@@ -175,7 +176,7 @@ class _AddNoteState extends State<AddNote> {
                               setState(() {
                                 newContent = false;
                               });
-                              // if(widget.meetingId.isNotEmpty){
+                              if(widget.meetingId.isEmpty){
                               if (await api.hasNetwork()) {
                                 var lol = await api.postRequest(
                                     'https://meetingss.onrender.com/notes/',
@@ -201,11 +202,41 @@ class _AddNoteState extends State<AddNote> {
                                       ]);
 
 
-                                // }
+                                }
 
+                              }else{
+                                if (await api.hasNetwork()) {
+                                  var lol = await api.postRequest(
+                                      'https://meetingss.onrender.com/notes/${widget.meetingId}',
+                                      {
+                                        'token':
+                                        '${loginInfo.getString('token')}',
+                                        'Content-Type': 'application/json',
+                                      },
+                                      jsonEncode({
+                                        "title": txtTitle.text,
+                                        "content": json,
+                                      }));
+
+                                  await sqldb.insertData(
+                                      'INSERT INTO notes(notes_id, title, content, meeting_id,about,date,person ,updatedAt,manager_id) VALUES (?,?,?,?,?,?,?,?,?)',
+                                      [
+                                        await api.getValue(lol, 'noteId')[0],
+                                        txtTitle.text,
+                                        json.toString(),
+                                        widget.meetingId,
+                                        widget.meetingTopic,
+                                        widget.meetingDate,
+                                        widget.meetingPersonOrEntity,
+                                        DateTime.now().toString(),
+                                        accData.getString('managerId')!,
+                                      ]);
+
+
+                                }
                               }
                                 print('insert');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(accData, loginInfo, Language)));
+                                Navigator.pop(context);
 
                             }
                           } else {

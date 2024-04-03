@@ -329,9 +329,9 @@ class _HomePageState extends State<HomePage> {
                         setState(() {
 
                       });
-                        return readData(); },
+                        return fetchData(); },
 
-                     child: FutureBuilder(future: widget.calenderDataBool ? RadioSelectedSetter(getDays()) :readData(),
+                     child: FutureBuilder(future: widget.calenderDataBool ? RadioSelectedSetter(getDays()) :fetchData(),
 
                           builder: (context, snapshot) {
 
@@ -480,7 +480,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  Future<List<Map>> readData() async {
+  Future<List<Map>> fetchData() async {
 
 
     cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ') :
@@ -489,6 +489,7 @@ class _HomePageState extends State<HomePage> {
     print(cardData);
 
      if(await api.hasNetwork()) {
+      var maxCreatedDate;
        var Response;
 
        if (cardData.isEmpty) {
@@ -505,17 +506,16 @@ class _HomePageState extends State<HomePage> {
 
        } else {
 
-
         var readData = isChecked? await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from meeting_Manager where manager_id = ${accData
             .getString('managerId')} and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\')')
             :await widget.sqldb.readData('select max(createdAt) as maxCreated, max(updatedAt) as maxUpdated from Meetings where meeting_id in( select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')} )');
 
-
+     maxCreatedDate = DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString();
 
          Response = isChecked ? await api.getRequest( 'https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}', {'token': '${loginInfo.getString('token')}'} )
-             :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}&date[gte]=$currentDayDate',
+             :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&createdAt[gte]=${maxCreatedDate}&date[gte]=$currentDayDate',
             {'token': '${loginInfo.getString('token')}'});
-
+print(maxCreatedDate);
         if(api.getValue(Response, 'count')[0] != '0'){
 
 
@@ -529,6 +529,7 @@ class _HomePageState extends State<HomePage> {
             :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=true&date[gte]=$currentDayDate&updatedAt[gte]=${DateTime.parse(readData[0]['maxUpdated']).add(const Duration(seconds: 1)).toString().substring(0,19)}' ,
             {'token': '${loginInfo.getString('token')}'});
 
+
       if(api.getValue(Response, 'count')[0] != '0'){
         await insertOrUpdateDataToLocalDb(Response);
         update = true;
@@ -536,16 +537,17 @@ class _HomePageState extends State<HomePage> {
         update = false;
       }
        }
-
+       print(currentDayDate);
+       print(widget.  loginInfo!.getString('token'));
 
       Response = await api.getRequest('https://meetingss.onrender.com/meetings/getMeetingManagers?', {'token': '${loginInfo.getString('token')}'});
+     print('Respone2 ${Response}');
 
-
-       List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' order by meeting_id');
-
+       List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\'  order by meeting_id');
+   print('lol $lol');
 
        var ids =  await api.getValue(Response, 'meeting_id');
-
+ print('ids $ids');
 
    for(int loop = 0 ; loop < ids.length; loop++){
 
@@ -558,7 +560,7 @@ class _HomePageState extends State<HomePage> {
 
        int Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
        int onlineCount = api.getValue(Response, 'meeting_id').length;
-
+   print('Localcount $Localcount onlineCount $onlineCount');
    if( Localcount != onlineCount){
 
 
@@ -877,8 +879,8 @@ class _HomePageState extends State<HomePage> {
                                     left: ScreenWidth * 0.05, top: ScreenHeight * 0.016),
 
                                 child: Container(
-                                  height: ScreenHeight * 0.015,
-                                  width: ScreenWidth * 0.025,
+                                  height: ScreenHeight * 0.017,
+                                  width: ScreenWidth * 0.038,
                                   margin: EdgeInsets.only(top: ScreenHeight * 0.001),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -893,7 +895,7 @@ class _HomePageState extends State<HomePage> {
                                           color: isSelected == true
                                               ? const Color(0xff7E7EBE)
                                               : Colors.white,
-                                          fontSize: 9),
+                                          fontSize: ScreenWidth * 0.022,fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
                               ),

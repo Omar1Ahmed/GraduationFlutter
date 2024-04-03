@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:learning/Widgets/ForgotPasswordWidget.dart';
 import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/Widgets/TestApi.dart';
@@ -358,6 +359,7 @@ class _LoginState extends State<Login> {
                                     api.getValue(Response, 'token')[0]);
 
                                 loginInfo.setBool('remember', true);
+
                               } else {
                                 loginInfo.setString(
                                     'token',

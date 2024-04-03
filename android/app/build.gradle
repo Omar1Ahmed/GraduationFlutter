@@ -24,8 +24,12 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.learning"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
+
+    defaultConfig {
+        multiDexEnabled true
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

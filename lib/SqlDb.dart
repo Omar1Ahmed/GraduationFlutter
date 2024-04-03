@@ -40,11 +40,11 @@ _onCreate(Database database, int version) async {
   ''');
   await database.execute(
       "CREATE TABLE `notes` (\n" +
-      "  `notes_id` INTEGER unique,\n" +
+      "  `notes_id` INTEGER PRIMARY KEY,\n" +
       "  `title` varchar(255) NOT NULL,\n" +
       "  `content` longtext DEFAULT NULL,\n" +
-      "  `meeting_id` int(11) DEFAULT NULL,\n" +
-      "  `manager_id` int(11) DEFAULT NULL,\n" +
+      "  `meeting_id` INTEGER DEFAULT 0 ,\n" +
+      "  `manager_id` INTEGER DEFAULT 0,\n" +
       "  `updatedAt` datetime NOT NULL,\n" +
           "'about' varchar,\n"+
           "'date' date ,\n"+

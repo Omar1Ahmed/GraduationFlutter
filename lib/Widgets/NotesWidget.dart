@@ -59,59 +59,58 @@ class _NotesState extends State<Notes> {
             //  EdgeInsets.only(top: ScreenHeight * 0.02,left: ScreenWidth * 0.69),)
           ),
           Flexible(
-            child: RefreshIndicator(
-              onRefresh: () {
-                setState(() {});
-                return readData1();
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: ScreenHeight * 0.02),
-                child: FutureBuilder(
-                    future: readData1(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return GridView.count(
-                          crossAxisCount: 2,
-                          children:
-                              List.generate(snapshot.data!.length + 1, (index) {
-                            // print('${!snapshot.data![index-1]['content']} loliu');
-                            return index == 0
-                                ? CardVu(Grid: true, first: true)
-                                : CardVu(
-                                    Grid: true,
-                                    PersonOrEntity_title:
-                                        snapshot.data![index - 1]['title'],
-                                    Topic_Content: snapshot.data![index - 1]
-                                        ['content'],
-                                    Address_NoteId: snapshot.data![index - 1]
-                                            ['notes_id']
-                                        .toString(),
-                                    MeetingId: snapshot.data![index - 1]
-                                            ['meeting_id']
-                                        .toString(),
-                                    Topic: snapshot.data![index - 1]['about']
-                                        .toString(),
-                                    Date: snapshot.data![index - 1]['date']
-                                        .toString(),
-                                    PersonOrEntity: snapshot.data![index - 1]
-                                            ['person']
-                                        .toString());
-                          }),
-                        );
-                      } else if (ConnectionState.done ==
-                              snapshot.connectionState ||
-                          snapshot.hasError) {
-                        return Center(
-                            child: Text(
-                          '${snapshot.error}',
-                          style: TextStyle(color: Colors.white),
-                        ));
-                      } else {
+              child: RefreshIndicator(
+
+                onRefresh: () {
+                  setState(() {});
+                  return readData1();
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: ScreenHeight * 0.02),
+                  child: FutureBuilder(
+                      future: readData1(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.hasData) {
+                            print('has Data');
+                            return GridView.count(
+                              crossAxisCount: 2,
+                              children: List.generate(snapshot.data!.length + 1, (index) {
+                                return index == 0
+                                    ? CardVu(Grid: true, first: true)
+                                    : CardVu(
+                                  Grid: true,
+                                  PersonOrEntity_title:
+                                  snapshot.data![index - 1]['title'],
+                                  Topic_Content:
+                                  snapshot.data![index - 1]['content'],
+                                  Address_NoteId: snapshot.data![index - 1]
+                                  ['notes_id']
+                                      .toString(),
+                                  MeetingId: snapshot.data![index - 1]['meeting_id']
+                                      .toString(),
+                                  Topic: snapshot.data![index - 1]['about'].toString(),
+                                  Date: snapshot.data![index - 1]['date'].toString(),
+                                  PersonOrEntity: snapshot.data![index - 1]['person']
+                                      .toString(),
+                                );
+                              }),
+                            );
+                          } else if (snapshot.hasError) {
+                            print('has Error');
+                            return Center(
+                              child: Text(
+                                '${snapshot.error}\n${S.current.noDataFound}',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }
+                        }
+                        print('Loading');
                         return Center(child: const CircularProgressIndicator());
-                      }
-                    }),
+                      },),
+                ),
               ),
-            ),
           ),
         ],
       ),
@@ -119,37 +118,48 @@ class _NotesState extends State<Notes> {
   }
 
   Future<List<Map>> readData1() async {
+
+    print('read Data 1');
     cardData = await sqldb.readData(
         'SELECT * FROM notes where manager_id = ${widget.accData.getString('managerId')} ');
-
+    print(cardData.length);
     if (await api.hasNetwork()) {
+      print('has Network');
       var Response;
 
       if (cardData.isEmpty) {
+        print('Empty Data');
         Response = await api.getRequest(
             'https://meetingss.onrender.com/notes?sort=createdAt',
             {'token': '${widget.loginInfo.getString('token')}'});
-        print('Response $Response');
         await insertDataToLocalDb(Response);
         insertion = true;
         cardData = await sqldb.readData(
-            'SELECT * FROM notes where manager_id = ${widget.accData.getString('managerId')} ');
+            'SELECT meeting_id,notes_id FROM notes where manager_id = ${widget.accData.getString('managerId')} and meeting_id is not "0"');
+        print('oooooo   ${cardData}');
 
         if (insertion) {
           var meetingNoteDetails;
 
           for (int i = 0; i < cardData.length; i++) {
-            if (cardData[i]['meeting_id'] != 'null') {
-              meetingNoteDetails = await sqldb.readData(
-                  'select meeting_id, date, about, person from meetings where meeting_id = ${cardData[i]['meeting_id']} ');
+            print('${cardData[i]['meeting_id']} $i ${cardData.length} ${cardData  } ${ cardData[i]['notes_id']}');
+            if (cardData[i]['meeting_id'] != 0 ) {
+              meetingNoteDetails = await sqldb.readData('select about, person, date from meetings where meeting_id = ${cardData[i]['meeting_id']}');
+             if(meetingNoteDetails.isEmpty) {
+               meetingNoteDetails = await api.getRequest(
+                   'https://meetingss.onrender.com/meetings/${cardData[i]['meeting_id']}',
+                   {'token': '${widget.loginInfo.getString('token')}'});
+             }
+             print('${meetingNoteDetails.runtimeType} ${cardData.runtimeType}');
+             print('haha meeting${meetingNoteDetails}  ${cardData[i]['meeting_id']}');
 
-              await sqldb.updateData(
+            await sqldb.updateData(
                   'update notes set meeting_id = ? ,about =  ? , date = ?, person = ?  where notes_id = ?',
                   [
                     cardData[i]['meeting_id'].toString(),
-                    meetingNoteDetails[0]['about'],
-                    meetingNoteDetails[0]['date'],
-                    meetingNoteDetails[0]['person'],
+                    meetingNoteDetails.runtimeType == String ? api.getValue(meetingNoteDetails, 'about')[0] : meetingNoteDetails['about'],
+                    meetingNoteDetails.runtimeType == String ?  api.getValue(meetingNoteDetails, 'date')[0] : meetingNoteDetails['date'],
+                    meetingNoteDetails.runtimeType == String ?  api.getValue(meetingNoteDetails, 'person')[0] : meetingNoteDetails['person'],
                     cardData[i]['notes_id'].toString()
                   ]);
             }
@@ -161,11 +171,12 @@ class _NotesState extends State<Notes> {
     }
 
     cardData = await sqldb.readData(
-        'SELECT * FROM notes where manager_id = ${widget.accData.getString('managerId')} order by notes_id desc');
+        'SELECT * FROM notes where manager_id = ${widget.accData.getString('managerId')} order by updatedAt desc');
 
     print(cardData[0]);
 
-    print(cardData.length);
+    print(' lol haha boom ${cardData.length}');
+
     return cardData;
   }
 
@@ -184,7 +195,6 @@ class _NotesState extends State<Notes> {
 //       "  `meeting_id` int(11) DEFAULT NULL,\n" +
 //       "  `manager_id` int(11) DEFAULT NULL,\n" +
 //       "  `updatedAt` datetime NOT NULL\n" +
-      print('length ${notesIds.length}');
       // print('${notesContents[18]} ${notesIds[18]}  length');
 
       for (int i = 0; i < notesIds.length; i++) {
@@ -194,12 +204,11 @@ class _NotesState extends State<Notes> {
               notesIds[i],
               notesTitles[i],
               notesContents[i],
-              meetingIds[i],
+              meetingIds[i].toString().compareTo( 'null') == 0 ? '0': meetingIds[i].toString(),
               notesUpdatedAts[i],
               widget.accData.getString('managerId')!,
             ]);
-
-        print('${notesContents[i]}');
+        print('${meetingIds[i]} ${meetingIds[i].toString().compareTo( 'null')}' );
       }
       // if(meetingIds.isNotEmpty){ meetingIds.clear();
       //  meetingTimes.clear();

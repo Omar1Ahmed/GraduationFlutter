@@ -53,14 +53,15 @@ class _pdfViewer extends State<pdfViewer> {
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(
-      child: PopScope(
-        onPopInvoked: (back) {
-          Navigator.pop(context);
-        },
-        child: Scaffold(
-          body: _isLoading ? Center(child: CircularProgressIndicator()) : PDFViewer(document: document,tooltip: PDFViewerTooltip(first: 'lol'),enableSwipeNavigation: true),
-        ),
+    return PopScope(
+      onPopInvoked: (back) async{
+        print('lol');
+        Navigator.pop(context);
+      },
+      child: SafeArea(
+          child:  Scaffold(body : _isLoading ? Center(child: CircularProgressIndicator()) : PDFViewer(document: document,tooltip: PDFViewerTooltip(first: 'lol'),enableSwipeNavigation: true)),
+
+
       ),
     );
   }

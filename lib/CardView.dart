@@ -97,8 +97,9 @@ class _CardVuState extends State<CardVu> {
                               )));
                 }
             }else{
-            print('${widget.MeetingId} ${widget.Topic} ${widget.PersonOrEntity_title} shhheeeeeesh');
+            print('${widget.MeetingId} ${widget.Topic} ${widget.PersonOrEntity_title} ${accData.getString('managerId')} shhheeeeeesh');
             var id = await sqldb.readData('select * from notes where meeting_id = ${widget.MeetingId} and manager_id = ${accData.getString('managerId')}');
+            print(id);
             ShowModal(id);
           }
         },
@@ -138,7 +139,7 @@ class _CardVuState extends State<CardVu> {
                             style: const TextStyle(color: Colors.white),
                           ),
                           Text(
-                            '${widget.MeetingId == 'null' ? S.current.noMeetings : widget.Topic} ',
+                            '${widget.MeetingId == '0' ? S.current.noMeetings : widget.Topic} ',
                             style: const TextStyle(color: Colors.white54),
                           ),])),
                          SizedBox(height: ScreenHeight * 0.06,),

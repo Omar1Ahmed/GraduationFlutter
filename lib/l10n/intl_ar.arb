@@ -82,5 +82,7 @@
 
   "noContent" : "اكتب المحتوى" ,
   "notes" : "الملاحظات",
-  "NearestMeetings" : "المواعيد القريبة"
+  "NearestMeetings" : "المواعيد القريبة",
+  "notifications" : "الإشعارات"
+
 }

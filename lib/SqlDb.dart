@@ -54,6 +54,12 @@ _onCreate(Database database, int version) async {
   "manager_id" int(3) NOT NULL,
   "meeting_id" int(3) NOT NULL
   )''');
+
+  await database.execute('''CREATE TABLE "Notifications" (
+  "notification_id" int(3) NOT NULL,
+  "person" varchar NOT NULL,
+   "createdAt" date
+  )''');
   print('DB Created');
 }
 

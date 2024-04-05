@@ -7,6 +7,7 @@ import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:intl/intl.dart';
+import 'package:learning/main.dart';
 
 
 class NearestMeetings extends StatelessWidget{
@@ -31,14 +32,13 @@ class NearestMeetings extends StatelessWidget{
                 children: [
                   Text(S.current.NearestMeetings, style: TextStyle(
                         color: Color(0xFF785FC0),fontSize: ScreenWidth * 0.06,fontWeight: FontWeight.bold)),
-                 isEnglish()? Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.05,endIndent: ScreenWidth * 0.06) : Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.06,endIndent: ScreenWidth * 0.05,),
                 ],
               )),
 
             Flexible(
               child: Container(
               alignment: Alignment.center,
-                margin: EdgeInsets.only(left: ScreenWidth * 0.04,right: ScreenWidth * 0.04,top: ScreenHeight * 0.02),
+                margin: EdgeInsets.only(left: ScreenWidth * 0.04,right: ScreenWidth * 0.04,top: ScreenHeight * 0.01),
                 child: FutureBuilder(future: readData1(), builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(

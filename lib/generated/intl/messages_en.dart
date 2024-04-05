@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No Results Found"),
         "noTitle": MessageLookupByLibrary.simpleMessage("Write Your title"),
         "notes": MessageLookupByLibrary.simpleMessage("Notes"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "openPdf": MessageLookupByLibrary.simpleMessage("Open Pdf"),
         "passworInvalidErrorText":
             MessageLookupByLibrary.simpleMessage("Invalid Password"),

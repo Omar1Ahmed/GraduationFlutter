@@ -6,11 +6,12 @@ import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/NoteViewerWidget.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:intl/intl.dart';
+import 'package:learning/main.dart';
 
 import 'Widgets/pdfViewer.dart';
 
 class CardVu extends StatefulWidget {
-  final bool Grid, first;
+  final bool Grid, first,Notification;
   final String PersonOrEntity_title,
       Topic_Content,
       Address_NoteId,
@@ -27,6 +28,7 @@ class CardVu extends StatefulWidget {
   CardVu(
       {super.key,
       this.Grid = false,
+      this.Notification = false,
       this.first = false,
       this.PersonOrEntity_title = '',
       this.Topic_Content = '',
@@ -61,7 +63,7 @@ class _CardVuState extends State<CardVu> {
   Widget build(BuildContext context) {
     widget.DateToShow = widget.Date.toString().compareTo(DateTime.now().toString().substring(0, 10)) == 0 ? S.current.Today : widget.Date.toString().compareTo(DateTime.now().add(const Duration(days: 1)).toString().substring(0, 10))== 0 ? S.of(context).Tomorrow : widget.Date;
 
-   if(!widget.Grid){
+   if(!widget.Grid && !widget.Notification){
      widget.TimeToShow = DateFormat('hh:mm a').format(DateFormat('hh:mm:ss','en').parse(widget.Time));}
     return Container(
       margin: EdgeInsets.only(bottom: ScreenHeight * 0.01),
@@ -69,7 +71,9 @@ class _CardVuState extends State<CardVu> {
       // height: widget.Grid == true ? 150 : null,
       child: InkWell(
         onTap: () async  {
-          if (widget.Grid){
+          if(widget.Notification){
+
+          }else if (widget.Grid){
               if (widget.first)
                 {
                   Navigator.push(context,
@@ -107,7 +111,23 @@ class _CardVuState extends State<CardVu> {
 
             color: const Color(0xff1E2126),
             elevation: ScreenWidth * 0.026,
-            child: widget.Grid == true
+            child: widget.Notification == true ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.grey[300],
+                    size: ScreenWidth * 0.09,
+                  ),
+                ),
+                Text(
+                  S.current.addNote,
+                  style: TextStyle(
+                      color: Colors.grey[700], fontSize: ScreenWidth * 0.04),
+                )
+              ],) : widget.Grid == true
                 ? (widget.first
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,

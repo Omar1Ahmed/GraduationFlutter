@@ -11,6 +11,7 @@ import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/NotesWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/generated/l10n.dart';
+import 'package:learning/main.dart';
 
 class AddNote extends StatefulWidget {
   String title,

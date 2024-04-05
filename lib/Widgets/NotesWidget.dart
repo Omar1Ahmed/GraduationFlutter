@@ -6,6 +6,7 @@ import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/generated/l10n.dart';
+import 'package:learning/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Notes extends StatefulWidget {
@@ -42,18 +43,11 @@ class _NotesState extends State<Notes> {
             alignment: Alignment.center,
             margin: isEnglish() ?EdgeInsets.only(top: ScreenHeight * 0.027, right: ScreenWidth * 0.74) :
         EdgeInsets.only(top: ScreenHeight * 0.04, left:  ScreenWidth * 0.69),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  S.of(context).notes,
-                  style: TextStyle(
-                      fontSize: ScreenWidth * 0.06,
-                      color: Color(0xFF785FC0),),
-                ),
-                isEnglish()? Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.04,endIndent: ScreenWidth * 0.04) : Divider(color: Color(0xFF785FC0),indent: ScreenWidth * 0.01,endIndent: ScreenWidth * 0.01),
-              ],
+            child: Text(
+              S.of(context).notes,
+              style: TextStyle(
+                fontSize: ScreenWidth * 0.06,
+                color: Color(0xFF785FC0),fontWeight: FontWeight.bold),
             ),
             // margin: isEnglish() ?EdgeInsets.only(top: ScreenHeight * 0.02,left: ScreenWidth * 0.07):
             //  EdgeInsets.only(top: ScreenHeight * 0.02,left: ScreenWidth * 0.69),)

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:learning/CardView.dart';
 import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/Widgets/NearestMeetingsWidget.dart';
 import 'package:learning/SqlDb.dart';
 import 'package:learning/Widgets/NotesWidget.dart';
+import 'package:learning/Widgets/NotificationsWidget.dart';
 import 'package:learning/generated/l10n.dart';
+import 'package:learning/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'Widgets/SettingsWidget.dart';
+
+var ScreenWidth , ScreenHeight ;
 
 class Grad extends StatefulWidget {
   SharedPreferences accData , loginInfo,Language, Nearest;
@@ -55,7 +56,7 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
   void initState() {
     super.initState();
 
-    Grad.lol = TabController(length: 4, vsync: this,);
+    Grad.lol = TabController(length: 5, vsync: this,);
     // connectToSocket();
 
     // languageSharedPrefInitialize();
@@ -71,6 +72,16 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    if(MediaQuery.of(context).orientation == Orientation.portrait){
+      ScreenWidth = MediaQuery.of(context).size.width;
+      ScreenHeight = MediaQuery.of(context).size.height;
+    }else{
+      ScreenWidth = MediaQuery.of(context).size.height;
+      ScreenHeight = MediaQuery.of(context).size.width;
+      // ScreenWidth = MediaQuery.of(context).size.width;
+      // ScreenHeight = MediaQuery.of(context).size.height;
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
@@ -85,13 +96,15 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
       home:  Scaffold(
         bottomNavigationBar:
       SizedBox(
-        height: 60,
+        height: ScreenHeight * 0.065,
         child: TabBar(
           controller: Grad.lol,
+          labelPadding: EdgeInsets.zero,
           tabs: [
               const Tab(icon: Icon(Icons.home),text: "Home",iconMargin: EdgeInsets.all(0)),
-              Tab(icon: Icon(_curntIndx == 1 ? Icons.notifications : Icons.notifications_none),text: "Nearest",iconMargin: const EdgeInsets.all(0)),
+              const Tab(icon: Icon(Icons.access_time_outlined), text: 'Nearest',iconMargin: EdgeInsets.zero,),
               const Tab(icon: Icon(Icons.edit_note_sharp),text: "Notes",iconMargin: EdgeInsets.all(0)),
+              Tab(icon: Icon(_curntIndx == 3 ? Icons.notifications : Icons.notifications_none),text: "Notifications",iconMargin: const EdgeInsets.all(0)),
               const Tab(icon: Icon(Icons.settings),text: "Settings",iconMargin: EdgeInsets.all(0)),
             ], onTap: (int index) {
               setState(() {
@@ -101,7 +114,7 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
               border: Border(
                 top: BorderSide(
                     color: Theme.of(context).primaryColor,
-                    width: 3.0
+                    width: ScreenWidth * 0.0065
                 ),
               ),
             ), ),
@@ -129,6 +142,7 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
 
                 NearestMeetings(),
                 Notes( accData, loginInfo, Language),
+                Notifications(accData, loginInfo, Language),
                 Settings(),
               ],
 
@@ -140,34 +154,6 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
       );
   }
 
-  void connectToSocket() {
-    print('socket Started');  
-    IO.Socket socket = IO.io("https://meetingss.onrender.com", IO.OptionBuilder().setTransports(["websocket"]).build());
-
-    socket.connect();
-
-    // socket.on('connect', (_) {
-    //   print('Connected');
-    // });
-
-    // socket.on('notification', (data) {
-    //   print('Received notification: $data');
-    //   // Handle the notification as needed
-    // });
-    //
-    // socket.on('disconnect', (_) {
-    //   print('Disconnected');
-    // });
-
-    socket.onConnect((data) => print('${socket.connected} Socket connected'));
-    socket.onError((data) => print('Socket error: $data'));
-    socket.onDisconnect((data) => print('Socket disconnected: $data'));
-    socket.onConnecting((data) => print('Socket connecting: $data'));
-    socket.emit('updateSocketId','${accData.getString('token')}' );
-
-    socket.on('newNotification', (data) => print('$data Socket'));
-
-  }
 
 
 

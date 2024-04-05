@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResultsTxt": MessageLookupByLibrary.simpleMessage("لا يوجد نتائج"),
         "noTitle": MessageLookupByLibrary.simpleMessage("اكتب العنوان"),
         "notes": MessageLookupByLibrary.simpleMessage("الملاحظات"),
+        "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
         "openPdf": MessageLookupByLibrary.simpleMessage("افتح الملف"),
         "passworInvalidErrorText":
             MessageLookupByLibrary.simpleMessage("كلمة مرور خاطئة"),

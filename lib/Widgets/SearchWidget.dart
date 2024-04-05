@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:learning/CardView.dart';
+import 'package:learning/Grad.dart';
 import 'package:learning/SqlDb.dart';
 import 'package:learning/Widgets/HomePageWidegt.dart';
 import 'package:learning/generated/l10n.dart';
+
+import '../main.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});

@@ -1,26 +1,54 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:learning/Widgets/LoginWidget.dart';
+import 'package:learning/back_service.dart';
 import 'package:learning/generated/l10n.dart';
+import 'package:learning/lol.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-void main (){
+Future<void> main () async {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
+  Permission.notification.isDenied.then((value) async {
+    if(value){
+      await Permission.notification.request();
+    }
+    if(await Permission.notification.isGranted){
+      Permission.ignoreBatteryOptimizations.isDenied.then((value) async {
+        if(value){
+          await Permission.ignoreBatteryOptimizations.request();
+        }
 
-  runApp(DevicePreview(
-      enabled: false ,
-      builder: (context) =>MainApp()));
+      });
+
+    }
+  });
+
+
+  await initializeService();
+  if(await Permission.ignoreBatteryOptimizations.isGranted){
+    print('backGround');
+    FlutterBackgroundService().invoke('setAsBackground');
+
+  }else{
+    FlutterBackgroundService().invoke('stopService');
+
+  }
+  runApp(MainApp());
   // runApp(MainApp());
 }
 
 class MainApp extends StatefulWidget{
-  State<MainApp> createState() => _MainAppState();
 
+  State<MainApp> createState() => _MainAppState();
 
 }
 
 class _MainAppState extends State<MainApp> {
+
   @override
   void initState() {
     super.initState();
@@ -34,11 +62,11 @@ class _MainAppState extends State<MainApp> {
     ]);
 
    // connectToSocket();
+
   }
   @override
   Widget build(BuildContext context) {
     return MaterialApp (
-      builder: DevicePreview.appBuilder,
         locale: const Locale('en'),
 
         localizationsDelegates: const [

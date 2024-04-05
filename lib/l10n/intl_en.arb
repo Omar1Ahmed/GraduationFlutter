@@ -79,6 +79,7 @@
  "noTitle" : "Write Your title",
  "noContent" : "Write Your Content",
   "notes" : "Notes",
- "NearestMeetings" : "Nearest Meetings"
+ "NearestMeetings" : "Nearest Meetings",
+ "notifications" : "Notifications"
 
 }

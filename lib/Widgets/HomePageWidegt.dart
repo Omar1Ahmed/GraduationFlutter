@@ -9,6 +9,7 @@ import 'package:learning/Widgets/LoginWidget.dart';
 import 'package:learning/Widgets/SearchWidget.dart';
 import 'package:learning/Widgets/TestApi.dart';
 import 'package:learning/generated/l10n.dart';
+import 'package:learning/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,8 +37,7 @@ class HomePage extends StatefulWidget {
 
 
 }
-late double ScreenWidth ;
-late double ScreenHeight;
+
 
 class _HomePageState extends State<HomePage> {
   late List<Map> cardData;
@@ -66,15 +66,7 @@ class _HomePageState extends State<HomePage> {
 
 
 
-    if(MediaQuery.of(context).orientation == Orientation.portrait){
-      ScreenWidth = MediaQuery.of(context).size.width;
-      ScreenHeight = MediaQuery.of(context).size.height;
-    }else{
-      ScreenWidth = MediaQuery.of(context).size.height;
-      ScreenHeight = MediaQuery.of(context).size.width;
-      // ScreenWidth = MediaQuery.of(context).size.width;
-      // ScreenHeight = MediaQuery.of(context).size.height;
-    }
+
 
     api = ApiTest(context);
     return SafeArea(
@@ -486,7 +478,7 @@ class _HomePageState extends State<HomePage> {
     cardData = isChecked ? await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\' and date <= \'$NearestMeetingDayDate\' order by date ') :
     await widget.sqldb.readData('SELECT * FROM Meetings where meeting_id in(select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) order by date');
 
-    print(cardData);
+
 
      if(await api.hasNetwork()) {
       var maxCreatedDate;
@@ -515,7 +507,7 @@ class _HomePageState extends State<HomePage> {
          Response = isChecked ? await api.getRequest( 'https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&createdAt[gte]=${DateTime.parse(readData[0]['maxCreated']).add(const Duration(seconds: 1)).toString()}', {'token': '${loginInfo.getString('token')}'} )
              :await api.getRequest('https://meetingss.onrender.com/meetings?sort=date&isUpdated=false&createdAt[gte]=${maxCreatedDate}&date[gte]=$currentDayDate',
             {'token': '${loginInfo.getString('token')}'});
-print(maxCreatedDate);
+
         if(api.getValue(Response, 'count')[0] != '0'){
 
 
@@ -537,17 +529,17 @@ print(maxCreatedDate);
         update = false;
       }
        }
-       print(currentDayDate);
-       print(widget.  loginInfo!.getString('token'));
+
 
       Response = await api.getRequest('https://meetingss.onrender.com/meetings/getMeetingManagers?', {'token': '${loginInfo.getString('token')}'});
-     print('Respone2 ${Response}');
+
+
 
        List<Map> lol = await widget.sqldb.readData('select meeting_id from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= \'$currentDayDate\'  order by meeting_id');
-   print('lol $lol');
+
 
        var ids =  await api.getValue(Response, 'meeting_id');
- print('ids $ids');
+
 
    for(int loop = 0 ; loop < ids.length; loop++){
 
@@ -560,7 +552,7 @@ print(maxCreatedDate);
 
        int Localcount = (await widget.sqldb.readData('select count(meeting_id) as count from meetings where meeting_id in (select meeting_id from meeting_Manager where manager_id = ${accData.getString('managerId')}) and date >= ${DateTime.now().toString().substring(0,10)} '))[0]['count'];
        int onlineCount = api.getValue(Response, 'meeting_id').length;
-   print('Localcount $Localcount onlineCount $onlineCount');
+
    if( Localcount != onlineCount){
 
 
@@ -733,10 +725,12 @@ print(maxCreatedDate);
 
   List<DateTime> getDays(){
     List<DateTime> Days =  [];
+    if(cardData.isEmpty){
+      _RadioSelected = 0;
 
+    }
     for(int loop = 0 ; loop < cardData.length ; loop ++){
       Days.add(DateTime.parse(cardData[loop]['date']));
-
     }
 
     return Days;
@@ -776,6 +770,7 @@ print(maxCreatedDate);
   CalenderVuWidget(List<DateTime> Dates){
 
     Dates.sort();
+    widget.DateWithCounter = [{'Date' : Dates[0], 'counter' : 1}];
 
     for(int loop = 0 ; loop < Dates.length ; loop ++){
       if(loop == 0){
@@ -790,8 +785,8 @@ print(maxCreatedDate);
       }else{
         widget.DateWithCounter.add({'Date' : Dates[loop], 'counter' : 1});
       }
-
     }
+
     initStateCalnder();
     return   Column(
 
@@ -814,12 +809,13 @@ print(maxCreatedDate);
 
                 widget.calenderData = value;
 
+
                 if(value.isNotEmpty){
                   for(int loop = 0 ; loop < value.length; loop ++){
                     value[loop] = DateTime.parse(value[loop].toString().substring(0,10)+' 00:00:00.00');
 
                     if(Dates.contains(value[loop])){
-                      widget.counter = (widget.counter + widget.DateWithCounter[widget.DateWithCounter.indexWhere((element) => element['Date'] == value[loop])]['counter'] ) as int;
+                      widget.counter = ( widget.counter + widget.DateWithCounter[widget.DateWithCounter.indexWhere((element) => element['Date'] == value[loop])]['counter'] ) as int;
                     }
                   }
                   widget.number.value = widget.counter;
@@ -958,6 +954,7 @@ print(maxCreatedDate);
 
     if(widget.DateWithCounter[0]['Date'].toString().contains(DateTime.now().toString().substring(0,10)+' 00:00:00.00')){
       widget.counter = widget.DateWithCounter[0]['counter'] as int ;
+
       widget.number = ValueNotifier(widget.counter);
       widget.counter = 0;
       widget.calenderData = [widget.DateWithCounter[0]['Date']];

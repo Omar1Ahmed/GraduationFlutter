@@ -22,11 +22,12 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            alignment: Alignment.center,
+              width: isEnglish() ? ScreenWidth * 0.4 :ScreenWidth * 0.25,
+              alignment: Alignment.center,
             margin: isEnglish() ?EdgeInsets.only(top: ScreenHeight * 0.027, right: ScreenWidth * 0.55) :
             EdgeInsets.only(top: ScreenHeight * 0.04, left:  ScreenWidth * 0.69),
             child: Text(
@@ -52,16 +53,22 @@ class _NotificationsState extends State<Notifications> {
                             shrinkWrap: true,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              return   CardVu(
+                              return   Container(
+                                height: ScreenHeight * 0.1,
+                                child: CardVu(
+
+                                  // sqldb.insertData('insert into Notifications(notification_id, person, receivedAt,  managerId) values(?,?,?,?)', [notification_id,message,DateTime.now().toString(), accData.getString('managerId')!]);
+
                                 Notification: true,
-                                  MeetingId: snapshot.data![index]['meeting_id'].toString(),
-                                  PersonOrEntity_title: snapshot.data![index]['person'].toString(),
-                                  Topic_Content: snapshot.data![index]['about'].toString(),
-                                  Address_NoteId: snapshot.data![index]['address'].toString(),);
+                                    PersonOrEntity_title: snapshot.data![index]['person'].toString(),
+                                    Date: snapshot.data![index]['receivedAt'].toString(),),
+                              );
                             },
                           );
                         }else{
-                          return Center(child: Text(S.of(context).noDataFound));
+                          return Center(child: Text(S.of(context).noDataFound, style: TextStyle(
+                              color: Colors.white,
+                              fontSize: ScreenWidth * 0.05)));
                         }
 
                         }
@@ -81,13 +88,11 @@ class _NotificationsState extends State<Notifications> {
 
   print('read Data 1');
   cardData = await sqldb.readData(
-      'SELECT * FROM notes where manager_id = ${widget.accData.getString('managerId')} ');
-  print(cardData.length);
-
+      'SELECT * FROM Notifications where managerId = ${widget.accData.getString('managerId')} ');
 
 
   cardData = await sqldb.readData(
-      'SELECT * FROM notes where manager_id = ${widget.accData.getString('managerId')} order by updatedAt desc');
+      'SELECT * FROM Notifications where managerId = ${widget.accData.getString('managerId')} order by receivedAt desc ');
 
   print(cardData[0]);
 

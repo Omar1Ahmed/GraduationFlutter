@@ -699,6 +699,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You hava a Meeting With `
+  String get meetingNotification {
+    return Intl.message(
+      'You hava a Meeting With ',
+      name: 'meetingNotification',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

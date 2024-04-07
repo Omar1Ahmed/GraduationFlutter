@@ -65,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Invalid Email/Username"),
         "mailLabelText":
             MessageLookupByLibrary.simpleMessage("Email or Username"),
+        "meetingNotification":
+            MessageLookupByLibrary.simpleMessage("You hava a Meeting With "),
         "nearbyMeetings":
             MessageLookupByLibrary.simpleMessage("Nearby Meetings"),
         "noContent": MessageLookupByLibrary.simpleMessage("Write Your Content"),

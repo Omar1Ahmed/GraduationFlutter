@@ -7,7 +7,6 @@ import 'package:learning/back_service.dart';
 import 'package:learning/generated/l10n.dart';
 import 'package:learning/lol.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 Future<void> main () async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,16 +26,6 @@ Future<void> main () async {
     }
   });
 
-
-  await initializeService();
-  if(await Permission.ignoreBatteryOptimizations.isGranted){
-    print('backGround');
-    FlutterBackgroundService().invoke('setAsBackground');
-
-  }else{
-    FlutterBackgroundService().invoke('stopService');
-
-  }
   runApp(MainApp());
   // runApp(MainApp());
 }
@@ -47,7 +36,7 @@ class MainApp extends StatefulWidget{
 
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
@@ -61,9 +50,17 @@ class _MainAppState extends State<MainApp> {
 
     ]);
 
+    WidgetsBinding.instance.addObserver(this);
    // connectToSocket();
 
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp (
@@ -87,7 +84,35 @@ class _MainAppState extends State<MainApp> {
     )
     );
   }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
 
-
+      checkPermission();
+      print("Executing code before app exits...");
+    }
+  }
 }
 
+  Future<void> connectToSocket() async {
+    await initializeService();
+
+
+  }
+
+  Future<void> checkPermission() async {
+
+    if(!(await FlutterBackgroundService().isRunning())) {
+      if (await Permission.ignoreBatteryOptimizations.isGranted) {
+        print('backGround');
+
+        connectToSocket();
+
+        FlutterBackgroundService().invoke('setAsBackground');
+        print('backGround Activated ');
+      } else {
+        FlutterBackgroundService().invoke('stopService');
+      }
+    }
+  }

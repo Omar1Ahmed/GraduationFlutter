@@ -58,8 +58,10 @@ _onCreate(Database database, int version) async {
   await database.execute('''CREATE TABLE "Notifications" (
   "notification_id" int(3) NOT NULL,
   "person" varchar NOT NULL,
-   "createdAt" date
+   "receivedAt" date,
+   "managerId" int(3)
   )''');
+
   print('DB Created');
 }
 

@@ -35,7 +35,7 @@ class _NotesState extends State<Notes> {
     api = ApiTest(context);
     return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(

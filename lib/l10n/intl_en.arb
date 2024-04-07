@@ -80,6 +80,7 @@
  "noContent" : "Write Your Content",
   "notes" : "Notes",
  "NearestMeetings" : "Nearest Meetings",
- "notifications" : "Notifications"
+ "notifications" : "Notifications",
+ "meetingNotification" : "You hava a Meeting With "
 
 }

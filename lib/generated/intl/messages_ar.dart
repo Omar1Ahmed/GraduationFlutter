@@ -66,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "البريد الإلكتروني/اسم المستخدم خاطئ"),
         "mailLabelText": MessageLookupByLibrary.simpleMessage(
             "البريد الإلكتروني أو اسم المستخدم"),
+        "meetingNotification":
+            MessageLookupByLibrary.simpleMessage("لديك اجتماع مع"),
         "nearbyMeetings":
             MessageLookupByLibrary.simpleMessage("المواعيد القريبة"),
         "noContent": MessageLookupByLibrary.simpleMessage("اكتب المحتوى"),

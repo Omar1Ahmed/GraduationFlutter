@@ -9,34 +9,23 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="Notes Modification">
-      <change afterPath="$PROJECT_DIR$/lib/Widgets/NotificationsWidget.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/back_service.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/lol.dart" afterDir="false" />
+    <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="App Notifications &amp;&amp; BackGround Service">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/CardView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CardView.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Grad.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Grad.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/SqlDb.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/SqlDb.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/ForgotPasswordWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/ForgotPasswordWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/NearestMeetingsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NearestMeetingsWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/SearchWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/SearchWidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/NotificationsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NotificationsWidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Widgets/TestApi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/TestApi.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/back_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/back_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/intl/messages_ar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/intl/messages_ar.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/intl/messages_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/intl/messages_en.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated/l10n.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/l10n.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/intl_ar.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/intl_ar.arb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/intl_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/intl_en.arb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +63,7 @@
     "com.google.services.firebase.aqiPopupShown": "true",
     "dart.analysis.tool.window.visible": "false",
     "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "D:/Omar/Programming/Mobile_Projects/Flutter/Learning/GraduationFlutter/lib",
+    "last_opened_file_path": "C:/Users/Omar/Desktop",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
@@ -147,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712125817997</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="App Notifications &amp;&amp; BackGround Service">
+      <option name="closed" value="true" />
+      <created>1712350006665</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1712350006665</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -155,6 +152,7 @@
     <MESSAGE value="V3" />
     <MESSAGE value="V4" />
     <MESSAGE value="Notes Modification" />
-    <option name="LAST_COMMIT_MESSAGE" value="Notes Modification" />
+    <MESSAGE value="App Notifications &amp;&amp; BackGround Service" />
+    <option name="LAST_COMMIT_MESSAGE" value="App Notifications &amp;&amp; BackGround Service" />
   </component>
 </project>

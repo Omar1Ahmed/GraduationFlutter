@@ -71,9 +71,9 @@ class _CardVuState extends State<CardVu> {
       // height: widget.Grid == true ? 150 : null,
       child: InkWell(
         onTap: () async  {
-          if(widget.Notification){
+        if(widget.Notification){
 
-          }else if (widget.Grid){
+        }else if (widget.Grid){
               if (widget.first)
                 {
                   Navigator.push(context,
@@ -111,23 +111,84 @@ class _CardVuState extends State<CardVu> {
 
             color: const Color(0xff1E2126),
             elevation: ScreenWidth * 0.026,
-            child: widget.Notification == true ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: widget.Notification == true ?
+            isEnglish() ? Row(
+
               children: [
-                Center(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.grey[300],
+                SizedBox(width: ScreenWidth * 0.03,),
+                Icon(
+                  Icons.notifications,
+                  color: Colors.grey[600],
+                  size: ScreenWidth * 0.09,
+                ),
+               SizedBox(width: ScreenWidth * 0.03,),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'you have a meeting with '+widget.PersonOrEntity_title,
+                      style: TextStyle(color: Colors.white, fontSize: ScreenWidth * 0.04),
+                    ),
+                    SizedBox(height: ScreenHeight * 0.01,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.Date.toString().substring(0, 10),
+                          style: TextStyle(color: Colors.white54),
+                        ),
+                        SizedBox(width: ScreenWidth * 0.48,),
+                        Text(
+                            DateFormat('hh:mm a').format(DateFormat('hh:mm','en').parse(widget.Date.toString().substring(11, 16))),
+                          // widget.Date.toString().substring(11, 16),
+                          style: TextStyle(color: Colors.white54),
+                        ),
+                      ]
+                    )
+                  ]
+                )
+              ]
+            ) :
+
+            Row(
+                children: [
+
+                  SizedBox(width: ScreenWidth * 0.03,),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          widget.PersonOrEntity_title+' ${S.current.meetingNotification} ',
+                          style: TextStyle(color: Colors.white, fontSize: ScreenWidth * 0.04),
+                        ),
+                        SizedBox(height: ScreenHeight * 0.01,),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.Date.toString().substring(0, 10),
+                                style: TextStyle(color: Colors.white54),
+                              ),
+                              SizedBox(width: ScreenWidth * 0.48,),
+                              Text(
+                                DateFormat('hh:mm a').format(DateFormat('hh:mm','en').parse(widget.Date.toString().substring(11, 16))),
+                                // widget.Date.toString().substring(11, 16),
+                                style: TextStyle(color: Colors.white54),
+                              ),
+                            ]
+                        )
+                      ]
+                  ),
+                  SizedBox(width: ScreenWidth * 0.05,),
+                  Icon(
+                    Icons.notifications,
+                    color: Colors.grey[600],
                     size: ScreenWidth * 0.09,
                   ),
-                ),
-                Text(
-                  S.current.addNote,
-                  style: TextStyle(
-                      color: Colors.grey[700], fontSize: ScreenWidth * 0.04),
-                )
-              ],) : widget.Grid == true
+                ]
+            ) : widget.Grid == true
                 ? (widget.first
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,

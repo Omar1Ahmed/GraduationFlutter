@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -8,7 +6,6 @@ import 'package:http/http.dart';
 class ApiTest  {
   ApiTest(this.context);
   BuildContext context;
-
   Future<bool> hasNetwork() async {
     try {
       final result = await InternetAddress.lookup('example.com');

@@ -2,11 +2,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:learning/CardView.dart';
-import 'package:learning/Grad.dart';
-import 'package:learning/SqlDb.dart';
-import 'package:learning/Widgets/HomePageWidegt.dart';
-import 'package:learning/generated/l10n.dart';
+import 'package:Meetings/CardView.dart';
+import 'package:Meetings/Grad.dart';
+import 'package:Meetings/SqlDb.dart';
+import 'package:Meetings/Widgets/HomePageWidegt.dart';
+import 'package:Meetings/generated/l10n.dart';
 
 import '../main.dart';
 
@@ -318,6 +318,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                                   return
                                       // Text('${snapshot.data![index] ['name']}',style: TextStyle(color: Colors.white, fontSize: 24),);
                                       CardVu(
+                                    MeetingId: snapshot.data![index]['meeting_id'].toString(),
                                     PersonOrEntity_title: snapshot.data![index]
                                         ['person'],
                                     Topic_Content: snapshot.data![index]

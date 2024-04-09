@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:learning/Widgets/HomePageWidegt.dart';
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/generated/l10n.dart';
-import 'package:learning/main.dart';
+import 'package:Meetings/Widgets/HomePageWidegt.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/generated/l10n.dart';
+import 'package:Meetings/main.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

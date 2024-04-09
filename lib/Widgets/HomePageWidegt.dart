@@ -2,14 +2,14 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/intl.dart';
-import 'package:learning/CardView.dart';
-import 'package:learning/Grad.dart';
-import 'package:learning/SqlDb.dart';
+import 'package:Meetings/CardView.dart';
+import 'package:Meetings/Grad.dart';
+import 'package:Meetings/SqlDb.dart';
 
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/Widgets/SearchWidget.dart';
-import 'package:learning/Widgets/TestApi.dart';
-import 'package:learning/generated/l10n.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/Widgets/SearchWidget.dart';
+import 'package:Meetings/Widgets/TestApi.dart';
+import 'package:Meetings/generated/l10n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -838,7 +838,7 @@ class _HomePageState extends State<HomePage> {
 
   List<DateTime> getDays() {
     List<DateTime> Days = [];
-    if (cardData.isEmpty) {
+    if (cardData.isEmpty || cardData.length == 0 || cardData == null ) {
       _RadioSelected = 0;
     }
     for (int loop = 0; loop < cardData.length; loop ++) {
@@ -1051,6 +1051,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {
                               setState(() {
                                 RadioSelectedSetter(Dates);
+                                print('${widget.calenderData} first');
                                 _RadioSelected = 0;
                               });
                             }, child: Text(S
@@ -1091,17 +1092,17 @@ class _HomePageState extends State<HomePage> {
   Future<List> RadioSelectedSetter(List Dates) async {
     // _RadioSelected = value;
     widget.calenderDataBool = true;
+    print('calendar data = ${widget.calenderData}');
+    String SearchBy = 'date = "${widget.calenderData[0].toString().substring(0, 10)}"';
 
-    String SearchBy = 'date = "${widget.calenderData[0].toString().substring(
-        0, 10)}"';
     for (int loop = 1; loop < widget.calenderData.length; loop ++) {
       SearchBy +=
       ' or date = "${widget.calenderData[loop].toString().substring(0, 10)}"';
     }
 
-    widget.calenderData = await sqldb.readData(
+    return await sqldb.readData(
         'select * from Meetings where $SearchBy order by date');
-    return widget.calenderData;
+
     // _HomePageState().RadioSelected(0);
   }
 

@@ -5,9 +5,10 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:learning/SqlDb.dart';
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/lol.dart';
+import 'package:flutter_background_service_ios/flutter_background_service_ios.dart';
+import 'package:Meetings/SqlDb.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/lol.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -37,11 +38,11 @@ Future<bool> onIosBackground(ServiceInstance service) async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
 
+
   return true;
 }
 
 SqlDb sqldb = SqlDb();
-late final String _token, _managerId ;
 
 @pragma('vm:entry-point')
 void onStart(ServiceInstance service) async{
@@ -64,8 +65,6 @@ void onStart(ServiceInstance service) async{
     socket.emit('updateSocketId', {
       'token': loginInfo.getString('token')});
 
-  NotificationService().showNotification(title: 'title', body: 'connected');
-
   });
 
   // ''CREATE TABLE "Notifications" (
@@ -87,7 +86,7 @@ socket.onReconnect((data) {
   socket.connect();
 });
 
-  if(service is AndroidServiceInstance){ {
+  if(service is AndroidServiceInstance ){ {
   service.on('setAsForeground').listen((event) {
     service.setAsForegroundService();
   });
@@ -96,21 +95,29 @@ socket.onReconnect((data) {
   });
 }
 
+if(service is IOSServiceInstance){
+  service.on('setAsForeground').listen((event) {
+    service.setAsForegroundService();
+  });
+  service.on('setAsBackground').listen((event) {
+    service.setAsBackgroundService();
+  });
+
+}
 
  service.on('stopService').listen((event) {
    service.stopSelf();
  });
 
  Timer.periodic(Duration(seconds: 1), (timer) async {
-   if(service is AndroidServiceInstance) {
+
 
      if(await service.isForegroundService()){
        service.setForegroundNotificationInfo(title: '', content: '');
 
      }
 
-   }
-   print('backGround Running');
+     print('backGround Running');
 
    service.invoke('update');
  });

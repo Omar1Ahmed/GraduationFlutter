@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/back_service.dart';
-import 'package:learning/generated/l10n.dart';
-import 'package:learning/lol.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/back_service.dart';
+import 'package:Meetings/generated/l10n.dart';
+import 'package:Meetings/lol.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main () async {
@@ -110,7 +110,6 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
         connectToSocket();
 
         FlutterBackgroundService().invoke('setAsBackground');
-        print('backGround Activated ');
       } else {
         FlutterBackgroundService().invoke('stopService');
       }

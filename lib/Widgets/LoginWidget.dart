@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:learning/Widgets/ForgotPasswordWidget.dart';
-import 'package:learning/Widgets/TestApi.dart';
-import 'package:learning/back_service.dart';
-import 'package:learning/generated/l10n.dart';
+import 'package:Meetings/Widgets/ForgotPasswordWidget.dart';
+import 'package:Meetings/Widgets/TestApi.dart';
+import 'package:Meetings/back_service.dart';
+import 'package:Meetings/generated/l10n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -374,10 +374,8 @@ class _LoginState extends State<Login> {
                           }
                           // connectToSocket();
 
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => Grad(
-                                      accData, loginInfo, Language, Nearest)));
+                          Navigator.maybeOf(context)!.pushReplacement(MaterialPageRoute(builder: (context) => Grad(accData, loginInfo, Language, Nearest)));
+
                         } else if (api
                                 .getValue(Response, 'message')[0]
                                 .contains('Email') ||

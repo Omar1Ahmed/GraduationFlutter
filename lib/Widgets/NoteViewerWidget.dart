@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:learning/Grad.dart';
-import 'package:learning/Widgets/HomePageWidegt.dart';
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/Widgets/NotesWidget.dart';
-import 'package:learning/Widgets/TestApi.dart';
-import 'package:learning/generated/l10n.dart';
-import 'package:learning/main.dart';
+import 'package:Meetings/Grad.dart';
+import 'package:Meetings/Widgets/HomePageWidegt.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/Widgets/NotesWidget.dart';
+import 'package:Meetings/Widgets/TestApi.dart';
+import 'package:Meetings/generated/l10n.dart';
+import 'package:Meetings/main.dart';
 
 class AddNote extends StatefulWidget {
   String title,

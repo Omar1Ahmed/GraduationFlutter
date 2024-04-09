@@ -56,7 +56,7 @@ class _pdfViewer extends State<pdfViewer> {
     return PopScope(
       onPopInvoked: (back) async{
         print('lol');
-        Navigator.pop(context);
+        Navigator.maybePop(context);
       },
       child: SafeArea(
           child:  Scaffold(body : _isLoading ? Center(child: CircularProgressIndicator()) : PDFViewer(document: document,tooltip: PDFViewerTooltip(first: 'lol'),enableSwipeNavigation: true)),

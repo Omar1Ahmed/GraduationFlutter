@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:learning/Widgets/HomePageWidegt.dart';
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/Widgets/NearestMeetingsWidget.dart';
-import 'package:learning/SqlDb.dart';
-import 'package:learning/Widgets/NotesWidget.dart';
-import 'package:learning/Widgets/NotificationsWidget.dart';
-import 'package:learning/generated/l10n.dart';
-import 'package:learning/main.dart';
+import 'package:Meetings/Widgets/HomePageWidegt.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/Widgets/NearestMeetingsWidget.dart';
+import 'package:Meetings/SqlDb.dart';
+import 'package:Meetings/Widgets/NotesWidget.dart';
+import 'package:Meetings/Widgets/NotificationsWidget.dart';
+import 'package:Meetings/generated/l10n.dart';
+import 'package:Meetings/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Widgets/SettingsWidget.dart';
@@ -56,7 +56,7 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
   void initState() {
     super.initState();
 
-    Grad.lol = TabController(length: 5, vsync: this,);
+    Grad.lol = TabController(length: 4, vsync: this,);
     // connectToSocket();
 
     // languageSharedPrefInitialize();
@@ -104,7 +104,7 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
               const Tab(icon: Icon(Icons.home),text: "Home",iconMargin: EdgeInsets.all(0)),
               const Tab(icon: Icon(Icons.access_time_outlined), text: 'Nearest',iconMargin: EdgeInsets.zero,),
               const Tab(icon: Icon(Icons.edit_note_sharp),text: "Notes",iconMargin: EdgeInsets.all(0)),
-              Tab(icon: Icon(_curntIndx == 3 ? Icons.notifications : Icons.notifications_none),text: "Notifications",iconMargin: const EdgeInsets.all(0)),
+              // Tab(icon: Icon(_curntIndx == 3 ? Icons.notifications : Icons.notifications_none),text: "Notifications",iconMargin: const EdgeInsets.all(0)),
               const Tab(icon: Icon(Icons.settings),text: "Settings",iconMargin: EdgeInsets.all(0)),
             ], onTap: (int index) {
               setState(() {
@@ -142,7 +142,7 @@ class _GradState extends State<Grad> with TickerProviderStateMixin{
 
                 NearestMeetings(),
                 Notes( accData, loginInfo, Language),
-                Notifications(accData, loginInfo, Language),
+                // Notifications(accData, loginInfo, Language),
                 Settings(),
               ],
 

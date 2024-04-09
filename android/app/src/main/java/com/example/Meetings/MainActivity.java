@@ -1,4 +1,4 @@
-package com.example.learning;
+package com.example.Meetings;
 
 import io.flutter.embedding.android.FlutterActivity;
 

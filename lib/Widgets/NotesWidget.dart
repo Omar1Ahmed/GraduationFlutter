@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:learning/CardView.dart';
-import 'package:learning/Grad.dart';
-import 'package:learning/Widgets/HomePageWidegt.dart';
-import 'package:learning/Widgets/LoginWidget.dart';
-import 'package:learning/Widgets/TestApi.dart';
-import 'package:learning/generated/l10n.dart';
-import 'package:learning/main.dart';
+import 'package:Meetings/CardView.dart';
+import 'package:Meetings/Grad.dart';
+import 'package:Meetings/Widgets/HomePageWidegt.dart';
+import 'package:Meetings/Widgets/LoginWidget.dart';
+import 'package:Meetings/Widgets/TestApi.dart';
+import 'package:Meetings/generated/l10n.dart';
+import 'package:Meetings/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Notes extends StatefulWidget {

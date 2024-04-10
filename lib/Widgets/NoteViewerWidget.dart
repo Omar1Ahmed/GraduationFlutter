@@ -197,7 +197,7 @@ class _AddNoteState extends State<AddNote> {
                                         await api.getValue(lol, 'noteId')[0],
                                         txtTitle.text,
                                         json.toString(),
-                                        'null',
+                                        '0',
                                         DateTime.now().toString(),
                                         accData.getString('managerId')!,
                                       ]);

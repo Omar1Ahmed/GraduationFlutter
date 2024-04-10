@@ -198,7 +198,7 @@ class _NotesState extends State<Notes> {
               notesIds[i],
               notesTitles[i],
               notesContents[i],
-              meetingIds[i].toString().compareTo( 'null') == 0 ? '0': meetingIds[i].toString(),
+              meetingIds[i].toString().compareTo('null') == 0 ? '0': meetingIds[i].toString(),
               notesUpdatedAts[i],
               widget.accData.getString('managerId')!,
             ]);

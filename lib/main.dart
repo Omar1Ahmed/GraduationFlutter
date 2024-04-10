@@ -26,6 +26,8 @@ Future<void> main () async {
     }
   });
 
+
+
   runApp(MainApp());
   // runApp(MainApp());
 }
@@ -115,3 +117,12 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
       }
     }
   }
+
+Future<void> stopBackService() async {
+
+  if(await FlutterBackgroundService().isRunning()) {
+
+      FlutterBackgroundService().invoke('stopService');
+
+  }
+}

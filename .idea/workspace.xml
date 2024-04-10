@@ -9,42 +9,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="Last Version">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="Final Version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/example/learning/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/example/Meetings/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/CardView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CardView.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Grad.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Grad.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/ForgotPasswordWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/ForgotPasswordWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/NearestMeetingsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NearestMeetingsWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/NotificationsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NotificationsWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/SearchWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/SearchWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/SettingsWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/SettingsWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/pdfViewer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/pdfViewer.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/back_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/back_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/linux/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/my_application.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/my_application.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Runner/Configs/AppInfo.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Runner/Configs/AppInfo.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/widget_test.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/windows/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/runner/Runner.rc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/runner/Runner.rc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/runner/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/windows/runner/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,19 +77,6 @@
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
       <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
       <method v="2" />
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Meetings" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Meetings" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -193,7 +152,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712522072046</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Final Version">
+      <option name="closed" value="true" />
+      <created>1712693220736</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1712693220737</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -203,6 +170,7 @@
     <MESSAGE value="Notes Modification" />
     <MESSAGE value="App Notifications &amp;&amp; BackGround Service" />
     <MESSAGE value="Last Version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Last Version" />
+    <MESSAGE value="Final Version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final Version" />
   </component>
 </project>

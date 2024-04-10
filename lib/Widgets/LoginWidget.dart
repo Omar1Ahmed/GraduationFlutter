@@ -1,13 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:Meetings/Widgets/ForgotPasswordWidget.dart';
 import 'package:Meetings/Widgets/TestApi.dart';
-import 'package:Meetings/back_service.dart';
 import 'package:Meetings/generated/l10n.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Grad.dart';
@@ -126,11 +123,11 @@ class _LoginState extends State<Login> {
                       controller: txtMail,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          print('$ScreenWidth  $ScreenHeight');
-                          return "${S.of(context).mailEmptyErrorText}";
+
+                          return S.of(context).mailEmptyErrorText;
                         } else if (invalidMail) {
                           invalidMail = false;
-                          return '${S.of(context).mailInvalidErrorText}';
+                          return S.of(context).mailInvalidErrorText;
                         }
                         return null;
                       },
@@ -157,8 +154,8 @@ class _LoginState extends State<Login> {
                           height: ScreenHeight * 0.06,
                           fit: BoxFit.scaleDown,
                         ),
-                        labelText: "${S.of(context).mailLabelText}",
-                        hintText: "${S.of(context).mailHintText}",
+                        labelText: S.of(context).mailLabelText,
+                        hintText: S.of(context).mailHintText,
                         focusColor: Colors.transparent,
                         labelStyle: const TextStyle(color: Colors.grey),
                         hintStyle: const TextStyle(color: Colors.grey),
@@ -229,8 +226,8 @@ class _LoginState extends State<Login> {
                             });
                           },
                         ),
-                        labelText: "${S.of(context).passwordLabelText}",
-                        hintText: "${S.of(context).passwordHintText}",
+                        labelText: S.of(context).passwordLabelText,
+                        hintText: S.of(context).passwordHintText,
                         focusColor: Colors.transparent,
                         labelStyle: const TextStyle(color: Colors.grey),
                         hintStyle: const TextStyle(color: Colors.grey),
@@ -251,10 +248,10 @@ class _LoginState extends State<Login> {
                       obscuringCharacter: "*",
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "${S.of(context).passwordEmptyErrorText}";
+                          return S.of(context).passwordEmptyErrorText;
                         } else if (invalidPass) {
                           invalidPass = false;
-                          return '${S.of(context).passworInvalidErrorText}';
+                          return S.of(context).passworInvalidErrorText;
                         }
                       },
                       textInputAction: TextInputAction.done,
@@ -270,12 +267,12 @@ class _LoginState extends State<Login> {
                   splashFactory: NoSplash.splashFactory,
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ForgotPassword(),
+                      builder: (context) => const ForgotPassword(),
                     ));
                   },
-                  child: Text('${S.of(context).ForgotPassword}',
+                  child: Text(S.of(context).ForgotPassword,
                       style: TextStyle(
-                        color: Color(0xff7E7EBE),
+                        color: const Color(0xff7E7EBE),
                         fontSize: ScreenWidth * 0.034,
                       )),
                 ),
@@ -302,9 +299,9 @@ class _LoginState extends State<Login> {
                         });
                       },
                       child: Text(
-                        '${S.of(context).RememberMe}',
+                        S.of(context).RememberMe,
                         style: TextStyle(
-                            color: Color(0xff7E7EBE),
+                            color: const Color(0xff7E7EBE),
                             fontSize: ScreenWidth * 0.032),
                       ),
                     ),
@@ -344,6 +341,7 @@ class _LoginState extends State<Login> {
                               "role": 'Manager',
                             }));
 
+                        print('Response ${Response}');
                         if (api.getValue(Response, 'success')[0] == 'true') {
                           if (checkedValue) {
                             loginInfo.setString(
@@ -355,7 +353,7 @@ class _LoginState extends State<Login> {
                                 'token', api.getValue(Response, 'token')[0]);
                             loginInfo.setBool('remember', false);
                           }
-                          print(loginInfo.getString('token'));
+
 
 
 
@@ -368,7 +366,7 @@ class _LoginState extends State<Login> {
                             accData.setString('lastName',api.getValue(Response, 'last_name')[0]);
                             accData.setString('email', api.getValue(Response, 'E_mail')[0]);
                             accData.setString('userName',api.getValue(Response, 'UserName')[0]);
-                            accData.setStringList('Secretaries',api.getValue(api.getValue(Response, 'Secretaries')[0] +',','secretary_id'));
+                            accData.setStringList('Secretaries',api.getValue('${api.getValue(Response, 'Secretaries')[0]},','secretary_id'));
 
 
                           }
@@ -402,10 +400,10 @@ class _LoginState extends State<Login> {
                           strokeWidth: ScreenWidth * 0.0015,
                         )
                       : Text(
-                          '${S.of(context).Login}',
+                          S.of(context).Login,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: S.current == 'en'
+                              fontSize: 'en' == S.current
                                   ? ScreenWidth * 0.04
                                   : ScreenWidth * 0.033),
                         ),
@@ -427,11 +425,11 @@ class _LoginState extends State<Login> {
 
   void languageSharedPref() async {
     if (Language.getString('language') == 'en') {
-      S.load(Locale("en"));
+      S.load(const Locale("en"));
     } else if (Language.getString('language') == 'ar') {
-      S.load(Locale("ar"));
+      S.load(const Locale("ar"));
     } else {
-      S.load(Locale("ar"));
+      S.load(const Locale("ar"));
       Language.setString('language', 'ar');
       setState(() {});
     }
@@ -441,7 +439,7 @@ class _LoginState extends State<Login> {
     Language = await SharedPreferences.getInstance();
 
     if (Language.getString('language').toString() == 'null') {
-      print('Empty Shared');
+
       languageSharedPref();
     } else {
       S.load(Locale(Language.getString('language')!));
@@ -451,8 +449,8 @@ class _LoginState extends State<Login> {
 
   void nearsetSharedPref() async {
     Nearest = await SharedPreferences.getInstance();
-    if (Nearest!.getInt('Days') == null) {
-      Nearest!.setInt('Days', 3);
+    if (Nearest.getInt('Days') == null) {
+      Nearest.setInt('Days', 3);
     }
     // NearestMeetingDayDate = DateTime.now().add(Duration(days: widget.Nearest!.getInt("Days")! )).toString().substring(0,10);
   }

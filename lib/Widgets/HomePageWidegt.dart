@@ -1,6 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/intl.dart';
 import 'package:Meetings/CardView.dart';
 import 'package:Meetings/Grad.dart';
@@ -10,10 +9,7 @@ import 'package:Meetings/Widgets/LoginWidget.dart';
 import 'package:Meetings/Widgets/SearchWidget.dart';
 import 'package:Meetings/Widgets/TestApi.dart';
 import 'package:Meetings/generated/l10n.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../back_service.dart' as back;
 
 class HomePage extends StatefulWidget {
 
@@ -118,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                                 .of(context)
                                 .nearbyMeetings, style: TextStyle(
                                 fontSize: ScreenWidth * 0.035,
-                                color: Color(0xFF785FC0)),),
+                                color: const Color(0xFF785FC0)),),
                           ]
 
                       ),
@@ -158,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                                         .of(context)
                                         .days, style: TextStyle(
                                         fontSize: ScreenWidth * 0.03,
-                                        color: Color(0xFF7E7EBE)),),
+                                        color: const Color(0xFF7E7EBE)),),
                                     SizedBox(width: ScreenWidth * 0.024,),
                                     SizedBox(width: ScreenWidth * 0.09,
                                         height: ScreenHeight * 0.045,
@@ -203,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                                   .getInt('Days')}',
                                               hintStyle: TextStyle(
                                                   fontSize: ScreenWidth * 0.03,
-                                                  color: Color(0xFF7E7EBE)),
+                                                  color: const Color(0xFF7E7EBE)),
                                               fillColor: const Color(
                                                   0xff323644),
                                               filled: true,
@@ -251,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                                         .of(context)
                                         .days, style: TextStyle(
                                         fontSize: ScreenWidth * 0.04,
-                                        color: Color(0xFF7E7EBE)),),
+                                        color: const Color(0xFF7E7EBE)),),
                                     SizedBox(width: ScreenWidth * 0.024,),
                                     SizedBox(width: ScreenWidth * 0.09,
                                         height: ScreenHeight * 0.045,
@@ -296,7 +292,7 @@ class _HomePageState extends State<HomePage> {
                                                   .getInt('Days')}',
                                               hintStyle: TextStyle(
                                                   fontSize: ScreenWidth * 0.03,
-                                                  color: Color(0xFF7E7EBE)),
+                                                  color: const Color(0xFF7E7EBE)),
                                               fillColor: const Color(
                                                   0xff323644),
                                               filled: true,
@@ -328,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                                 .of(context)
                                 .nearbyMeetings, style: TextStyle(
                                 fontSize: ScreenWidth * 0.035,
-                                color: Color(0xFF785FC0)),),
+                                color: const Color(0xFF785FC0)),),
                             Icon(
                               isChecked ? Icons.check_box : Icons
                                   .check_box_outline_blank_rounded,
@@ -353,7 +349,7 @@ class _HomePageState extends State<HomePage> {
                   color: const Color.fromRGBO(50, 213, 131, 100),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Search()));
+                        MaterialPageRoute(builder: (context) => const Search()));
                   },
                 ),
               ), // Search Icon
@@ -577,11 +573,10 @@ class _HomePageState extends State<HomePage> {
             'https://meetingss.onrender.com/meetings?sort=date&date[lte]=$NearestMeetingDayDate&date[gte]=$currentDayDate&isUpdated=true',
             {'token': '${loginInfo.getString('token')}'})
             : await api.getRequest(
-            'https://meetingss.onrender.com/meetings?sort=date&date[gte]=' +
-                currentDayDate,
+            'https://meetingss.onrender.com/meetings?sort=date&date[gte]=$currentDayDate',
             {'token': '${loginInfo.getString('token')}'});
 
-        print('Response ${Response}');
+
         await insertDataToLocalDb(Response);
         insertion = true;
       } else {
@@ -905,7 +900,7 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             padding: EdgeInsets.only(top: ScreenHeight * 0.01),
             decoration: BoxDecoration(
-              color: Color(0xff1E2126),
+              color: const Color(0xff1E2126),
               // color: Colors.white,
               borderRadius: BorderRadius.all(
                   Radius.circular(ScreenWidth * 0.06)),
@@ -922,8 +917,7 @@ class _HomePageState extends State<HomePage> {
 
                   for (int loop = 0; loop < value.length; loop ++) {
                     value[loop] = DateTime.parse(
-                        value[loop].toString().substring(0, 10) +
-                            ' 00:00:00.00');
+                        '${value[loop].toString().substring(0, 10)} 00:00:00.00');
 
                     if (Dates.contains(value[loop])) {
                       widget.counter = (widget.counter +
@@ -1051,7 +1045,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {
                               setState(() {
                                 RadioSelectedSetter(Dates);
-                                print('${widget.calenderData} first');
+
                                 _RadioSelected = 0;
                               });
                             }, child: Text(S
@@ -1077,7 +1071,7 @@ class _HomePageState extends State<HomePage> {
 
   initStateCalnder() {
     if (widget.DateWithCounter[0]['Date'].toString().contains(
-        DateTime.now().toString().substring(0, 10) + ' 00:00:00.00')) {
+        '${DateTime.now().toString().substring(0, 10)} 00:00:00.00')) {
       widget.counter = widget.DateWithCounter[0]['counter'] as int;
 
       widget.number = ValueNotifier(widget.counter);
@@ -1092,7 +1086,7 @@ class _HomePageState extends State<HomePage> {
   Future<List> RadioSelectedSetter(List Dates) async {
     // _RadioSelected = value;
     widget.calenderDataBool = true;
-    print('calendar data = ${widget.calenderData}');
+
     String SearchBy = 'date = "${widget.calenderData[0].toString().substring(0, 10)}"';
 
     for (int loop = 1; loop < widget.calenderData.length; loop ++) {

@@ -10,13 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a758e408-a655-4459-abbb-4d8fe82ae873" name="Changes" comment="Final Version">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/HomePageWidegt.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/LoginWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NoteViewerWidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/NotesWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/back_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/back_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

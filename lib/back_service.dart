@@ -65,7 +65,7 @@ Future<bool> onIosBackground(ServiceInstance service) async {
   // "receivedAt" date
   socket.on('newNotification', (data) async {
     var message = getValue(jsonEncode(data), 'message')[0].toString().substring(38);
-    NotificationService().showNotification(title: 'title', body: Language.getString('language') == 'en' ? 'You hava a Meeting With $message' : '$message لديك اجتماع مع ');
+    NotificationService().showNotification(title: Language.getString('language') == 'en' ? 'Hey ${accData.getString('firstName')}' : '${accData.getString('firstName')}أهلا ', body: Language.getString('language') == 'en' ? 'You hava a Meeting With $message' : '$message لديك اجتماع مع ');
 
     var notification_id = getValue(jsonEncode(data), 'notificationId')[0].toString();
     print('$notification_id  $message');
@@ -151,7 +151,7 @@ void onStart(ServiceInstance service) async{
   // "receivedAt" date
   socket.on('newNotification', (data) async {
     var message = getValue(jsonEncode(data), 'message')[0].toString().substring(38);
-    NotificationService().showNotification(title: 'title', body: Language.getString('language') == 'en' ? 'You hava a Meeting With $message' : '$message لديك اجتماع مع ');
+    NotificationService().showNotification(title: Language.getString('language') == 'en' ? 'Hey ${accData.getString('firstName')}' : '${accData.getString('firstName')} أهلا ', body: Language.getString('language') == 'en' ? 'You hava a Meeting With $message' : '$message لديك اجتماع مع ');
 
     var notification_id = getValue(jsonEncode(data), 'notificationId')[0].toString();
     print('$notification_id  $message');
